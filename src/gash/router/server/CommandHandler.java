@@ -15,13 +15,12 @@
  */
 package gash.router.server;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import gash.router.container.RoutingConf;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import pipe.common.Common.Failure;
 import routing.Pipe.CommandMessage;
 
