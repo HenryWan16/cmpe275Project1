@@ -15,11 +15,12 @@
  */
 package gash.router.server;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import pipe.common.Common.Failure;
 import pipe.work.Work.Heartbeat;
 import pipe.work.Work.Task;
@@ -66,6 +67,7 @@ public class WorkHandler extends SimpleChannelInboundHandler<WorkMessage> {
 				Heartbeat hb = msg.getBeat();
 				logger.debug("heartbeat from " + msg.getHeader().getNodeId());
 			} else if (msg.hasPing()) {
+				logger.info("Server WorkHandler received ping message!");
 				logger.info("ping from " + msg.getHeader().getNodeId());
 				boolean p = msg.getPing();
 				WorkMessage.Builder rb = WorkMessage.newBuilder();

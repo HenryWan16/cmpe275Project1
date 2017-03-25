@@ -15,10 +15,11 @@
  */
 package gash.router.server.edges;
 
-import gash.router.container.RoutingConf.RoutingEntry;
-import gash.router.server.ServerState;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import gash.router.container.RoutingConf.RoutingEntry;
+import gash.router.server.ServerState;
 import pipe.common.Common.Header;
 import pipe.work.Work.Heartbeat;
 import pipe.work.Work.WorkMessage;

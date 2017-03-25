@@ -15,6 +15,8 @@
  */
 package gash.router.client;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import pipe.common.Common.Header;
 import routing.Pipe.CommandMessage;
 
@@ -25,6 +27,7 @@ import routing.Pipe.CommandMessage;
  * 
  */
 public class MessageClient {
+	protected static Logger logger = LoggerFactory.getLogger("client");
 	// track requests
 	private long curID = 0;
 
@@ -34,6 +37,7 @@ public class MessageClient {
 
 	private void init(String host, int port) {
 		CommConnection.initConnection(host, port);
+		logger.info("MessageClient init host: " + host + " port: " + port);
 	}
 
 	public void addListener(CommListener listener) {
@@ -56,6 +60,7 @@ public class MessageClient {
 			// CommConnection.getInstance().write(rb.build());
 
 			// using queue
+			logger.info("MessageClient send CommandMessage with ping=true to Netty Channel! ");
 			CommConnection.getInstance().enqueue(rb.build());
 		} catch (Exception e) {
 			e.printStackTrace();

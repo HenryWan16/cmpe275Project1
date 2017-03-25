@@ -15,12 +15,13 @@
  */
 package gash.router.server;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import gash.router.container.RoutingConf;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import pipe.common.Common.Failure;
 import routing.Pipe.CommandMessage;
 
@@ -61,6 +62,7 @@ public class CommandHandler extends SimpleChannelInboundHandler<CommandMessage> 
 		try {
 			// TODO How can you implement this without if-else statements?
 			if (msg.hasPing()) {
+				logger.info("Server CommandHandler received ping message!");
 				logger.info("ping from " + msg.getHeader().getNodeId());
 			} else if (msg.hasMessage()) {
 				logger.info(msg.getMessage());
@@ -93,6 +95,7 @@ public class CommandHandler extends SimpleChannelInboundHandler<CommandMessage> 
 	 */
 	@Override
 	protected void channelRead0(ChannelHandlerContext ctx, CommandMessage msg) throws Exception {
+		logger.info("CommandHandler Accept the message: " + acceptInboundMessage(msg));
 		handleMessage(msg, ctx.channel());
 	}
 

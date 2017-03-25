@@ -15,12 +15,13 @@
  */
 package gash.router.container;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlRootElement;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  * Routing information for the server - internal use only
@@ -42,6 +43,7 @@ public class RoutingConf {
 		HashMap<String, Integer> map = new HashMap<String, Integer>();
 		if (routing != null) {
 			for (RoutingEntry entry : routing) {
+				System.out.println("RoutingConf asHashMap(): host = " + entry.host + " port = " + entry.port);
 				map.put(entry.host, entry.port);
 			}
 		}
@@ -55,6 +57,7 @@ public class RoutingConf {
 		if (routing == null)
 			routing = new ArrayList<RoutingEntry>();
 
+		System.out.println("RoutingConf addEntry(): host = " + entry.host + " port = " + entry.port);
 		routing.add(entry);
 	}
 
