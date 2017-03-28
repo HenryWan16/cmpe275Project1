@@ -23,7 +23,7 @@ public class CommWorker extends Thread {
 
 	@Override
 	public void run() {
-		System.out.println("--> starting worker thread");
+		System.out.println("--> starting CommWorker thread");
 		System.out.flush();
 
 		Channel ch = conn.connect();

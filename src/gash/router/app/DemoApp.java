@@ -68,7 +68,7 @@ public class DemoApp implements CommListener {
 	 */
 	public static void main(String[] args) {
 		String host = "localhost";
-		int port = 4168;
+		int port = 4668;
 
 		try {
 			MessageClient mc = new MessageClient(host, port);

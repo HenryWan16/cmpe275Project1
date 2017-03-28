@@ -15,6 +15,7 @@
  */
 package gash.router.server;
 
+import gash.router.client.CommInit;
 import gash.router.container.RoutingConf;
 import gash.router.server.edges.EdgeMonitor;
 import gash.router.server.tasks.NoOpBalancer;
@@ -45,6 +46,7 @@ public class MessageServer {
 
 	protected RoutingConf conf;
 	protected boolean background = false;
+	protected QOSWorker qosWorker;
 
 	/**
 	 * initialize the server with a configuration of it's resources
@@ -107,6 +109,7 @@ public class MessageServer {
 			br = new BufferedInputStream(new FileInputStream(cfg));
 			br.read(raw);
 			conf = JsonUtil.decode(new String(raw), RoutingConf.class);
+			qosWorker = new QOSWorker(conf);
 			if (!verifyConf(conf))
 				throw new RuntimeException("verification of configuration failed");
 		} catch (Exception ex) {
@@ -229,7 +232,8 @@ public class MessageServer {
 				// b.option(ChannelOption.MESSAGE_SIZE_ESTIMATOR);
 
 				boolean compressComm = false;
-				b.childHandler(new WorkInit(state, compressComm));
+//				b.childHandler(new WorkInit(state, compressComm));
+				b.childHandler(new CommInit(state, compressComm));
 
 				// Start the server.
 				logger.info("Starting work server (" + state.getConf().getNodeId() + "), listening on port = "

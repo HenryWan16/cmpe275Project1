@@ -1,5 +1,6 @@
 package gash.router.client;
 
+import gash.router.server.ServerState;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.socket.SocketChannel;
@@ -13,10 +14,13 @@ import routing.Pipe.CommandMessage;
 
 public class CommInit extends ChannelInitializer<SocketChannel> {
 	boolean compress = false;
+	ServerState state;
 
-	public CommInit(boolean enableCompression) {
+	public CommInit(ServerState state, boolean enableCompression) {
 		super();
+		System.out.println("CommInit() -->");
 		compress = enableCompression;
+		this.state = state;
 	}
 
 	@Override
@@ -43,7 +47,8 @@ public class CommInit extends ChannelInitializer<SocketChannel> {
 		pipeline.addLast("frameEncoder", new LengthFieldPrepender(4));
 		pipeline.addLast("protobufEncoder", new ProtobufEncoder());
 
+		System.out.println("CommInit.initChannel() --> prepare to add handler to pipeline");
 		// our server processor (new instance for each connection)
-		pipeline.addLast("handler", new CommHandler());
+		pipeline.addLast("handler", new CommHandler(state));
 	}
 }

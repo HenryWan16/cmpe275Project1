@@ -61,7 +61,7 @@ public class CommConnection {
 	protected CommConnection(String host, int port) {
 		this.host = host;
 		this.port = port;
-
+		logger.info("CommConnection constructor is called.");
 		init();
 	}
 
@@ -133,8 +133,12 @@ public class CommConnection {
 	 */
 	public void addListener(CommListener listener) {
 		CommHandler handler = connect().pipeline().get(CommHandler.class);
+		logger.info("CommConnection adds listener.");
 		if (handler != null)
 			handler.addListener(listener);
+		else {
+			System.out.println("handler is null.");
+		}
 	}
 
 	private void init() {
