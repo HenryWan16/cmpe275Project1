@@ -232,7 +232,7 @@ public class MessageServer {
 				// b.option(ChannelOption.MESSAGE_SIZE_ESTIMATOR);
 
 				boolean compressComm = false;
-//				b.childHandler(new WorkInit(state, compressComm));
+				b.childHandler(new WorkInit(state, compressComm));
 				b.childHandler(new CommInit(state, compressComm));
 
 				// Start the server.
