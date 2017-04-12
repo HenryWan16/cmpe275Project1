@@ -36,7 +36,7 @@ public class DemoMessage implements CommListener{
     private void sendMessage(String message, int fromNode, int toNode) {
         long previousTime = System.currentTimeMillis(), futureTime = 0;
         System.out.println("=====================sendMessage======================");
-        mc.sendMessage(message, fromNode, toNode);
+        mc.sendCommMessage(message, fromNode, toNode);
         futureTime = System.currentTimeMillis();
         System.out.println("Message sending times (msec)");
         System.out.println(futureTime - previousTime);

@@ -67,7 +67,6 @@ public class CommandHandler extends SimpleChannelInboundHandler<CommandMessage> 
 				logger.info(msg.getMessage());
 			} else {
 			}
-
 		} catch (Exception e) {
 			// TODO add logging
 			Failure.Builder eb = Failure.newBuilder();

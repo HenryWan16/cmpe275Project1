@@ -69,11 +69,11 @@ public class MessageClient {
 	}
 
 	/**
-	 * send a message through workPort to the Remote.
+	 * send a comm message through workPort to the Remote.
 	 * @param message
 	 * @author Henry
 	 */
-	public void sendMessage(String message, int fromNodeId, int toNodeId) {
+	public void sendCommMessage(String message, int fromNodeId, int toNodeId) {
 		// construct the message to send
 		Common.Header.Builder hb = Common.Header.newBuilder();
 		hb.setNodeId(fromNodeId);

@@ -20,6 +20,8 @@ import pipe.common.Common.Header;
 import pipe.work.Work.WorkMessage;
 import routing.Pipe.CommandMessage;
 
+import java.sql.Timestamp;
+
 public class PrintUtil {
 	private static final String gap = "   ";
 
@@ -60,6 +62,10 @@ public class PrintUtil {
 			System.out.println("Failure");
 		else if (msg.hasPing())
 			System.out.println("Ping");
+		else if (msg.hasBeat()) {
+			Timestamp time = new Timestamp(System.currentTimeMillis());
+			System.out.println("Heartbeat timestamp: " + time);
+		}
 		else
 			System.out.println("Unknown");
 

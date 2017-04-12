@@ -17,6 +17,14 @@ package gash.router.server.edges;
 
 import gash.router.container.RoutingConf.RoutingEntry;
 import gash.router.server.ServerState;
+import gash.router.server.WorkInit;
+import io.netty.bootstrap.Bootstrap;
+import io.netty.channel.Channel;
+import io.netty.channel.ChannelFuture;
+import io.netty.channel.ChannelOption;
+import io.netty.channel.EventLoopGroup;
+import io.netty.channel.nio.NioEventLoopGroup;
+import io.netty.channel.socket.nio.NioSocketChannel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pipe.common.Common.Header;
@@ -73,6 +81,7 @@ public class EdgeMonitor implements EdgeListener, Runnable {
 		WorkMessage.Builder wb = WorkMessage.newBuilder();
 		wb.setHeader(hb);
 		wb.setBeat(bb);
+		wb.setSecret(12);
 
 		return wb.build();
 	}
@@ -89,9 +98,14 @@ public class EdgeMonitor implements EdgeListener, Runnable {
 					if (ei.isActive() && ei.getChannel() != null) {
 						WorkMessage wm = createHB(ei);
 						ei.getChannel().writeAndFlush(wm);
+						logger.info("active edge" + wm.toString());
 					} else {
 						// TODO create a client to the node
 						logger.info("trying to connect to node " + ei.getRef());
+						Channel channel = initChannel(ei.getHost(),ei.getPort());
+						if (channel == null) continue;
+						ei.setChannel(channel);
+						ei.setActive(true);
 					}
 				}
 
@@ -101,6 +115,38 @@ public class EdgeMonitor implements EdgeListener, Runnable {
 				e.printStackTrace();
 			}
 		}
+	}
+
+	/**
+	 * Send heartbeat to the "host:port" with new channel.
+	 * @param host
+	 * @param port
+	 * @return
+	 */
+	public Channel initChannel(String host, int port) {
+		ChannelFuture channel = null;
+		EventLoopGroup group = new NioEventLoopGroup();
+		logger.info("initChannel-->");
+		if (channel == null) {
+			try {
+				Bootstrap b = new Bootstrap();
+				WorkInit mi = new WorkInit(state, false);
+				b.group(group).channel(NioSocketChannel.class).handler(mi);
+				b.option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 10000);
+				b.option(ChannelOption.TCP_NODELAY, true);
+				b.option(ChannelOption.SO_KEEPALIVE, true);
+				logger.info("Monitor " + host + "," + port);
+				channel = b.connect(host, port).syncUninterruptibly();
+			} catch (Exception e) {
+				logger.info("channel create failed!");
+			}
+		}
+		if (channel != null){
+			return channel.channel();
+		}
+//		else
+//			throw new RuntimeException("can not establish channel to server");
+		return null;
 	}
 
 	@Override

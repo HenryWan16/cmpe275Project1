@@ -15,15 +15,16 @@
  */
 package gash.router.client;
 
-import gash.router.container.RoutingConf;
 import gash.router.server.PrintUtil;
 import gash.router.server.ServerState;
+import gash.router.server.messages.CommandSession;
+import gash.router.server.messages.QOSWorker;
+import gash.router.server.messages.Session;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import pipe.common.Common;
 import routing.Pipe.CommandMessage;
 
 import java.util.concurrent.ConcurrentHashMap;
@@ -81,43 +82,11 @@ public class CommHandler extends SimpleChannelInboundHandler<CommandMessage> {
 		if (debug)
 			PrintUtil.printCommand(msg);
 
-		// TODO How can you implement this without if-else statements?
-		try {
-			logger.info("Server CommHandler received string message!");
-			logger.info("msg.hasMessage() = " + msg.hasMessage());
-			// If the current nodeId equals msg destination, we can accept it.
-			// Or we will transfer the message to new node.
-			if (msg.hasMessage()) {
-				logger.info("string message from " + msg.getHeader().getNodeId());
-				logger.info("state.getConf().getNodeId() = " + state.getConf().getNodeId());
-				logger.info("msg.getHeader().getDestination()" + msg.getHeader().getDestination());
-				if (state.getConf().getNodeId() == msg.getHeader().getDestination()) {
-					System.out.println("CommHandler: the message arrived the node.");
-					System.out.println("Message: " + msg.getMessage());
-				}
-				else {
-					System.out.println("CommHandler: transfered by the node. " + state.getConf().getNodeId());
-					for (RoutingConf.RoutingEntry r : state.getConf().getRouting()) {
-						String newHost = r.getHost();
-						int newPort = r.getPort();
-						int newId = r.getId();
-						MessageClient mc = new MessageClient(newHost, newPort);
-						mc.sendMessage(msg.getMessage(), msg.getHeader().getNodeId(), msg.getHeader().getDestination());
-					}
-				}
-			}
-		} catch (Exception e) {
-			// TODO add logging
-			Common.Failure.Builder eb = Common.Failure.newBuilder();
-			eb.setId(state.getConf().getNodeId());
-			eb.setRefId(msg.getHeader().getNodeId());
-			eb.setMessage(e.getMessage());
-			CommandMessage.Builder rb = CommandMessage.newBuilder(msg);
-			rb.setErr(eb);
-			channel.write(rb.build());
-		}
-
-		System.out.flush();
+		QOSWorker qos = QOSWorker.getInstance();
+		qos.handleMessage();
+		logger.info("QOSWorker Thread Working on CommandSession: ");
+		Session session = new CommandSession(this.state, msg);
+		qos.getQueue().enqueue(session);
 	}
 
 	/**
