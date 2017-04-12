@@ -75,7 +75,7 @@ public class EdgeMonitor implements EdgeListener, Runnable {
 
 		Header.Builder hb = Header.newBuilder();
 		hb.setNodeId(state.getConf().getNodeId());
-		hb.setDestination(-1);
+		hb.setDestination(2);
 		hb.setTime(System.currentTimeMillis());
 
 		WorkMessage.Builder wb = WorkMessage.newBuilder();
@@ -98,11 +98,24 @@ public class EdgeMonitor implements EdgeListener, Runnable {
 					if (ei.isActive() && ei.getChannel() != null) {
 						WorkMessage wm = createHB(ei);
 						ei.getChannel().writeAndFlush(wm);
+//						try {
+//							// direct no queue
+//							// CommConnection.getInstance().write(rb.build());
+//
+//							// using queue
+//							logger.info("EdgeMonitor sent WorkMessage with heartbeat=true to Netty Channel! ");
+//							WorkConnection.getInstance().enqueue(wm);
+//						} catch (Exception e) {
+//							e.printStackTrace();
+//						}
 						logger.info("active edge" + wm.toString());
 					} else {
+						// create a channel which can connect to the remote server. if channel == null, try to connect again.
 						// TODO create a client to the node
 						logger.info("trying to connect to node " + ei.getRef());
 						Channel channel = initChannel(ei.getHost(),ei.getPort());
+//						WorkConnection.initConnection(ei.getHost(), ei.getPort());
+//						Channel channel = WorkConnection.getInstance().getChannel().channel();
 						if (channel == null) continue;
 						ei.setChannel(channel);
 						ei.setActive(true);

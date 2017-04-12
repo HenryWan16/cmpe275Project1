@@ -1,20 +1,13 @@
 package gash.router.server.messages;
 
 import gash.router.server.MessageServer;
+import gash.router.server.PrintUtil;
 import gash.router.server.ServerState;
-import gash.router.server.WorkInit;
-import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
-import io.netty.channel.ChannelFuture;
-import io.netty.channel.ChannelOption;
-import io.netty.channel.EventLoopGroup;
-import io.netty.channel.nio.NioEventLoopGroup;
-import io.netty.channel.socket.nio.NioSocketChannel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pipe.common.Common;
 import pipe.work.Work;
-import pipe.work.Work.Heartbeat;
 import pipe.work.Work.WorkMessage;
 
 /**
@@ -44,8 +37,9 @@ public class WorkSession implements Session, Runnable{
         // TODO How can you implement this without if-else statements?
         try {
             if (msg.hasBeat()) {
-                Heartbeat hb = msg.getBeat();
-                logger.info("heartbeat from " + msg.getHeader());
+//                Heartbeat hb = msg.getBeat();
+//                logger.info("heartbeat from " + msg.getHeader());
+                PrintUtil.printWork(msg);
             } else if (msg.hasPing()) {
                 logger.info("Server WorkHandler received ping message!");
                 logger.info("ping from " + msg.getHeader().getNodeId());
@@ -75,29 +69,6 @@ public class WorkSession implements Session, Runnable{
             channel.write(rb.build());
         }
         System.out.flush();
-    }
-
-    public Channel initChannel(String host, int port) {
-        ChannelFuture channel = null;
-        EventLoopGroup group = new NioEventLoopGroup();
-        if (channel == null) {
-            try {
-                WorkInit mi = new WorkInit(state, false);
-                Bootstrap b = new Bootstrap();
-                b.group(group).channel(NioSocketChannel.class).handler(mi);
-                b.option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 10000);
-                b.option(ChannelOption.TCP_NODELAY, true);
-                b.option(ChannelOption.SO_KEEPALIVE, true);
-                logger.info("Monitor" + host + "," + port);
-                channel = b.connect(host, port).syncUninterruptibly();
-            } catch (Exception e) {
-                logger.info("channel create failed!");
-            }
-        }
-        if (channel != null)
-            return channel.channel();
-        else
-            throw new RuntimeException("can not establish channel to server");
     }
 
     @Override
