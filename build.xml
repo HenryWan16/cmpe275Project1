@@ -7,7 +7,7 @@
 		<property name="test.dir" location="${basedir}/test" />
 		<property name="build.dir" location="${basedir}/classes" />
 
-		<property name="config.dir" location="${basedir}/resources" />
+		<property name="config.dir" location="/resources0" />
 		<property name="protobuf.dir" location="/Users/gash/Developer/protobuf/current" />
 		<property name="junit.jar" location="/Users/gash/Developer/junit-4.8.2.jar" />
 		<property name="logging.jar" location="${basedir}/lib/slf4j-log4j12-1.6.1.jar" />
