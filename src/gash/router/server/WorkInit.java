@@ -51,6 +51,7 @@ public class WorkInit extends ChannelInitializer<SocketChannel> {
 		pipeline.addLast("frameEncoder", new LengthFieldPrepender(4));
 		pipeline.addLast("protobufEncoder", new ProtobufEncoder());
 
+		System.out.println("WorkInit.initChannel() --> prepare to add handler to pipeline");
 		// our server processor (new instance for each connection)
 		pipeline.addLast("handler", new WorkHandler(state));
 	}

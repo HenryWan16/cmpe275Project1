@@ -83,7 +83,6 @@ public class CommHandler extends SimpleChannelInboundHandler<CommandMessage> {
 			PrintUtil.printCommand(msg);
 
 		QOSWorker qos = QOSWorker.getInstance();
-		qos.handleMessage();
 		logger.info("QOSWorker Thread Working on CommandSession: ");
 		Session session = new CommandSession(this.state, msg);
 		qos.getQueue().enqueue(session);

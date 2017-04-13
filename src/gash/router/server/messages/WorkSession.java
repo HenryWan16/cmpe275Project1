@@ -30,7 +30,7 @@ public class WorkSession implements Session, Runnable{
         this.channel = channel;
     }
 
-    // When the server receive the commandMessage, how to deal with it?
+    // When the server receive the WorkMessage, how to deal with it?
     @Override
     public void handleMessage() {
         // Channel channel = initChannel()
@@ -56,7 +56,9 @@ public class WorkSession implements Session, Runnable{
             } else if (msg.hasState()) {
                 Work.WorkState s = msg.getState();
             }
+            logger.info("MessageServer.threadLimit = " + MessageServer.threadLimit);
             MessageServer.minThreadLimit();
+            logger.info("MessageServer.threadLimit = " + MessageServer.threadLimit);
         }
         catch (Exception e) {
             // TODO add logging

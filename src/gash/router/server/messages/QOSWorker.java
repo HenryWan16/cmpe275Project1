@@ -19,6 +19,7 @@ public class QOSWorker implements Runnable{
         // We use SimpleQueue here;
         this.queue = new SimpleQueue();
         instance = this;
+        init();
     }
 
     public static QOSWorker getInstance() {
@@ -32,7 +33,7 @@ public class QOSWorker implements Runnable{
         forever = false;
     }
 
-    public void handleMessage() {
+    public void init() {
         Thread cthread = new Thread(this);
         cthread.start();
     }

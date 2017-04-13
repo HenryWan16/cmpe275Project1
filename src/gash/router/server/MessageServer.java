@@ -15,7 +15,6 @@
  */
 package gash.router.server;
 
-import gash.router.client.CommInit;
 import gash.router.container.RoutingConf;
 import gash.router.server.edges.EdgeMonitor;
 import gash.router.server.tasks.NoOpBalancer;
@@ -63,6 +62,10 @@ public class MessageServer {
 	}
 
 	public void release() {
+	}
+
+	public static synchronized int getThreadLimit() {
+		return threadLimit;
 	}
 
 	public static synchronized void addThreadLimit() {
@@ -240,8 +243,8 @@ public class MessageServer {
 				// b.option(ChannelOption.MESSAGE_SIZE_ESTIMATOR);
 
 				boolean compressComm = false;
-//				b.childHandler(new WorkInit(state, compressComm));
-				b.childHandler(new CommInit(state, compressComm));
+				b.childHandler(new WorkInit(state, compressComm));
+//				b.childHandler(new CommInit(state, compressComm));
 
 				// Start the server.
 				logger.info("Starting work server (" + state.getConf().getNodeId() + "), listening on port = "
