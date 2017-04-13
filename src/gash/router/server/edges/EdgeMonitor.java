@@ -95,8 +95,8 @@ public class EdgeMonitor implements EdgeListener, Runnable {
 		while (forever) {
 			try {
 				for (EdgeInfo ei : this.outboundEdges.map.values()) {
+					WorkMessage wm = createHB(ei);
 					if (ei.isActive() && ei.getChannel() != null) {
-						WorkMessage wm = createHB(ei);
 						ei.getChannel().writeAndFlush(wm);
 //						try {
 //							// direct no queue
@@ -119,6 +119,13 @@ public class EdgeMonitor implements EdgeListener, Runnable {
 						if (channel == null) continue;
 						ei.setChannel(channel);
 						ei.setActive(true);
+
+						// Why we need to use inboundEdges?
+						if (channel.isActive()) {
+							this.inboundEdges.addNode(ei.getRef(), ei.getHost(), ei.getPort());
+							logger.info("connected to node " + ei.getRef());
+							ei.getChannel().writeAndFlush(wm);
+						}
 					}
 				}
 

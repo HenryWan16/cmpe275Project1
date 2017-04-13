@@ -114,6 +114,7 @@ public class WorkHandler extends SimpleChannelInboundHandler<WorkMessage> {
 	 */
 	@Override
 	protected void channelRead0(ChannelHandlerContext ctx, WorkMessage msg) throws Exception {
+		logger.info("WorkHandler channelRead0...");
 		handleMessage(msg, ctx.channel());
 	}
 
