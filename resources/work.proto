@@ -1,4 +1,4 @@
-syntax = "proto2";
+syntax="proto2";
 option optimize_for = SPEED;
 option java_package = "pipe.work";
 
@@ -24,9 +24,9 @@ message Task {
 
 // These are messages to keep the network running (not to perform work)
 message WorkMessage {
-   required Header header = 1;
+   optional Header header = 1;
    required int64 secret = 2;
-
+   
    /**
     * The actions (request or response) is
     * implicit through which data structure is in the payload.
@@ -40,9 +40,17 @@ message WorkMessage {
 
       // status updates between adjacent workers
       Heartbeat beat = 5;
-
+	  
       Task task = 6;
-      WorkState state = 7;
-      LeaderStatus leader = 8;
+      WorkState state = 7;      
+      LeaderStatus leader = 9;      
+      Vote vote=10; 
+      RequestVote reqvote=11;
+      AddNewNode addnewnode=12;
+      Request request = 13;      
+      Response response = 14;
+      
    }
 }
+
+

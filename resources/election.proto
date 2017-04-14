@@ -1,22 +1,30 @@
-syntax = "proto2";
+syntax="proto2";
 option optimize_for = SPEED;
 option java_package = "pipe.election";
 
 // enquire about the state of the leader/election
 message LeaderStatus {
-   required LeaderQuery action = 1;
-   optional LeaderState state = 2;
-   optional string leader_host= 3;
-   optional int32 leader_id = 4;
-   
-   enum LeaderState {
-      LEADERUNKNOWN = 1;
-      LEADERALIVE = 2;
-      LEADERDEAD = 3;
-   }
+   //required LeaderQuery action = 1;
+   //optional LeaderState state = 2;
+   //optional string leader_host= 3;
+   optional int32 leader_id = 1;
+   optional int32 leader_term = 2;
+	
+}
 
-   enum LeaderQuery {
-      WHOISTHELEADER = 1;
-      THELEADERIS = 2;
-   }
+message CandidateStatus{
+   optional string candidate_host= 3;
+   optional int32 candidate_id = 4;
+   
+}
+
+message Vote {    
+    required int32 voterID = 2;
+    optional int32 candidateID = 3;
+}
+
+message RequestVote {
+	
+    required int32 currentTerm = 1;
+    required int32 candidateID = 2;    
 }

@@ -1,4 +1,4 @@
-syntax = "proto2";
+syntax="proto2";
 option optimize_for = SPEED;
 option java_package = "routing";
 
@@ -9,10 +9,10 @@ message CommandMessage {
 
     oneof payload {
       // a client (external) sanity check for testing
-      bool ping = 3;
-
-      string message = 4;
-      
+ 	  
+      bool ping = 4;
+	  Request request = 6;      
+      Response response = 7;
       Failure err = 5;
    }
 }
