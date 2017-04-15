@@ -48,8 +48,8 @@ message Request {
 message WriteBody {
    optional int64 file_id = 1;
    required string filename = 2;
-   optional string file_ext=3;
-   optional Chunk chunk=4;
+   optional string file_ext = 3;
+   optional Chunk chunk = 4;
    optional int32 num_of_chunks = 5;
 }
 
@@ -83,13 +83,13 @@ message ReadResponse {
    optional string file_ext= 3;
    optional int32 num_of_chunks = 4;
    repeated ChunkLocation chunk_location = 5;
+   optional Chunk chunk = 6;
 }
 
 
 message ChunkLocation {
    optional int32 chunkid = 1;
    repeated Node node = 2;
-
 }
 
 
