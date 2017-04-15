@@ -40,16 +40,16 @@ message WorkMessage {
 
       // status updates between adjacent workers
       Heartbeat beat = 5;
-	  
+
       Task task = 6;
       WorkState state = 7;      
-      LeaderStatus leader = 9;      
-      Vote vote=10; 
-      RequestVote reqvote=11;
-      AddNewNode addnewnode=12;
+      LeaderStatus leader = 8;
+            
+      Vote a_vote = 10; 
+      RequestVote req_a_vote = 11;
+      RegisterNode a_node = 12;
       Request request = 13;      
       Response response = 14;
-      
    }
 }
 

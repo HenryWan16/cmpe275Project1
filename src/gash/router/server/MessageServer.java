@@ -15,8 +15,19 @@
  */
 package gash.router.server;
 
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.HashMap;
+
+import org.codehaus.jackson.map.ObjectMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import gash.router.container.RoutingConf;
 import gash.router.server.edges.EdgeMonitor;
+import gash.router.server.raft.RaftHandler;
 import gash.router.server.tasks.NoOpBalancer;
 import gash.router.server.tasks.TaskList;
 import io.netty.bootstrap.ServerBootstrap;
@@ -25,15 +36,6 @@ import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.util.HashMap;
 
 public class MessageServer {
 	protected static Logger logger = LoggerFactory.getLogger("server");
@@ -45,8 +47,6 @@ public class MessageServer {
 
 	protected RoutingConf conf;
 	protected boolean background = false;
-
-	public static int threadLimit = 0;
 
 	/**
 	 * initialize the server with a configuration of it's resources
@@ -64,20 +64,9 @@ public class MessageServer {
 	public void release() {
 	}
 
-	public static synchronized int getThreadLimit() {
-		return threadLimit;
-	}
-
-	public static synchronized void addThreadLimit() {
-		threadLimit++;
-	}
-
-	public static synchronized void minThreadLimit() {
-		threadLimit--;
-	}
-
 	public void startServer() {
 		StartWorkCommunication comm = new StartWorkCommunication(conf);
+		logger.info("Work starting");
 
 		// We always start the worker in the background
 		Thread cthread = new Thread(comm);
@@ -104,12 +93,6 @@ public class MessageServer {
 		System.exit(0);
 	}
 
-	/**
-	 * Init the class RoutingConf.
-	 * @param cfg
-	 * @return
-	 * @author Henry just comment
-	 */
 	private void init(File cfg) {
 		if (!cfg.exists())
 			throw new RuntimeException(cfg.getAbsolutePath() + " not found");
@@ -120,7 +103,6 @@ public class MessageServer {
 			br = new BufferedInputStream(new FileInputStream(cfg));
 			br.read(raw);
 			conf = JsonUtil.decode(new String(raw), RoutingConf.class);
-
 			if (!verifyConf(conf))
 				throw new RuntimeException("verification of configuration failed");
 		} catch (Exception ex) {
@@ -136,12 +118,6 @@ public class MessageServer {
 		}
 	}
 
-	/**
-	 * config file shouldn't be null.
-	 * @param conf
-	 * @return
-	 * @author Henry just comment
-	 */
 	private boolean verifyConf(RoutingConf conf) {
 		return (conf != null);
 	}
@@ -209,6 +185,7 @@ public class MessageServer {
 	 */
 	private static class StartWorkCommunication implements Runnable {
 		ServerState state;
+		RaftHandler handler;
 
 		public StartWorkCommunication(RoutingConf conf) {
 			if (conf == null)
@@ -223,6 +200,14 @@ public class MessageServer {
 			EdgeMonitor emon = new EdgeMonitor(state);
 			Thread t = new Thread(emon);
 			t.start();
+			
+			//create new thread for handling raft operation
+			handler = new RaftHandler(state);
+			state.setHandler(handler);
+			handler.init();
+			
+			Thread raftHandlerThread = new Thread(handler);
+			raftHandlerThread.start();
 		}
 
 		public void run() {
@@ -244,7 +229,6 @@ public class MessageServer {
 
 				boolean compressComm = false;
 				b.childHandler(new WorkInit(state, compressComm));
-//				b.childHandler(new CommInit(state, compressComm));
 
 				// Start the server.
 				logger.info("Starting work server (" + state.getConf().getNodeId() + "), listening on port = "
@@ -272,64 +256,6 @@ public class MessageServer {
 			}
 		}
 	}
-
-//	private static class StartQOSWorker implements Runnable {
-//		QOSWorker qos;
-//		ServerState state;
-//
-//		public StartQOSWorker(RoutingConf conf) {
-//			this.qos = QOSWorker.getInstance();
-//			if (conf == null)
-//				throw new RuntimeException("missing conf");
-//
-//			state = new ServerState();
-//			state.setConf(conf);
-//
-//			TaskList tasks = new TaskList(new NoOpBalancer());
-//			state.setTasks(tasks);
-//		}
-//
-//		public void run() {
-//			// construct boss and worker threads (num threads = number of cores)
-//
-//			EventLoopGroup bossGroup = new NioEventLoopGroup();
-//			EventLoopGroup workerGroup = new NioEventLoopGroup();
-//
-//			try {
-//				ServerBootstrap b = new ServerBootstrap();
-//				bootstrap.put(state.getConf().getWorkPort(), b);
-//
-//				b.group(bossGroup, workerGroup);
-//				b.channel(NioServerSocketChannel.class);
-//				b.option(ChannelOption.SO_BACKLOG, 100);
-//				b.option(ChannelOption.TCP_NODELAY, true);
-//				b.option(ChannelOption.SO_KEEPALIVE, true);
-//				// b.option(ChannelOption.MESSAGE_SIZE_ESTIMATOR);
-//
-//				boolean compressComm = false;
-//				b.childHandler(new QOSWorkerInit(state, compressComm));
-//
-//				// Start the server.
-//				logger.info("Starting work server (" + state.getConf().getNodeId() + "), listening on port = "
-//						+ state.getConf().getWorkPort());
-//				ChannelFuture f = b.bind(state.getConf().getWorkPort()).syncUninterruptibly();
-//
-//				logger.info(f.channel().localAddress() + " -> open: " + f.channel().isOpen() + ", write: "
-//						+ f.channel().isWritable() + ", act: " + f.channel().isActive());
-//
-//				// block until the server socket is closed.
-//				f.channel().closeFuture().sync();
-//
-//			} catch (Exception ex) {
-//				// on bind().sync()
-//				logger.error("Failed to setup handler.", ex);
-//			} finally {
-//				// Shut down all event loops to terminate all threads.
-//				bossGroup.shutdownGracefully();
-//				workerGroup.shutdownGracefully();
-//			}
-//		}
-//	}
 
 	/**
 	 * help with processing the configuration information

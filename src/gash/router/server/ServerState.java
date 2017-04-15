@@ -2,15 +2,35 @@ package gash.router.server;
 
 import gash.router.container.RoutingConf;
 import gash.router.server.edges.EdgeMonitor;
+import gash.router.server.raft.RaftHandler;
 import gash.router.server.tasks.TaskList;
 
 public class ServerState {
 	private RoutingConf conf;
 	private EdgeMonitor emon;
 	private TaskList tasks;
+	private RaftHandler handler;
+	private int leaderId;
+	private String status = "";
+
+	public String getStatus() { 
+		return status;
+    }
+
+	public void setStatus(String status) { 
+		this.status = status;
+    }
 
 	public RoutingConf getConf() {
 		return conf;
+	}
+	
+	public int getLeaderId() {
+	    return leaderId;
+	}
+	
+	public void setLeaderId(int id) {
+	    leaderId = id;
 	}
 
 	public void setConf(RoutingConf conf) {
@@ -31,6 +51,14 @@ public class ServerState {
 
 	public void setTasks(TaskList tasks) {
 		this.tasks = tasks;
+	}
+	
+	public void setHandler(RaftHandler handler) {
+		this.handler = handler;
+	}
+	
+	public RaftHandler getHandler() {
+		return this.handler;
 	}
 
 }

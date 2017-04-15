@@ -18,10 +18,6 @@ message Header {
     optional int32 max_hops = 10 [default = -1];
 }
 
-message AddNewNode{
-	required string host = 1;
-	required int32 port = 2;
-}
 message Request {          
  	required RequestType requestType = 3;    
     enum RequestType {
@@ -83,27 +79,34 @@ message Node{
    required int32 port = 3;
 }
 
-message Response{
-	//optional string message=1;
-	optional string filename=3;	
-	enum ResponseType{
-	   READFILE = 1;
-       WRITEFILE = 2;
-       DELETEFILE = 3;
-       UPDATEFILE = 4;
-	}
-	enum Status{
-	   Success = 1;
-	   Failure = 2;
-	}
-	oneof payload{
-       WriteResponse writeResponse = 4;
-       ReadResponse readResponse = 5;
-       //optional ResponseDeleteBody rdb = 6;
-       //optional ResponseUpdateBody rub = 7;
-    }
-	
+message RegisterNode{
+    required string host = 1;
+    required int32 port = 2;
 }
+
+message Response{
+    //optional string message=1;
+    optional string filename=3;	
+    enum ResponseType{
+        READFILE = 1;
+        WRITEFILE = 2;
+        DELETEFILE = 3;
+        UPDATEFILE = 4;
+    }
+    
+    enum Status{
+        Success = 1;
+        Failure = 2;
+    }
+    
+    oneof payload{
+        WriteResponse writeResponse = 4;
+        ReadResponse readResponse = 5;
+        //optional ResponseDeleteBody rdb = 6;
+        //optional ResponseUpdateBody rub = 7;
+    }
+}
+
 
 message Failure {
     required int32 id = 1;

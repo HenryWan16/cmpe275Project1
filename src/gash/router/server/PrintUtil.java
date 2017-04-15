@@ -20,8 +20,6 @@ import pipe.common.Common.Header;
 import pipe.work.Work.WorkMessage;
 import routing.Pipe.CommandMessage;
 
-import java.sql.Timestamp;
-
 public class PrintUtil {
 	private static final String gap = "   ";
 
@@ -45,11 +43,8 @@ public class PrintUtil {
 			System.out.println(PrintUtil.gap + "Code:    " + msg.getErr().getId());
 			System.out.println(PrintUtil.gap + "Ref ID:  " + msg.getErr().getRefId());
 			System.out.println(PrintUtil.gap + "Message: " + msg.getErr().getMessage());
-		} else if (msg.hasPing())
+		} else if (msg.hasPing()) {
 			System.out.println("Ping");
-		else if (msg.hasMessage()) {
-			System.out.println("Message");
-			System.out.println(PrintUtil.gap + "Msg:  " + msg.getMessage());
 		} else
 			System.out.println("Unknown");
 	}
@@ -62,10 +57,8 @@ public class PrintUtil {
 			System.out.println("Failure");
 		else if (msg.hasPing())
 			System.out.println("Ping");
-		else if (msg.hasBeat()) {
-			Timestamp time = new Timestamp(System.currentTimeMillis());
-			System.out.println("Heartbeat timestamp: " + time);
-		}
+		else if (msg.hasLeader())
+			System.out.println("HeartBeat");
 		else
 			System.out.println("Unknown");
 

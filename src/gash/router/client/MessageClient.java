@@ -15,9 +15,6 @@
  */
 package gash.router.client;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import pipe.common.Common;
 import pipe.common.Common.Header;
 import routing.Pipe.CommandMessage;
 
@@ -28,7 +25,6 @@ import routing.Pipe.CommandMessage;
  * 
  */
 public class MessageClient {
-	protected static Logger logger = LoggerFactory.getLogger("client");
 	// track requests
 	private long curID = 0;
 
@@ -38,7 +34,6 @@ public class MessageClient {
 
 	private void init(String host, int port) {
 		CommConnection.initConnection(host, port);
-		logger.info("MessageClient init host: " + host + " port: " + port);
 	}
 
 	public void addListener(CommListener listener) {
@@ -61,33 +56,6 @@ public class MessageClient {
 			// CommConnection.getInstance().write(rb.build());
 
 			// using queue
-			logger.info("MessageClient send CommandMessage with ping=true to Netty Channel! ");
-			CommConnection.getInstance().enqueue(rb.build());
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	/**
-	 * send a comm message through workPort to the Remote.
-	 * @param message
-	 * @author Henry
-	 */
-	public void sendCommMessage(String message, int fromNodeId, int toNodeId) {
-		// construct the message to send
-		Common.Header.Builder hb = Common.Header.newBuilder();
-		hb.setNodeId(fromNodeId);
-		hb.setTime(System.currentTimeMillis());
-		hb.setDestination(toNodeId);
-
-		CommandMessage.Builder rb = CommandMessage.newBuilder();
-		rb.setHeader(hb);
-		rb.setPing(false);
-		rb.setMessage(message);
-		logger.info("rb.hasMessage() = " + rb.hasMessage());
-		try {
-			// using queue
-//            logger.info("MessageClient send CommandMessage with message=True to Netty Channel! ");
 			CommConnection.getInstance().enqueue(rb.build());
 		} catch (Exception e) {
 			e.printStackTrace();

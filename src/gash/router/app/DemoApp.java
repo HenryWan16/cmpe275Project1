@@ -58,7 +58,6 @@ public class DemoApp implements CommListener {
 	@Override
 	public void onMessage(CommandMessage msg) {
 		System.out.println("---> " + msg);
-		System.out.println("DemoApp onMessage ");
 	}
 
 	/**
@@ -67,8 +66,8 @@ public class DemoApp implements CommListener {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		String host = "localhost";
-		int port = 4668;
+		String host = "169.254.214.81";
+		int port = 4168;
 
 		try {
 			MessageClient mc = new MessageClient(host, port);

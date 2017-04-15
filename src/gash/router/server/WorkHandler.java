@@ -15,15 +15,17 @@
  */
 package gash.router.server;
 
-import gash.router.server.messages.QOSWorker;
-import gash.router.server.messages.Session;
-import gash.router.server.messages.WorkSession;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import pipe.common.Common.Failure;
+import pipe.work.Work.Heartbeat;
+import pipe.work.Work.Task;
 import pipe.work.Work.WorkMessage;
+import pipe.work.Work.WorkState;
 
 /**
  * The message handler processes json messages that are delimited by a 'newline'
@@ -59,45 +61,59 @@ public class WorkHandler extends SimpleChannelInboundHandler<WorkMessage> {
 		if (debug)
 			PrintUtil.printWork(msg);
 
-		QOSWorker qos = QOSWorker.getInstance();
-		logger.info("QOSWorker Thread Working : ");
-		Session session = new WorkSession(this.state, msg);
-		qos.getQueue().enqueue(session);
-
 		// TODO How can you implement this without if-else statements?
-//		try {
-//			if (msg.hasBeat()) {
-//				Heartbeat hb = msg.getBeat();
-//				logger.debug("heartbeat from " + msg.getHeader().getNodeId());
-//				PrintUtil.printWork(msg);
-//			} else if (msg.hasPing()) {
-//				logger.info("Server WorkHandler received ping message!");
-//				logger.info("ping from " + msg.getHeader().getNodeId());
-//				boolean p = msg.getPing();
-//				WorkMessage.Builder rb = WorkMessage.newBuilder();
-//				rb.setPing(true);
-//				channel.write(rb.build());
-//			} else if (msg.hasErr()) {
-//				Failure err = msg.getErr();
-//				logger.error("failure from " + msg.getHeader().getNodeId());
-//				// PrintUtil.printFailure(err);
-//			} else if (msg.hasTask()) {
-//				Task t = msg.getTask();
-//			} else if (msg.hasState()) {
-//				WorkState s = msg.getState();
-//			}
-//		} catch (Exception e) {
-//			// TODO add logging
-//			Failure.Builder eb = Failure.newBuilder();
-//			eb.setId(state.getConf().getNodeId());
-//			eb.setRefId(msg.getHeader().getNodeId());
-//			eb.setMessage(e.getMessage());
-//			WorkMessage.Builder rb = WorkMessage.newBuilder(msg);
-//			rb.setErr(eb);
-//			channel.write(rb.build());
-//		}
-//
-//		System.out.flush();
+		try {
+			if (msg.hasBeat()) {
+				Heartbeat hb = msg.getBeat();
+				logger.debug("heartbeat from " + msg.getHeader().getNodeId());
+			} else if (msg.hasPing()) {
+				logger.info("ping from " + msg.getHeader().getNodeId());
+				boolean p = msg.getPing();
+				WorkMessage.Builder rb = WorkMessage.newBuilder();
+				rb.setPing(true);
+				channel.write(rb.build());
+				
+			} else if (msg.hasErr()) {
+				Failure err = msg.getErr();
+				logger.error("failure from " + msg.getHeader().getNodeId());
+				// PrintUtil.printFailure(err);
+				
+			} else if (msg.hasReqAVote()){				
+				state.getHandler().getNodeState().processReplyAVoteToCandidate(msg);	        	
+				
+			} else if (msg.hasAVote()){
+				state.getHandler().getNodeState().processHandleAVoteFromFollower(msg);		   
+					
+			} else if (msg.hasLeader()) {							
+				state.getHandler().getNodeState().processReplyHeartBeatToLeader(msg);
+				
+			} else if (msg.hasANode()) {
+				state.getHandler().getEdgeMonitor().createOutboundIfNew(msg.getHeader().getNodeId(), 
+									msg.getANode().getHost(), msg.getANode().getPort());
+								
+			} else if (msg.hasErr()) {
+				Failure err = msg.getErr();
+				logger.error("failure from " + msg.getHeader().getNodeId());
+			    PrintUtil.printFailure(err);
+			    
+			} else if (msg.hasTask()) {
+				Task t = msg.getTask();
+				
+			} else if (msg.hasState()) {
+				WorkState s = msg.getState();
+			}
+		} catch (Exception e) {
+			// TODO add logging
+			Failure.Builder eb = Failure.newBuilder();
+			eb.setId(state.getConf().getNodeId());
+			eb.setRefId(msg.getHeader().getNodeId());
+			eb.setMessage(e.getMessage());
+			WorkMessage.Builder rb = WorkMessage.newBuilder(msg);
+			rb.setErr(eb);
+			channel.write(rb.build());
+		}
+
+		System.out.flush();
 
 	}
 
@@ -113,7 +129,6 @@ public class WorkHandler extends SimpleChannelInboundHandler<WorkMessage> {
 	 */
 	@Override
 	protected void channelRead0(ChannelHandlerContext ctx, WorkMessage msg) throws Exception {
-		logger.info("WorkHandler channelRead0...");
 		handleMessage(msg, ctx.channel());
 	}
 

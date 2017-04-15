@@ -15,22 +15,21 @@
  */
 package gash.router.server.edges;
 
+import java.net.UnknownHostException;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import gash.router.container.RoutingConf.RoutingEntry;
 import gash.router.server.ServerState;
 import gash.router.server.WorkInit;
+import gash.router.server.raft.MessageUtil;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
-import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelOption;
-import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import pipe.common.Common.Header;
-import pipe.work.Work.Heartbeat;
-import pipe.work.Work.WorkMessage;
-import pipe.work.Work.WorkState;
+
 
 public class EdgeMonitor implements EdgeListener, Runnable {
 	protected static Logger logger = LoggerFactory.getLogger("edge monitor");
@@ -40,6 +39,8 @@ public class EdgeMonitor implements EdgeListener, Runnable {
 	private long dt = 2000;
 	private ServerState state;
 	private boolean forever = true;
+	private boolean isStarted = false;
+	
 
 	public EdgeMonitor(ServerState state) {
 		if (state == null)
@@ -65,25 +66,12 @@ public class EdgeMonitor implements EdgeListener, Runnable {
 		inboundEdges.createIfNew(ref, host, port);
 	}
 
-	private WorkMessage createHB(EdgeInfo ei) {
-		WorkState.Builder sb = WorkState.newBuilder();
-		sb.setEnqueued(-1);
-		sb.setProcessed(-1);
-
-		Heartbeat.Builder bb = Heartbeat.newBuilder();
-		bb.setState(sb);
-
-		Header.Builder hb = Header.newBuilder();
-		hb.setNodeId(state.getConf().getNodeId());
-		hb.setDestination(2);
-		hb.setTime(System.currentTimeMillis());
-
-		WorkMessage.Builder wb = WorkMessage.newBuilder();
-		wb.setHeader(hb);
-		wb.setBeat(bb);
-		wb.setSecret(12);
-
-		return wb.build();
+	public void createOutboundIfNew(int ref, String host, int port) {
+		outboundEdges.createIfNew(ref, host, port);
+	}
+	
+	public EdgeList getOutboundEdges() {
+		return outboundEdges;
 	}
 
 	public void shutdown() {
@@ -94,80 +82,65 @@ public class EdgeMonitor implements EdgeListener, Runnable {
 	public void run() {
 		while (forever) {
 			try {
-				for (EdgeInfo ei : this.outboundEdges.map.values()) {
-					WorkMessage wm = createHB(ei);
-					if (ei.isActive() && ei.getChannel() != null) {
-						ei.getChannel().writeAndFlush(wm);
-//						try {
-//							// direct no queue
-//							// CommConnection.getInstance().write(rb.build());
-//
-//							// using queue
-//							logger.info("EdgeMonitor sent WorkMessage with heartbeat=true to Netty Channel! ");
-//							WorkConnection.getInstance().enqueue(wm);
-//						} catch (Exception e) {
-//							e.printStackTrace();
-//						}
-						logger.info("active edge" + wm.toString());
-					} else {
-						// create a channel which can connect to the remote server. if channel == null, try to connect again.
-						// TODO create a client to the node
-						logger.info("trying to connect to node " + ei.getRef());
-						Channel channel = initChannel(ei.getHost(),ei.getPort());
-//						WorkConnection.initConnection(ei.getHost(), ei.getPort());
-//						Channel channel = WorkConnection.getInstance().getChannel().channel();
-						if (channel == null) continue;
-						ei.setChannel(channel);
-						ei.setActive(true);
+				// check if node gets initialized yet
+				if (!isStarted) {
+					for (EdgeInfo ei:this.outboundEdges.map.values()) {
+						logger.info("Init the node itself and register to other\n");
+						if (ei.isActive() && ei.getChannel().isActive()) {	
+							int host = state.getConf().getNodeId();
+							int port = state.getConf().getWorkPort();
 
-						// Why we need to use inboundEdges?
-						if (channel.isActive()) {
-							this.inboundEdges.addNode(ei.getRef(), ei.getHost(), ei.getPort());
-							logger.info("connected to node " + ei.getRef());
-							ei.getChannel().writeAndFlush(wm);
-						}
-					}
+							ei.getChannel().writeAndFlush(MessageUtil.registerANewNode(host, port));
+						}				
+					 }
+					isStarted = true;
 				}
+				
+				//Check all neighbor nodes to get connected
+				for(EdgeInfo ei:this.outboundEdges.map.values()) {
+					if (ei.getChannel() == null || !ei.getChannel().isActive()) {
+						//logger.info("trying to connect to node " + ei.getRef());
+						try {
+							Channel channel = createChannel(ei.getHost(), ei.getPort());
 
+	                        if (channel != null && channel.isActive()) {
+	                        	ei.setChannel(channel);                        	
+	                            ei.setActive(true);                                
+	                            logger.info("connected to node " + ei.getRef());
+	                        } else {
+	                        	
+	                        }
+						} catch (Exception e) { /*do not show anything */ }
+					} 
+				}
+				
 				Thread.sleep(dt);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
+			} catch (InterruptedException e) {			
+				e.printStackTrace();
+			} catch (UnknownHostException e) {
 				e.printStackTrace();
 			}
 		}
 	}
-
-	/**
-	 * Send heartbeat to the "host:port" with new channel.
-	 * @param host
-	 * @param port
-	 * @return
-	 */
-	public Channel initChannel(String host, int port) {
-		ChannelFuture channel = null;
-		EventLoopGroup group = new NioEventLoopGroup();
-		logger.info("initChannel-->");
-		if (channel == null) {
-			try {
-				Bootstrap b = new Bootstrap();
-				WorkInit mi = new WorkInit(state, false);
-				b.group(group).channel(NioSocketChannel.class).handler(mi);
-				b.option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 10000);
-				b.option(ChannelOption.TCP_NODELAY, true);
-				b.option(ChannelOption.SO_KEEPALIVE, true);
-				logger.info("Monitor " + host + "," + port);
-				channel = b.connect(host, port).syncUninterruptibly();
-			} catch (Exception e) {
-				logger.info("channel create failed!");
-			}
-		}
-		if (channel != null){
-			return channel.channel();
-		}
-//		else
-//			throw new RuntimeException("can not establish channel to server");
-		return null;
+	
+	private Channel createChannel(String host, int port) {
+		Bootstrap b = new Bootstrap();
+		NioEventLoopGroup eventLoop = new NioEventLoopGroup();
+		WorkInit workInit = new WorkInit(state, false);
+		
+		try {
+			b.group(eventLoop).channel(NioSocketChannel.class).handler(workInit);
+			b.option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 10000); //timeout in 10sec
+			b.option(ChannelOption.TCP_NODELAY, true);
+			b.option(ChannelOption.SO_KEEPALIVE, true);
+    	} catch (Exception e) {
+    		return null;
+    	}
+		
+		return b.connect(host, port).syncUninterruptibly().channel();
 	}
+	
+	
 
 	@Override
 	public synchronized void onAdd(EdgeInfo ei) {

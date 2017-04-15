@@ -3,13 +3,12 @@
 
 	<target name="init">
 		<property name="src.dir" location="${basedir}/src" />
-		<property name="generated.dir" location="${basedir}/generated" />
 		<property name="test.dir" location="${basedir}/test" />
 		<property name="build.dir" location="${basedir}/classes" />
 
-		<property name="config.dir" location="/resources0" />
-		<property name="protobuf.dir" location="/Users/gash/Developer/protobuf/current" />
-		<property name="junit.jar" location="/Users/gash/Developer/junit-4.8.2.jar" />
+		<property name="config.dir" location="${basedir}/resources" />
+		
+		<property name="junit.jar" location="${basedir}/lib/junit-4.8.2.jar" />
 		<property name="logging.jar" location="${basedir}/lib/slf4j-log4j12-1.6.1.jar" />
 
 		<path id="project.classpath">
@@ -34,14 +33,19 @@
 	<target name="build" depends="clean">
 		<mkdir dir="${build.dir}" />
 
-		<javac destdir="${build.dir}" debug="true" deprecation="false" optimize="false" failonerror="true">
-			<src path="${src.dir}:${generated.dir}" />
+		<javac destdir="${build.dir}" debug="true" deprecation="false" includeantruntime="false" optimize="false" failonerror="true">
+					<src path="${basedir}/generated" />
+					<classpath refid="project.classpath" />
+		</javac>
+
+		<javac destdir="${build.dir}" debug="true" deprecation="false" optimize="false" includeantruntime="false" failonerror="true">
+			<src path="${src.dir}" />
 			<classpath refid="project.classpath" />
 		</javac>
 	</target>
 
 	<target name="build.test" depends="build">
-		<javac destdir="${build.dir}" debug="true" deprecation="false" optimize="false" failonerror="true">
+		<javac destdir="${build.dir}" debug="true" deprecation="false" optimize="false" includeantruntime="false" failonerror="true">
 			<src path="${test.dir}" />
 			<classpath refid="project.classpath" />
 		</javac>
@@ -54,17 +58,12 @@
 			</test>
 		</junit>
 	</target>
-
-	<target name="hello" depends="build">
+	
+	
+		
+	<target name="client" depends="build">
 		<java fork="yes" classname="gash.router.app.DemoApp">
 			<classpath refid="project.classpath" />
-		</java>
-	</target>
-
-	<target name="server" depends="build">
-		<java fork="yes" classname="gash.router.server.MessageApp">
-			<classpath refid="project.classpath" />
-			<arg value="resources/routing.conf" />
 		</java>
 	</target>
 
