@@ -4,7 +4,7 @@ import java.net.Inet4Address;
 import java.net.UnknownHostException;
 
 import pipe.common.Common.Header;
-import pipe.common.Common.RegisterNode;
+import pipe.work.Work.RegisterNode;
 import pipe.election.Election.LeaderStatus;
 import pipe.election.Election.RequestVote;
 import pipe.election.Election.Vote;

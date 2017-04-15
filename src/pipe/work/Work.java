@@ -1751,6 +1751,651 @@ public final class Work {
 
   }
 
+  public interface RegisterNodeOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:RegisterNode)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>required string host = 1;</code>
+     */
+    boolean hasHost();
+    /**
+     * <code>required string host = 1;</code>
+     */
+    java.lang.String getHost();
+    /**
+     * <code>required string host = 1;</code>
+     */
+    com.google.protobuf.ByteString
+        getHostBytes();
+
+    /**
+     * <code>required int32 port = 2;</code>
+     */
+    boolean hasPort();
+    /**
+     * <code>required int32 port = 2;</code>
+     */
+    int getPort();
+  }
+  /**
+   * Protobuf type {@code RegisterNode}
+   */
+  public  static final class RegisterNode extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:RegisterNode)
+      RegisterNodeOrBuilder {
+    // Use RegisterNode.newBuilder() to construct.
+    private RegisterNode(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private RegisterNode() {
+      host_ = "";
+      port_ = 0;
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    private RegisterNode(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 10: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000001;
+              host_ = bs;
+              break;
+            }
+            case 16: {
+              bitField0_ |= 0x00000002;
+              port_ = input.readInt32();
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return pipe.work.Work.internal_static_RegisterNode_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return pipe.work.Work.internal_static_RegisterNode_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              pipe.work.Work.RegisterNode.class, pipe.work.Work.RegisterNode.Builder.class);
+    }
+
+    private int bitField0_;
+    public static final int HOST_FIELD_NUMBER = 1;
+    private volatile java.lang.Object host_;
+    /**
+     * <code>required string host = 1;</code>
+     */
+    public boolean hasHost() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>required string host = 1;</code>
+     */
+    public java.lang.String getHost() {
+      java.lang.Object ref = host_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          host_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>required string host = 1;</code>
+     */
+    public com.google.protobuf.ByteString
+        getHostBytes() {
+      java.lang.Object ref = host_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        host_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int PORT_FIELD_NUMBER = 2;
+    private int port_;
+    /**
+     * <code>required int32 port = 2;</code>
+     */
+    public boolean hasPort() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>required int32 port = 2;</code>
+     */
+    public int getPort() {
+      return port_;
+    }
+
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      if (!hasHost()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!hasPort()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 1, host_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeInt32(2, port_);
+      }
+      unknownFields.writeTo(output);
+    }
+
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, host_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(2, port_);
+      }
+      size += unknownFields.getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof pipe.work.Work.RegisterNode)) {
+        return super.equals(obj);
+      }
+      pipe.work.Work.RegisterNode other = (pipe.work.Work.RegisterNode) obj;
+
+      boolean result = true;
+      result = result && (hasHost() == other.hasHost());
+      if (hasHost()) {
+        result = result && getHost()
+            .equals(other.getHost());
+      }
+      result = result && (hasPort() == other.hasPort());
+      if (hasPort()) {
+        result = result && (getPort()
+            == other.getPort());
+      }
+      result = result && unknownFields.equals(other.unknownFields);
+      return result;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      if (hasHost()) {
+        hash = (37 * hash) + HOST_FIELD_NUMBER;
+        hash = (53 * hash) + getHost().hashCode();
+      }
+      if (hasPort()) {
+        hash = (37 * hash) + PORT_FIELD_NUMBER;
+        hash = (53 * hash) + getPort();
+      }
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static pipe.work.Work.RegisterNode parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static pipe.work.Work.RegisterNode parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static pipe.work.Work.RegisterNode parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static pipe.work.Work.RegisterNode parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static pipe.work.Work.RegisterNode parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static pipe.work.Work.RegisterNode parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static pipe.work.Work.RegisterNode parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static pipe.work.Work.RegisterNode parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static pipe.work.Work.RegisterNode parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static pipe.work.Work.RegisterNode parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(pipe.work.Work.RegisterNode prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code RegisterNode}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:RegisterNode)
+        pipe.work.Work.RegisterNodeOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return pipe.work.Work.internal_static_RegisterNode_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return pipe.work.Work.internal_static_RegisterNode_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                pipe.work.Work.RegisterNode.class, pipe.work.Work.RegisterNode.Builder.class);
+      }
+
+      // Construct using pipe.work.Work.RegisterNode.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+        }
+      }
+      public Builder clear() {
+        super.clear();
+        host_ = "";
+        bitField0_ = (bitField0_ & ~0x00000001);
+        port_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000002);
+        return this;
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return pipe.work.Work.internal_static_RegisterNode_descriptor;
+      }
+
+      public pipe.work.Work.RegisterNode getDefaultInstanceForType() {
+        return pipe.work.Work.RegisterNode.getDefaultInstance();
+      }
+
+      public pipe.work.Work.RegisterNode build() {
+        pipe.work.Work.RegisterNode result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public pipe.work.Work.RegisterNode buildPartial() {
+        pipe.work.Work.RegisterNode result = new pipe.work.Work.RegisterNode(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.host_ = host_;
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        result.port_ = port_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder clone() {
+        return (Builder) super.clone();
+      }
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          Object value) {
+        return (Builder) super.setField(field, value);
+      }
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return (Builder) super.clearField(field);
+      }
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return (Builder) super.clearOneof(oneof);
+      }
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, Object value) {
+        return (Builder) super.setRepeatedField(field, index, value);
+      }
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          Object value) {
+        return (Builder) super.addRepeatedField(field, value);
+      }
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof pipe.work.Work.RegisterNode) {
+          return mergeFrom((pipe.work.Work.RegisterNode)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(pipe.work.Work.RegisterNode other) {
+        if (other == pipe.work.Work.RegisterNode.getDefaultInstance()) return this;
+        if (other.hasHost()) {
+          bitField0_ |= 0x00000001;
+          host_ = other.host_;
+          onChanged();
+        }
+        if (other.hasPort()) {
+          setPort(other.getPort());
+        }
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        if (!hasHost()) {
+          return false;
+        }
+        if (!hasPort()) {
+          return false;
+        }
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        pipe.work.Work.RegisterNode parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (pipe.work.Work.RegisterNode) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private java.lang.Object host_ = "";
+      /**
+       * <code>required string host = 1;</code>
+       */
+      public boolean hasHost() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>required string host = 1;</code>
+       */
+      public java.lang.String getHost() {
+        java.lang.Object ref = host_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            host_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>required string host = 1;</code>
+       */
+      public com.google.protobuf.ByteString
+          getHostBytes() {
+        java.lang.Object ref = host_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          host_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>required string host = 1;</code>
+       */
+      public Builder setHost(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000001;
+        host_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required string host = 1;</code>
+       */
+      public Builder clearHost() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        host_ = getDefaultInstance().getHost();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required string host = 1;</code>
+       */
+      public Builder setHostBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000001;
+        host_ = value;
+        onChanged();
+        return this;
+      }
+
+      private int port_ ;
+      /**
+       * <code>required int32 port = 2;</code>
+       */
+      public boolean hasPort() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>required int32 port = 2;</code>
+       */
+      public int getPort() {
+        return port_;
+      }
+      /**
+       * <code>required int32 port = 2;</code>
+       */
+      public Builder setPort(int value) {
+        bitField0_ |= 0x00000002;
+        port_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required int32 port = 2;</code>
+       */
+      public Builder clearPort() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        port_ = 0;
+        onChanged();
+        return this;
+      }
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFields(unknownFields);
+      }
+
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:RegisterNode)
+    }
+
+    // @@protoc_insertion_point(class_scope:RegisterNode)
+    private static final pipe.work.Work.RegisterNode DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new pipe.work.Work.RegisterNode();
+    }
+
+    public static pipe.work.Work.RegisterNode getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    @java.lang.Deprecated public static final com.google.protobuf.Parser<RegisterNode>
+        PARSER = new com.google.protobuf.AbstractParser<RegisterNode>() {
+      public RegisterNode parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+          return new RegisterNode(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<RegisterNode> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<RegisterNode> getParserForType() {
+      return PARSER;
+    }
+
+    public pipe.work.Work.RegisterNode getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
   public interface WorkMessageOrBuilder extends
       // @@protoc_insertion_point(interface_extends:WorkMessage)
       com.google.protobuf.MessageOrBuilder {
@@ -1904,11 +2549,11 @@ public final class Work {
     /**
      * <code>optional .RegisterNode a_node = 12;</code>
      */
-    pipe.common.Common.RegisterNode getANode();
+    pipe.work.Work.RegisterNode getANode();
     /**
      * <code>optional .RegisterNode a_node = 12;</code>
      */
-    pipe.common.Common.RegisterNodeOrBuilder getANodeOrBuilder();
+    pipe.work.Work.RegisterNodeOrBuilder getANodeOrBuilder();
 
     /**
      * <code>optional .Request request = 13;</code>
@@ -2107,14 +2752,14 @@ public final class Work {
               break;
             }
             case 98: {
-              pipe.common.Common.RegisterNode.Builder subBuilder = null;
+              pipe.work.Work.RegisterNode.Builder subBuilder = null;
               if (payloadCase_ == 12) {
-                subBuilder = ((pipe.common.Common.RegisterNode) payload_).toBuilder();
+                subBuilder = ((pipe.work.Work.RegisterNode) payload_).toBuilder();
               }
               payload_ =
-                  input.readMessage(pipe.common.Common.RegisterNode.PARSER, extensionRegistry);
+                  input.readMessage(pipe.work.Work.RegisterNode.PARSER, extensionRegistry);
               if (subBuilder != null) {
-                subBuilder.mergeFrom((pipe.common.Common.RegisterNode) payload_);
+                subBuilder.mergeFrom((pipe.work.Work.RegisterNode) payload_);
                 payload_ = subBuilder.buildPartial();
               }
               payloadCase_ = 12;
@@ -2494,20 +3139,20 @@ public final class Work {
     /**
      * <code>optional .RegisterNode a_node = 12;</code>
      */
-    public pipe.common.Common.RegisterNode getANode() {
+    public pipe.work.Work.RegisterNode getANode() {
       if (payloadCase_ == 12) {
-         return (pipe.common.Common.RegisterNode) payload_;
+         return (pipe.work.Work.RegisterNode) payload_;
       }
-      return pipe.common.Common.RegisterNode.getDefaultInstance();
+      return pipe.work.Work.RegisterNode.getDefaultInstance();
     }
     /**
      * <code>optional .RegisterNode a_node = 12;</code>
      */
-    public pipe.common.Common.RegisterNodeOrBuilder getANodeOrBuilder() {
+    public pipe.work.Work.RegisterNodeOrBuilder getANodeOrBuilder() {
       if (payloadCase_ == 12) {
-         return (pipe.common.Common.RegisterNode) payload_;
+         return (pipe.work.Work.RegisterNode) payload_;
       }
-      return pipe.common.Common.RegisterNode.getDefaultInstance();
+      return pipe.work.Work.RegisterNode.getDefaultInstance();
     }
 
     public static final int REQUEST_FIELD_NUMBER = 13;
@@ -2670,7 +3315,7 @@ public final class Work {
         output.writeMessage(11, (pipe.election.Election.RequestVote) payload_);
       }
       if (payloadCase_ == 12) {
-        output.writeMessage(12, (pipe.common.Common.RegisterNode) payload_);
+        output.writeMessage(12, (pipe.work.Work.RegisterNode) payload_);
       }
       if (payloadCase_ == 13) {
         output.writeMessage(13, (pipe.common.Common.Request) payload_);
@@ -2729,7 +3374,7 @@ public final class Work {
       }
       if (payloadCase_ == 12) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(12, (pipe.common.Common.RegisterNode) payload_);
+          .computeMessageSize(12, (pipe.work.Work.RegisterNode) payload_);
       }
       if (payloadCase_ == 13) {
         size += com.google.protobuf.CodedOutputStream
@@ -4513,7 +5158,7 @@ public final class Work {
       }
 
       private com.google.protobuf.SingleFieldBuilderV3<
-          pipe.common.Common.RegisterNode, pipe.common.Common.RegisterNode.Builder, pipe.common.Common.RegisterNodeOrBuilder> aNodeBuilder_;
+          pipe.work.Work.RegisterNode, pipe.work.Work.RegisterNode.Builder, pipe.work.Work.RegisterNodeOrBuilder> aNodeBuilder_;
       /**
        * <code>optional .RegisterNode a_node = 12;</code>
        */
@@ -4523,23 +5168,23 @@ public final class Work {
       /**
        * <code>optional .RegisterNode a_node = 12;</code>
        */
-      public pipe.common.Common.RegisterNode getANode() {
+      public pipe.work.Work.RegisterNode getANode() {
         if (aNodeBuilder_ == null) {
           if (payloadCase_ == 12) {
-            return (pipe.common.Common.RegisterNode) payload_;
+            return (pipe.work.Work.RegisterNode) payload_;
           }
-          return pipe.common.Common.RegisterNode.getDefaultInstance();
+          return pipe.work.Work.RegisterNode.getDefaultInstance();
         } else {
           if (payloadCase_ == 12) {
             return aNodeBuilder_.getMessage();
           }
-          return pipe.common.Common.RegisterNode.getDefaultInstance();
+          return pipe.work.Work.RegisterNode.getDefaultInstance();
         }
       }
       /**
        * <code>optional .RegisterNode a_node = 12;</code>
        */
-      public Builder setANode(pipe.common.Common.RegisterNode value) {
+      public Builder setANode(pipe.work.Work.RegisterNode value) {
         if (aNodeBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
@@ -4556,7 +5201,7 @@ public final class Work {
        * <code>optional .RegisterNode a_node = 12;</code>
        */
       public Builder setANode(
-          pipe.common.Common.RegisterNode.Builder builderForValue) {
+          pipe.work.Work.RegisterNode.Builder builderForValue) {
         if (aNodeBuilder_ == null) {
           payload_ = builderForValue.build();
           onChanged();
@@ -4569,11 +5214,11 @@ public final class Work {
       /**
        * <code>optional .RegisterNode a_node = 12;</code>
        */
-      public Builder mergeANode(pipe.common.Common.RegisterNode value) {
+      public Builder mergeANode(pipe.work.Work.RegisterNode value) {
         if (aNodeBuilder_ == null) {
           if (payloadCase_ == 12 &&
-              payload_ != pipe.common.Common.RegisterNode.getDefaultInstance()) {
-            payload_ = pipe.common.Common.RegisterNode.newBuilder((pipe.common.Common.RegisterNode) payload_)
+              payload_ != pipe.work.Work.RegisterNode.getDefaultInstance()) {
+            payload_ = pipe.work.Work.RegisterNode.newBuilder((pipe.work.Work.RegisterNode) payload_)
                 .mergeFrom(value).buildPartial();
           } else {
             payload_ = value;
@@ -4610,35 +5255,35 @@ public final class Work {
       /**
        * <code>optional .RegisterNode a_node = 12;</code>
        */
-      public pipe.common.Common.RegisterNode.Builder getANodeBuilder() {
+      public pipe.work.Work.RegisterNode.Builder getANodeBuilder() {
         return getANodeFieldBuilder().getBuilder();
       }
       /**
        * <code>optional .RegisterNode a_node = 12;</code>
        */
-      public pipe.common.Common.RegisterNodeOrBuilder getANodeOrBuilder() {
+      public pipe.work.Work.RegisterNodeOrBuilder getANodeOrBuilder() {
         if ((payloadCase_ == 12) && (aNodeBuilder_ != null)) {
           return aNodeBuilder_.getMessageOrBuilder();
         } else {
           if (payloadCase_ == 12) {
-            return (pipe.common.Common.RegisterNode) payload_;
+            return (pipe.work.Work.RegisterNode) payload_;
           }
-          return pipe.common.Common.RegisterNode.getDefaultInstance();
+          return pipe.work.Work.RegisterNode.getDefaultInstance();
         }
       }
       /**
        * <code>optional .RegisterNode a_node = 12;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
-          pipe.common.Common.RegisterNode, pipe.common.Common.RegisterNode.Builder, pipe.common.Common.RegisterNodeOrBuilder> 
+          pipe.work.Work.RegisterNode, pipe.work.Work.RegisterNode.Builder, pipe.work.Work.RegisterNodeOrBuilder> 
           getANodeFieldBuilder() {
         if (aNodeBuilder_ == null) {
           if (!(payloadCase_ == 12)) {
-            payload_ = pipe.common.Common.RegisterNode.getDefaultInstance();
+            payload_ = pipe.work.Work.RegisterNode.getDefaultInstance();
           }
           aNodeBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-              pipe.common.Common.RegisterNode, pipe.common.Common.RegisterNode.Builder, pipe.common.Common.RegisterNodeOrBuilder>(
-                  (pipe.common.Common.RegisterNode) payload_,
+              pipe.work.Work.RegisterNode, pipe.work.Work.RegisterNode.Builder, pipe.work.Work.RegisterNodeOrBuilder>(
+                  (pipe.work.Work.RegisterNode) payload_,
                   getParentForChildren(),
                   isClean());
           payload_ = null;
@@ -4984,6 +5629,11 @@ public final class Work {
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_Task_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_RegisterNode_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_RegisterNode_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_WorkMessage_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
@@ -5001,17 +5651,18 @@ public final class Work {
       "to\"0\n\tWorkState\022\020\n\010enqueued\030\001 \002(\005\022\021\n\tpro" +
       "cessed\030\002 \002(\005\"&\n\tHeartbeat\022\031\n\005state\030\001 \002(\013" +
       "2\n.WorkState\")\n\004Task\022\021\n\tseries_id\030\001 \002(\003\022" +
-      "\016\n\006seq_id\030\002 \002(\005\"\365\002\n\013WorkMessage\022\027\n\006heade" +
-      "r\030\001 \001(\0132\007.Header\022\016\n\006secret\030\002 \002(\003\022\027\n\003err\030" +
-      "\003 \001(\0132\010.FailureH\000\022\016\n\004ping\030\004 \001(\010H\000\022\032\n\004bea" +
-      "t\030\005 \001(\0132\n.HeartbeatH\000\022\025\n\004task\030\006 \001(\0132\005.Ta" +
-      "skH\000\022\033\n\005state\030\007 \001(\0132\n.WorkStateH\000\022\037\n\006lea" +
-      "der\030\010 \001(\0132\r.LeaderStatusH\000\022\027\n\006a_vote\030\n \001",
-      "(\0132\005.VoteH\000\022\"\n\nreq_a_vote\030\013 \001(\0132\014.Reques" +
-      "tVoteH\000\022\037\n\006a_node\030\014 \001(\0132\r.RegisterNodeH\000" +
-      "\022\033\n\007request\030\r \001(\0132\010.RequestH\000\022\035\n\010respons" +
-      "e\030\016 \001(\0132\t.ResponseH\000B\t\n\007payloadB\r\n\tpipe." +
-      "workH\001"
+      "\016\n\006seq_id\030\002 \002(\005\"*\n\014RegisterNode\022\014\n\004host\030" +
+      "\001 \002(\t\022\014\n\004port\030\002 \002(\005\"\365\002\n\013WorkMessage\022\027\n\006h" +
+      "eader\030\001 \001(\0132\007.Header\022\016\n\006secret\030\002 \002(\003\022\027\n\003" +
+      "err\030\003 \001(\0132\010.FailureH\000\022\016\n\004ping\030\004 \001(\010H\000\022\032\n" +
+      "\004beat\030\005 \001(\0132\n.HeartbeatH\000\022\025\n\004task\030\006 \001(\0132" +
+      "\005.TaskH\000\022\033\n\005state\030\007 \001(\0132\n.WorkStateH\000\022\037\n",
+      "\006leader\030\010 \001(\0132\r.LeaderStatusH\000\022\027\n\006a_vote" +
+      "\030\n \001(\0132\005.VoteH\000\022\"\n\nreq_a_vote\030\013 \001(\0132\014.Re" +
+      "questVoteH\000\022\037\n\006a_node\030\014 \001(\0132\r.RegisterNo" +
+      "deH\000\022\033\n\007request\030\r \001(\0132\010.RequestH\000\022\035\n\010res" +
+      "ponse\030\016 \001(\0132\t.ResponseH\000B\t\n\007payloadB\r\n\tp" +
+      "ipe.workH\001"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -5045,8 +5696,14 @@ public final class Work {
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_Task_descriptor,
         new java.lang.String[] { "SeriesId", "SeqId", });
-    internal_static_WorkMessage_descriptor =
+    internal_static_RegisterNode_descriptor =
       getDescriptor().getMessageTypes().get(3);
+    internal_static_RegisterNode_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_RegisterNode_descriptor,
+        new java.lang.String[] { "Host", "Port", });
+    internal_static_WorkMessage_descriptor =
+      getDescriptor().getMessageTypes().get(4);
     internal_static_WorkMessage_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_WorkMessage_descriptor,

@@ -119,7 +119,7 @@ public class MessageClient {
 				hb.setTime(System.currentTimeMillis());
 				hb.setDestination(-1);
 
-				r.setRequestType(Common.Request.RequestType.WRITEFILE);
+				r.setRequestType(Common.TaskType.WRITEFILE);
 
 				cb.setChunkId(numberOfChunks);
 				cb.setChunkData(ByteString.copyFrom(byteChunk));

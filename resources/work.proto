@@ -22,10 +22,10 @@ message Task {
     required int32 seq_id = 2;
 }
 
--message RegisterNode{
--    required string host = 1;
--    required int32 port = 2;
--}
+message RegisterNode{
+   required string host = 1;
+   required int32 port = 2;
+}
 
 // These are messages to keep the network running (not to perform work)
 message WorkMessage {
