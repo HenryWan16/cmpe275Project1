@@ -62,7 +62,11 @@ public class CommandHandler extends SimpleChannelInboundHandler<CommandMessage> 
 		try {
 			// TODO How can you implement this without if-else statements?
 			if (msg.hasPing()) {
+				logger.info("Server CommandHandler received ping message!");
 				logger.info("ping from " + msg.getHeader().getNodeId());
+			} else if (msg.hasRequest()) {
+				logger.info("server get request: "+msg.getRequest().toString());
+			} else {
 			}
 
 		} catch (Exception e) {
@@ -91,6 +95,7 @@ public class CommandHandler extends SimpleChannelInboundHandler<CommandMessage> 
 	 */
 	@Override
 	protected void channelRead0(ChannelHandlerContext ctx, CommandMessage msg) throws Exception {
+		logger.info("CommandHandler Accept the message: " + acceptInboundMessage(msg));
 		handleMessage(msg, ctx.channel());
 	}
 

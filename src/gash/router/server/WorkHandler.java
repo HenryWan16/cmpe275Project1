@@ -18,6 +18,9 @@ package gash.router.server;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import gash.router.server.messages.QOSWorker;
+import gash.router.server.messages.Session;
+import gash.router.server.messages.WorkSession;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
@@ -52,6 +55,14 @@ public class WorkHandler extends SimpleChannelInboundHandler<WorkMessage> {
 	 * @param msg
 	 */
 	public void handleMessage(WorkMessage msg, Channel channel) {
+		
+		QOSWorker qos = QOSWorker.getInstance();
+		logger.info("QOSWorker Thread Working : ");
+		Session session = new WorkSession(this.state, msg);
+		qos.getQueue().enqueue(session);
+
+		
+		
 		if (msg == null) {
 			// TODO add logging
 			System.out.println("ERROR: Unexpected content - " + msg);
@@ -129,6 +140,7 @@ public class WorkHandler extends SimpleChannelInboundHandler<WorkMessage> {
 	 */
 	@Override
 	protected void channelRead0(ChannelHandlerContext ctx, WorkMessage msg) throws Exception {
+		logger.info("WorkHandler channelRead0...");
 		handleMessage(msg, ctx.channel());
 	}
 

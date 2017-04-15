@@ -66,7 +66,7 @@ public class CommConnection {
 	protected CommConnection(String host, int port) {
 		this.host = host;
 		this.port = port;
-
+		logger.info("CommConnection constructor is called.");
 		init();
 	}
 
@@ -122,6 +122,7 @@ public class CommConnection {
 
 		// TODO a queue is needed to prevent overloading of the socket
 		// connection. For the demonstration, we don't need it
+		logger.info("writing and flushing: "+msg.getRequest().getRwb().toString());
 		ChannelFuture cf = connect().writeAndFlush(msg);
 		if (cf.isDone() && !cf.isSuccess()) {
 			logger.error("failed to send message to server");
@@ -138,8 +139,12 @@ public class CommConnection {
 	 */
 	public void addListener(CommListener listener) {
 		CommHandler handler = connect().pipeline().get(CommHandler.class);
+		logger.info("CommConnection adds listener.");
 		if (handler != null)
 			handler.addListener(listener);
+		else {
+			System.out.println("handler is null.");
+		}
 	}
 
 	private void init() {
@@ -156,9 +161,10 @@ public class CommConnection {
 			b.option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 10000);
 			b.option(ChannelOption.TCP_NODELAY, true);
 			b.option(ChannelOption.SO_KEEPALIVE, true);
-
+			logger.info("Prepare to connect to the host & port: ");
 			// Make the connection attempt.
 			channel = b.connect(host, port).syncUninterruptibly();
+			logger.info("After to connect to the host & port: ");
 
 			// want to monitor the connection to the server s.t. if we loose the
 			// connection, we can try to re-establish it.

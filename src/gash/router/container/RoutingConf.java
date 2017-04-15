@@ -43,6 +43,7 @@ public class RoutingConf {
 		HashMap<String, Integer> map = new HashMap<String, Integer>();
 		if (routing != null) {
 			for (RoutingEntry entry : routing) {
+				System.out.println("RoutingConf asHashMap(): host = " + entry.host + " port = " + entry.port);
 				map.put(entry.host, entry.port);
 			}
 		}
@@ -56,6 +57,7 @@ public class RoutingConf {
 		if (routing == null)
 			routing = new ArrayList<RoutingEntry>();
 
+		System.out.println("RoutingConf addEntry(): host = " + entry.host + " port = " + entry.port);
 		routing.add(entry);
 	}
 

@@ -15,12 +15,18 @@
  */
 package gash.router.client;
 
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
+import gash.router.server.PrintUtil;
+import gash.router.server.ServerState;
+import gash.router.server.messages.CommandSession;
+import gash.router.server.messages.QOSWorker;
+import gash.router.server.messages.Session;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
+import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import routing.Pipe.CommandMessage;
@@ -36,11 +42,18 @@ import routing.Pipe.CommandMessage;
  */
 public class CommHandler extends SimpleChannelInboundHandler<CommandMessage> {
 	protected static Logger logger = LoggerFactory.getLogger("connect");
+	protected boolean debug = false;
+	protected ServerState state;
 	protected ConcurrentMap<String, CommListener> listeners = new ConcurrentHashMap<String, CommListener>();
 	//private volatile Channel channel;
 
 	public CommHandler() {
 	}
+	
+	public CommHandler(ServerState state) {
+		this.state = state;
+	}
+
 
 	/**
 	 * Notification registration. Classes/Applications receiving information
@@ -60,6 +73,27 @@ public class CommHandler extends SimpleChannelInboundHandler<CommandMessage> {
 	}
 
 	/**
+	 * override this method to provide processing behavior. T
+	 *
+	 * @param msg
+	 */
+	public void handleMessage(CommandMessage msg, Channel channel) {
+		if (msg == null) {
+			// TODO add logging
+			System.out.println("ERROR: Unexpected content - " + msg);
+			return;
+		}
+
+		if (debug)
+			PrintUtil.printCommand(msg);
+
+		QOSWorker qos = QOSWorker.getInstance();
+		logger.info("QOSWorker Thread Working on CommandSession: ");
+		Session session = new CommandSession(this.state, msg);
+		qos.getQueue().enqueue(session);
+	}
+
+	/**
 	 * a message was received from the server. Here we dispatch the message to
 	 * the client's thread pool to minimize the time it takes to process other
 	 * messages.
@@ -72,6 +106,7 @@ public class CommHandler extends SimpleChannelInboundHandler<CommandMessage> {
 	@Override
 	protected void channelRead0(ChannelHandlerContext ctx, CommandMessage msg) throws Exception {
 		System.out.println("--> got incoming message");
+		System.out.println("--> listeners.size() = " + listeners.size());
 		for (String id : listeners.keySet()) {
 			CommListener cl = listeners.get(id);
 
@@ -79,6 +114,7 @@ public class CommHandler extends SimpleChannelInboundHandler<CommandMessage> {
 			// async processing of replies
 			cl.onMessage(msg);
 		}
+		handleMessage(msg, ctx.channel());
 	}
 
 	@Override
