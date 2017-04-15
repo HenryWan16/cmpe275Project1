@@ -1,4 +1,4 @@
-syntax="proto2";
+syntax = "proto2";
 option optimize_for = SPEED;
 option java_package = "pipe.common";
 
@@ -6,107 +6,17 @@ option java_package = "pipe.common";
  * the accompanying information for all messages. Provides origination,
  * security, authentication, and tracking information
  */
-message Header {  
+
+message Header {
     required int32 node_id = 1;
-    optional int64 time = 2;
-   
+    required int64 time = 2;
+
     // if the message is for a specific node, this will be set
     optional int32 destination = 8;
-
-    // This factor limits the distance that a msg travels from the originating 
+    // This factor limits the distance that a msg travels from the originating
     // node. Default (-1) is the whole network (not restricted).
     optional int32 max_hops = 10 [default = -1];
 }
-
-message Request {          
- 	required RequestType requestType = 3;    
-    enum RequestType {
-        READFILE = 1;
-        WRITEFILE = 2;
-        DELETEFILE = 3;
-        UPDATEFILE = 4;
-    }
-    oneof payload{
-       WriteBody rwb = 4;
-       ReadBody rrb = 5;
-       //DeleteBody rdb = 6;
-       //UpdateBody rub = 7;
-    } 
-   
-}
-message WriteBody{
-   optional int32 file_id = 1;
-   required string filename = 2;
-   optional string file_ext=3;
-   optional Chunk chunk=4;
-   optional int32 num_of_chunks = 5;
-}
-
-//this payload will be only present when chunks are missing on server during write
-//and will request client to send it again.
-message WriteResponse {
-   repeated int32 ChunkId=1;
-}
-message Chunk{
-	required int32 chunk_id = 1;
-    required bytes chunk_data = 6;
-    optional int32 chunk_size=9;
-}
-
-message ReadBody{
-   optional string filename = 1; // to get all use * wildcard
-   optional int64 file_id = 2;
-   optional int64 chunk_id = 3;
-   optional int64 chunk_size = 4;
-}
-
-message ReadResponse{
-   optional string file_id = 1;
-   required string filename = 2;
-   optional string file_ext=  3;
-   optional int32 num_of_chunks = 4;
-   repeated ChunkLocation chunk_location = 5;
-}
-
-message ChunkLocation{
-   optional int32 chunkid = 1;
-   repeated Node node = 2;
-}
-
-message Node{
-   required int32 node_id = 1;
-   required string host = 2;
-   required int32 port = 3;
-}
-
-message RegisterNode{
-    required string host = 1;
-    required int32 port = 2;
-}
-
-message Response{
-    //optional string message=1;
-    optional string filename=3;	
-    enum ResponseType{
-        READFILE = 1;
-        WRITEFILE = 2;
-        DELETEFILE = 3;
-        UPDATEFILE = 4;
-    }
-    
-    enum Status{
-        Success = 1;
-        Failure = 2;
-    }
-    
-    oneof payload{
-        WriteResponse writeResponse = 4;
-        ReadResponse readResponse = 5;
-        //optional ResponseDeleteBody rdb = 6;
-        //optional ResponseUpdateBody rub = 7;
-    }
-}
-
 
 message Failure {
     required int32 id = 1;
@@ -114,3 +24,79 @@ message Failure {
     optional string message = 3;
 }
 
+enum TaskType {
+    READFILE = 1;
+    WRITEFILE = 2;
+    DELETEFILE = 3;
+    UPDATEFILE = 4;
+ }
+
+message Request {
+    required TaskType requestType = 3;
+
+    oneof payload{
+        WriteBody rwb = 4;
+        ReadBody rrb = 5;
+    }
+}
+
+message WriteBody{
+    optional int64 file_id = 1;
+    required string filename = 2;
+    optional string file_ext=3;
+    optional Chunk chunk=4;
+    optional int32 num_of_chunks = 5;
+}
+
+//this payload will be only present when chunks are missing on server during write
+//and will request client to send it again.
+message WriteResponse {
+    repeated int32 ChunkId=1;
+}
+
+message Chunk{
+    required int32 chunk_id = 1;
+    required bytes chunk_data = 6;
+    optional int32 chunk_size=9;
+}
+
+message ReadBody{
+    optional string filename = 1; // to get all use * wildcard
+    optional int64 file_id = 2;
+    optional int32 chunk_id = 3;
+    optional int32 chunk_size = 4;
+}
+
+message ReadResponse{
+    optional int64 file_id = 1;
+    required string filename = 2;
+    optional string file_ext= 3;
+    optional int32 num_of_chunks = 4;
+    repeated ChunkLocation chunk_location = 5;
+    optional Chunk chunk = 6;
+}
+
+message ChunkLocation{
+    optional int32 chunkid = 1;
+    repeated Node node = 2;
+}
+
+message Node{
+    required int32 node_id = 1;
+    required string host = 2;
+    required int32 port = 3;
+}
+
+message Response{
+    required TaskType responseType = 1;
+    optional string filename=3;
+    enum Status{
+        Success = 1;
+        Failure = 2;
+    }
+
+    oneof payload{
+        WriteResponse writeResponse = 4;
+        ReadResponse readResponse = 5;
+    }
+}
