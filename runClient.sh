@@ -11,8 +11,7 @@ echo server home = $SVR_HOME
 
 #cd ${SVR_HOME}
 
-JAVA_MAIN='gash.router.app.DemoApp'
-#JAVA_MAIN='gash.router.app.DemoMessage'
+JAVA_MAIN='gash.router.app.ClientApp'
 JAVA_ARGS="localhost 4167"
 #echo -e "\n** config: ${JAVA_ARGS} **\n"
 
