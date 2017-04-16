@@ -23,12 +23,15 @@ import gash.router.server.messages.Session;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
+import pipe.common.Common;
 import routing.Pipe.CommandMessage;
 
 /**
@@ -46,6 +49,7 @@ public class CommHandler extends SimpleChannelInboundHandler<CommandMessage> {
 	protected ServerState state;
 	protected ConcurrentMap<String, CommListener> listeners = new ConcurrentHashMap<String, CommListener>();
 	//private volatile Channel channel;
+	MergeWorker mergeWorker;
 
 	public CommHandler() {
 	}
@@ -82,15 +86,52 @@ public class CommHandler extends SimpleChannelInboundHandler<CommandMessage> {
 			// TODO add logging
 			System.out.println("ERROR: Unexpected content - " + msg);
 			return;
+		}else if(msg.hasResponse()){
+			if(msg.getResponse().getReadResponse().getChunkLocationList() == null){
+				//second response from server
+				Common.Chunk chunk = msg.getResponse().getReadResponse().getChunk();
+				mergeWorker = MergeWorker.getMergeWorkerInstance();
+				mergeWorker.upDateTable(chunk);
+			}else{
+				//first response from server
+				int numChunks = msg.getResponse().getReadResponse().getNumOfChunks();
+				mergeWorker = MergeWorker.getMergeWorkerInstance();
+				Thread mergeThread = new Thread(mergeWorker);
+				mergeThread.start();
+				mergeWorker.setTotalNoOfChunks(numChunks);
+				//ask directly from server nodes for file chunks
+				List<Common.ChunkLocation> list = msg.getResponse().getReadResponse().getChunkLocationList();
+				String fname = msg.getResponse().getReadResponse().getFilename();
+				for(int i=0;i<list.size();i++){
+					CommandMessage.Builder cmb = CommandMessage.newBuilder();
+					Common.Request.Builder rb = Common.Request.newBuilder();
+					Common.ReadBody.Builder rdb = Common.ReadBody.newBuilder();
+					rdb.setFilename(fname);
+					rdb.setChunkId(list.get(i).getChunkid());
+					rb.setRrb(rdb);
+					cmb.setRequest(rb);
+					String host = list.get(i).getNode(0).getHost();
+					int port = list.get(i).getNode(0).getPort();
+					CommConnection.initConnection(host, port);
+					try {
+						CommConnection.getInstance().enqueue(cmb.build());
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+
+			}
+
+
 		}
 
 		if (debug)
 			PrintUtil.printCommand(msg);
 
-		QOSWorker qos = QOSWorker.getInstance();
-		logger.info("QOSWorker Thread Working on CommandSession: ");
-		Session session = new CommandSession(this.state, msg);
-		qos.getQueue().enqueue(session);
+//		QOSWorker qos = QOSWorker.getInstance();
+//		logger.info("QOSWorker Thread Working on CommandSession: ");
+//		Session session = new CommandSession(this.state, msg);
+//		qos.getQueue().enqueue(session);
 	}
 
 	/**

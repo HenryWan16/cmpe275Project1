@@ -54,26 +54,25 @@ message WriteBody {
 }
 
 
-//this payload will be only present when chunks are missing on server during write
-//and will request client to send it again.
-
-message WriteResponse {
-   repeated int32 ChunkId=1;
+message ReadBody {
+   optional string filename = 1; // to get all use * wildcard
+   optional int64 file_id = 2;
+   optional int32 chunk_id = 3;
+   optional int32 chunk_size = 4;
 }
 
 
 message Chunk {
    required int32 chunk_id = 1;
    required bytes chunk_data = 6;
-   optional int32 chunk_size=9;
+   optional int32 chunk_size = 9;
 }
 
+//this payload will be only present when chunks are missing on server during write
+//and will request client to send it again.
 
-message ReadBody {
-   optional string filename = 1; // to get all use * wildcard
-   optional int64 file_id = 2;
-   optional int32 chunk_id = 3;
-   optional int32 chunk_size = 4;
+message WriteResponse {
+   repeated int32 ChunkId=1;
 }
 
 

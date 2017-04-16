@@ -59,8 +59,15 @@ public class DemoApp implements CommListener {
 	public void onMessage(CommandMessage msg) {
 		System.out.println("---> " + msg);
 	}
+
+	//upload file to server
 	private void chunkAndSend(String fname){
 		mc.chunkAndSend(fname);
+	}
+
+	//request file from server
+	private void requestFile(String fname){
+
 	}
 
 	/**

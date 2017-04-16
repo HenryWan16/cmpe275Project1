@@ -96,6 +96,8 @@ public class MessageClient {
 		int read = 0;
 		String newFileName;
 		int requestId = 0;
+		int chunkSize = file_size / readLength + (file_size % readLength == 0 ? 0 : 1);
+		
 		try{
 			fis = new FileInputStream(file);
 			while(file_size > 0){
@@ -108,10 +110,10 @@ public class MessageClient {
 				numberOfChunks++;
 				//get hash key for store, to do
 				logger.info("bytechunk: "+byteChunk.toString());
-				newFileName = String.format("%s.part%06d",fname, numberOfChunks-1);
+				newFileName = String.format("%s.part%06d",fname, numberOfChunks);
 				CommandMessage.Builder cmdb = CommandMessage.newBuilder();
 				Common.Request.Builder r = Common.Request.newBuilder();
-				Common.WriteBody.Builder rb = Common.WriteBody.newBuilder();
+				Common.WriteBody.Builder wb = Common.WriteBody.newBuilder();
 				Common.Chunk.Builder cb = Common.Chunk.newBuilder();
 				Header.Builder hb = Header.newBuilder();
 
@@ -122,11 +124,12 @@ public class MessageClient {
 				r.setRequestType(Common.TaskType.WRITEFILE);
 
 				cb.setChunkId(numberOfChunks);
+				cb.setChunkSize(chunkSize);
 				cb.setChunkData(ByteString.copyFrom(byteChunk));
 
-				rb.setFilename(fname);
-				rb.setChunk(cb);
-				r.setRwb(rb);
+				wb.setFilename(fname);
+				wb.setChunk(cb);
+				r.setRwb(wb);
 
 				cmdb.setHeader(hb);
 				cmdb.setRequest(r);
@@ -147,6 +150,43 @@ public class MessageClient {
 		}catch(Exception e){
 			e.printStackTrace();
 		}
+	}
+
+	//send file request to server
+	public void sendReadRequest(String fname){
+		/*
+		* commandmessage
+		* 	header
+		* 	request
+			* requesttype
+				* readfile
+			readbody
+
+		 */
+		CommandMessage.Builder cmdb = CommandMessage.newBuilder();
+		Header.Builder hb = Header.newBuilder();
+		Common.Request.Builder rb = Common.Request.newBuilder();
+		Common.ReadBody.Builder rdb = Common.ReadBody.newBuilder();
+
+		hb.setNodeId(999);
+		rb.setRequestType(Common.TaskType.READFILE);
+		rdb.setFilename(fname);
+
+		rb.setRrb(rdb.build());
+		cmdb.setHeader(hb.build());
+		cmdb.setRequest(rb.build());
+
+		try {
+			CommConnection.getInstance().enqueue(cmdb.build());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		//start the thread for waiting the chunks from server
+	}
+
+	public void receiveAndMerge() {
+
 	}
 
 	/**
