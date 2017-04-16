@@ -52,9 +52,11 @@ public class CommHandler extends SimpleChannelInboundHandler<CommandMessage> {
 	MergeWorker mergeWorker;
 
 	public CommHandler() {
+     System.out.println("CommHandler Init");
 	}
 	
 	public CommHandler(ServerState state) {
+    System.out.println("CommHandler Init");
 		this.state = state;
 	}
 
@@ -128,10 +130,10 @@ public class CommHandler extends SimpleChannelInboundHandler<CommandMessage> {
 		if (debug)
 			PrintUtil.printCommand(msg);
 
-		QOSWorker qos = QOSWorker.getInstance();
-		logger.info("QOSWorker Thread Working on CommandSession: ");
-		Session session = new CommandSession(this.state, msg);
-		qos.getQueue().enqueue(session);
+//		QOSWorker qos = QOSWorker.getInstance();
+//		logger.info("QOSWorker Thread Working on CommandSession: ");
+//		Session session = new CommandSession(this.state, msg);
+//		qos.getQueue().enqueue(session);
 	}
 
 	/**

@@ -15,6 +15,7 @@
  */
 package gash.router.server;
 
+import gash.router.server.messages.CommandSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,11 +25,13 @@ import gash.router.server.messages.WorkSession;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
+import pipe.common.Common;
 import pipe.common.Common.Failure;
 import pipe.work.Work.Heartbeat;
 import pipe.work.Work.Task;
 import pipe.work.Work.WorkMessage;
 import pipe.work.Work.WorkState;
+import routing.Pipe;
 
 /**
  * The message handler processes json messages that are delimited by a 'newline'
@@ -84,11 +87,6 @@ public class WorkHandler extends SimpleChannelInboundHandler<WorkMessage> {
 				rb.setPing(true);
 				channel.write(rb.build());
 				
-			} else if (msg.hasErr()) {
-				Failure err = msg.getErr();
-				logger.error("failure from " + msg.getHeader().getNodeId());
-				// PrintUtil.printFailure(err);
-				
 			} else if (msg.hasReqAVote()){				
 				state.getHandler().getNodeState().processReplyAVoteToCandidate(msg);	        	
 				
@@ -107,11 +105,32 @@ public class WorkHandler extends SimpleChannelInboundHandler<WorkMessage> {
 				logger.error("failure from " + msg.getHeader().getNodeId());
 			    PrintUtil.printFailure(err);
 			    
+			} else if(msg.hasState()){
+				//Other node is requesting work from this node
+				System.out.println("received stealing request");
+				if(!QOSWorker.getInstance().getQueue().isEmpty()){
+					//No clue how to send the channel as a message
+					//The node that steals the work from this node will not be able to talk to the client
+					Pipe.CommandMessage cMsg = ((CommandSession)QOSWorker.getInstance().getQueue().dequeue()).getMsg();
+	
+					Common.Header.Builder hd = Common.Header.newBuilder();
+					hd.setNodeId(state.getConf().getNodeId());
+					hd.setTime(System.currentTimeMillis());
+	
+					WorkMessage.Builder wm = WorkMessage.newBuilder();
+	
+					wm.setHeader(hd);
+					wm.setCmdMessage(cMsg);
+					wm.setSecret(100l);
+					channel.writeAndFlush(wm);
+				}
+			} else if (msg.hasCmdMessage()){
+				Pipe.CommandMessage cmdMessage = msg.getCmdMessage();
+				Session session1 = new CommandSession(state.getConf(), cmdMessage, channel);
+				QOSWorker.getInstance().getQueue().enqueue(session1);
+				
 			} else if (msg.hasTask()) {
 				Task t = msg.getTask();
-				
-			} else if (msg.hasState()) {
-				WorkState s = msg.getState();
 			}
 		} catch (Exception e) {
 			// TODO add logging

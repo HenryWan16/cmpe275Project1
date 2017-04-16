@@ -1,10 +1,12 @@
 package gash.router.server.messages;
 
+import gash.router.container.RoutingConf;
 import gash.router.server.ServerState;
 import io.netty.channel.Channel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pipe.common.Common;
+import pipe.common.Common.Header;
 import routing.Pipe.CommandMessage;
 
 /**
@@ -12,13 +14,16 @@ import routing.Pipe.CommandMessage;
  */
 public class CommandSession implements Session, Runnable{
     protected static Logger logger = LoggerFactory.getLogger("server");
-    private ServerState state;
+    //private ServerState state;
+    private RoutingConf conf;
     private CommandMessage msg;
     private Channel channel;
 
-    public CommandSession(ServerState state, CommandMessage msg) {
-        this.state = state;
+    public CommandSession(RoutingConf conf, CommandMessage msg, Channel channel) {
+        //this.state = state;
+        this.conf = conf;
         this.msg = msg;
+        this.channel = channel;
     }
 
     // When the server receive the commandMessage, how to deal with it?
@@ -67,10 +72,24 @@ public class CommandSession implements Session, Runnable{
 //                }
 //                MessageServer.minThreadLimit();
 //            }
+            if(msg.hasPing()){
+                logger.info("QoSWorker: Server CommandHandler received ping message");
+                logger.info("QoSWorker: ping from " + msg.getHeader().getNodeId());
+                //return ping ack
+                Header.Builder hb = Header.newBuilder();
+                hb.setNodeId(conf.getNodeId());
+                hb.setTime(System.currentTimeMillis());
+
+                CommandMessage.Builder cm = CommandMessage.newBuilder();
+                cm.setHeader(hb);
+                cm.setPing(true);
+                channel.writeAndFlush(cm);
+            }
+
         } catch (Exception e) {
             // TODO add logging
             Common.Failure.Builder eb = Common.Failure.newBuilder();
-            eb.setId(state.getConf().getNodeId());
+            eb.setId(conf.getNodeId());
             eb.setRefId(msg.getHeader().getNodeId());
             eb.setMessage(e.getMessage());
             CommandMessage.Builder rb = CommandMessage.newBuilder(msg);
@@ -83,14 +102,6 @@ public class CommandSession implements Session, Runnable{
     @Override
     public void run() {
         handleMessage();
-    }
-
-    public ServerState getState() {
-        return state;
-    }
-
-    public void setState(ServerState state) {
-        this.state = state;
     }
 
     public CommandMessage getMsg() {

@@ -4,6 +4,7 @@ option java_package = "pipe.work";
 
 import "common.proto";
 import "election.proto";
+import "pipe.proto";
 
 message WorkState {
    required int32 enqueued = 1;
@@ -55,6 +56,7 @@ message WorkMessage {
       RegisterNode a_node = 12;
       Request request = 13;      
       Response response = 14;
+      CommandMessage cmd_message = 15;
    }
 }
 

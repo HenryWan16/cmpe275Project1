@@ -2581,6 +2581,19 @@ public final class Work {
      */
     pipe.common.Common.ResponseOrBuilder getResponseOrBuilder();
 
+    /**
+     * <code>optional .CommandMessage cmd_message = 15;</code>
+     */
+    boolean hasCmdMessage();
+    /**
+     * <code>optional .CommandMessage cmd_message = 15;</code>
+     */
+    routing.Pipe.CommandMessage getCmdMessage();
+    /**
+     * <code>optional .CommandMessage cmd_message = 15;</code>
+     */
+    routing.Pipe.CommandMessageOrBuilder getCmdMessageOrBuilder();
+
     public pipe.work.Work.WorkMessage.PayloadCase getPayloadCase();
   }
   /**
@@ -2793,6 +2806,20 @@ public final class Work {
               payloadCase_ = 14;
               break;
             }
+            case 122: {
+              routing.Pipe.CommandMessage.Builder subBuilder = null;
+              if (payloadCase_ == 15) {
+                subBuilder = ((routing.Pipe.CommandMessage) payload_).toBuilder();
+              }
+              payload_ =
+                  input.readMessage(routing.Pipe.CommandMessage.PARSER, extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom((routing.Pipe.CommandMessage) payload_);
+                payload_ = subBuilder.buildPartial();
+              }
+              payloadCase_ = 15;
+              break;
+            }
           }
         }
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
@@ -2833,6 +2860,7 @@ public final class Work {
       A_NODE(12),
       REQUEST(13),
       RESPONSE(14),
+      CMD_MESSAGE(15),
       PAYLOAD_NOT_SET(0);
       private final int value;
       private PayloadCase(int value) {
@@ -2859,6 +2887,7 @@ public final class Work {
           case 12: return A_NODE;
           case 13: return REQUEST;
           case 14: return RESPONSE;
+          case 15: return CMD_MESSAGE;
           case 0: return PAYLOAD_NOT_SET;
           default: return null;
         }
@@ -3207,6 +3236,32 @@ public final class Work {
       return pipe.common.Common.Response.getDefaultInstance();
     }
 
+    public static final int CMD_MESSAGE_FIELD_NUMBER = 15;
+    /**
+     * <code>optional .CommandMessage cmd_message = 15;</code>
+     */
+    public boolean hasCmdMessage() {
+      return payloadCase_ == 15;
+    }
+    /**
+     * <code>optional .CommandMessage cmd_message = 15;</code>
+     */
+    public routing.Pipe.CommandMessage getCmdMessage() {
+      if (payloadCase_ == 15) {
+         return (routing.Pipe.CommandMessage) payload_;
+      }
+      return routing.Pipe.CommandMessage.getDefaultInstance();
+    }
+    /**
+     * <code>optional .CommandMessage cmd_message = 15;</code>
+     */
+    public routing.Pipe.CommandMessageOrBuilder getCmdMessageOrBuilder() {
+      if (payloadCase_ == 15) {
+         return (routing.Pipe.CommandMessage) payload_;
+      }
+      return routing.Pipe.CommandMessage.getDefaultInstance();
+    }
+
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
@@ -3277,6 +3332,12 @@ public final class Work {
           return false;
         }
       }
+      if (hasCmdMessage()) {
+        if (!getCmdMessage().isInitialized()) {
+          memoizedIsInitialized = 0;
+          return false;
+        }
+      }
       memoizedIsInitialized = 1;
       return true;
     }
@@ -3322,6 +3383,9 @@ public final class Work {
       }
       if (payloadCase_ == 14) {
         output.writeMessage(14, (pipe.common.Common.Response) payload_);
+      }
+      if (payloadCase_ == 15) {
+        output.writeMessage(15, (routing.Pipe.CommandMessage) payload_);
       }
       unknownFields.writeTo(output);
     }
@@ -3383,6 +3447,10 @@ public final class Work {
       if (payloadCase_ == 14) {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(14, (pipe.common.Common.Response) payload_);
+      }
+      if (payloadCase_ == 15) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(15, (routing.Pipe.CommandMessage) payload_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -3459,6 +3527,10 @@ public final class Work {
           result = result && getResponse()
               .equals(other.getResponse());
           break;
+        case 15:
+          result = result && getCmdMessage()
+              .equals(other.getCmdMessage());
+          break;
         case 0:
         default:
       }
@@ -3527,6 +3599,10 @@ public final class Work {
         case 14:
           hash = (37 * hash) + RESPONSE_FIELD_NUMBER;
           hash = (53 * hash) + getResponse().hashCode();
+          break;
+        case 15:
+          hash = (37 * hash) + CMD_MESSAGE_FIELD_NUMBER;
+          hash = (53 * hash) + getCmdMessage().hashCode();
           break;
         case 0:
         default:
@@ -3773,6 +3849,13 @@ public final class Work {
             result.payload_ = responseBuilder_.build();
           }
         }
+        if (payloadCase_ == 15) {
+          if (cmdMessageBuilder_ == null) {
+            result.payload_ = payload_;
+          } else {
+            result.payload_ = cmdMessageBuilder_.build();
+          }
+        }
         result.bitField0_ = to_bitField0_;
         result.payloadCase_ = payloadCase_;
         onBuilt();
@@ -3867,6 +3950,10 @@ public final class Work {
             mergeResponse(other.getResponse());
             break;
           }
+          case CMD_MESSAGE: {
+            mergeCmdMessage(other.getCmdMessage());
+            break;
+          }
           case PAYLOAD_NOT_SET: {
             break;
           }
@@ -3927,6 +4014,11 @@ public final class Work {
         }
         if (hasResponse()) {
           if (!getResponse().isInitialized()) {
+            return false;
+          }
+        }
+        if (hasCmdMessage()) {
+          if (!getCmdMessage().isInitialized()) {
             return false;
           }
         }
@@ -5564,6 +5656,142 @@ public final class Work {
         onChanged();;
         return responseBuilder_;
       }
+
+      private com.google.protobuf.SingleFieldBuilderV3<
+          routing.Pipe.CommandMessage, routing.Pipe.CommandMessage.Builder, routing.Pipe.CommandMessageOrBuilder> cmdMessageBuilder_;
+      /**
+       * <code>optional .CommandMessage cmd_message = 15;</code>
+       */
+      public boolean hasCmdMessage() {
+        return payloadCase_ == 15;
+      }
+      /**
+       * <code>optional .CommandMessage cmd_message = 15;</code>
+       */
+      public routing.Pipe.CommandMessage getCmdMessage() {
+        if (cmdMessageBuilder_ == null) {
+          if (payloadCase_ == 15) {
+            return (routing.Pipe.CommandMessage) payload_;
+          }
+          return routing.Pipe.CommandMessage.getDefaultInstance();
+        } else {
+          if (payloadCase_ == 15) {
+            return cmdMessageBuilder_.getMessage();
+          }
+          return routing.Pipe.CommandMessage.getDefaultInstance();
+        }
+      }
+      /**
+       * <code>optional .CommandMessage cmd_message = 15;</code>
+       */
+      public Builder setCmdMessage(routing.Pipe.CommandMessage value) {
+        if (cmdMessageBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          payload_ = value;
+          onChanged();
+        } else {
+          cmdMessageBuilder_.setMessage(value);
+        }
+        payloadCase_ = 15;
+        return this;
+      }
+      /**
+       * <code>optional .CommandMessage cmd_message = 15;</code>
+       */
+      public Builder setCmdMessage(
+          routing.Pipe.CommandMessage.Builder builderForValue) {
+        if (cmdMessageBuilder_ == null) {
+          payload_ = builderForValue.build();
+          onChanged();
+        } else {
+          cmdMessageBuilder_.setMessage(builderForValue.build());
+        }
+        payloadCase_ = 15;
+        return this;
+      }
+      /**
+       * <code>optional .CommandMessage cmd_message = 15;</code>
+       */
+      public Builder mergeCmdMessage(routing.Pipe.CommandMessage value) {
+        if (cmdMessageBuilder_ == null) {
+          if (payloadCase_ == 15 &&
+              payload_ != routing.Pipe.CommandMessage.getDefaultInstance()) {
+            payload_ = routing.Pipe.CommandMessage.newBuilder((routing.Pipe.CommandMessage) payload_)
+                .mergeFrom(value).buildPartial();
+          } else {
+            payload_ = value;
+          }
+          onChanged();
+        } else {
+          if (payloadCase_ == 15) {
+            cmdMessageBuilder_.mergeFrom(value);
+          }
+          cmdMessageBuilder_.setMessage(value);
+        }
+        payloadCase_ = 15;
+        return this;
+      }
+      /**
+       * <code>optional .CommandMessage cmd_message = 15;</code>
+       */
+      public Builder clearCmdMessage() {
+        if (cmdMessageBuilder_ == null) {
+          if (payloadCase_ == 15) {
+            payloadCase_ = 0;
+            payload_ = null;
+            onChanged();
+          }
+        } else {
+          if (payloadCase_ == 15) {
+            payloadCase_ = 0;
+            payload_ = null;
+          }
+          cmdMessageBuilder_.clear();
+        }
+        return this;
+      }
+      /**
+       * <code>optional .CommandMessage cmd_message = 15;</code>
+       */
+      public routing.Pipe.CommandMessage.Builder getCmdMessageBuilder() {
+        return getCmdMessageFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>optional .CommandMessage cmd_message = 15;</code>
+       */
+      public routing.Pipe.CommandMessageOrBuilder getCmdMessageOrBuilder() {
+        if ((payloadCase_ == 15) && (cmdMessageBuilder_ != null)) {
+          return cmdMessageBuilder_.getMessageOrBuilder();
+        } else {
+          if (payloadCase_ == 15) {
+            return (routing.Pipe.CommandMessage) payload_;
+          }
+          return routing.Pipe.CommandMessage.getDefaultInstance();
+        }
+      }
+      /**
+       * <code>optional .CommandMessage cmd_message = 15;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilderV3<
+          routing.Pipe.CommandMessage, routing.Pipe.CommandMessage.Builder, routing.Pipe.CommandMessageOrBuilder> 
+          getCmdMessageFieldBuilder() {
+        if (cmdMessageBuilder_ == null) {
+          if (!(payloadCase_ == 15)) {
+            payload_ = routing.Pipe.CommandMessage.getDefaultInstance();
+          }
+          cmdMessageBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              routing.Pipe.CommandMessage, routing.Pipe.CommandMessage.Builder, routing.Pipe.CommandMessageOrBuilder>(
+                  (routing.Pipe.CommandMessage) payload_,
+                  getParentForChildren(),
+                  isClean());
+          payload_ = null;
+        }
+        payloadCase_ = 15;
+        onChanged();;
+        return cmdMessageBuilder_;
+      }
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
         return super.setUnknownFields(unknownFields);
@@ -5648,21 +5876,22 @@ public final class Work {
   static {
     java.lang.String[] descriptorData = {
       "\n\nwork.proto\032\014common.proto\032\016election.pro" +
-      "to\"0\n\tWorkState\022\020\n\010enqueued\030\001 \002(\005\022\021\n\tpro" +
-      "cessed\030\002 \002(\005\"&\n\tHeartbeat\022\031\n\005state\030\001 \002(\013" +
-      "2\n.WorkState\")\n\004Task\022\021\n\tseries_id\030\001 \002(\003\022" +
-      "\016\n\006seq_id\030\002 \002(\005\"*\n\014RegisterNode\022\014\n\004host\030" +
-      "\001 \002(\t\022\014\n\004port\030\002 \002(\005\"\365\002\n\013WorkMessage\022\027\n\006h" +
-      "eader\030\001 \001(\0132\007.Header\022\016\n\006secret\030\002 \002(\003\022\027\n\003" +
-      "err\030\003 \001(\0132\010.FailureH\000\022\016\n\004ping\030\004 \001(\010H\000\022\032\n" +
-      "\004beat\030\005 \001(\0132\n.HeartbeatH\000\022\025\n\004task\030\006 \001(\0132" +
-      "\005.TaskH\000\022\033\n\005state\030\007 \001(\0132\n.WorkStateH\000\022\037\n",
-      "\006leader\030\010 \001(\0132\r.LeaderStatusH\000\022\027\n\006a_vote" +
-      "\030\n \001(\0132\005.VoteH\000\022\"\n\nreq_a_vote\030\013 \001(\0132\014.Re" +
-      "questVoteH\000\022\037\n\006a_node\030\014 \001(\0132\r.RegisterNo" +
-      "deH\000\022\033\n\007request\030\r \001(\0132\010.RequestH\000\022\035\n\010res" +
-      "ponse\030\016 \001(\0132\t.ResponseH\000B\t\n\007payloadB\r\n\tp" +
-      "ipe.workH\001"
+      "to\032\npipe.proto\"0\n\tWorkState\022\020\n\010enqueued\030" +
+      "\001 \002(\005\022\021\n\tprocessed\030\002 \002(\005\"&\n\tHeartbeat\022\031\n" +
+      "\005state\030\001 \002(\0132\n.WorkState\")\n\004Task\022\021\n\tseri" +
+      "es_id\030\001 \002(\003\022\016\n\006seq_id\030\002 \002(\005\"*\n\014RegisterN" +
+      "ode\022\014\n\004host\030\001 \002(\t\022\014\n\004port\030\002 \002(\005\"\235\003\n\013Work" +
+      "Message\022\027\n\006header\030\001 \001(\0132\007.Header\022\016\n\006secr" +
+      "et\030\002 \002(\003\022\027\n\003err\030\003 \001(\0132\010.FailureH\000\022\016\n\004pin" +
+      "g\030\004 \001(\010H\000\022\032\n\004beat\030\005 \001(\0132\n.HeartbeatH\000\022\025\n" +
+      "\004task\030\006 \001(\0132\005.TaskH\000\022\033\n\005state\030\007 \001(\0132\n.Wo",
+      "rkStateH\000\022\037\n\006leader\030\010 \001(\0132\r.LeaderStatus" +
+      "H\000\022\027\n\006a_vote\030\n \001(\0132\005.VoteH\000\022\"\n\nreq_a_vot" +
+      "e\030\013 \001(\0132\014.RequestVoteH\000\022\037\n\006a_node\030\014 \001(\0132" +
+      "\r.RegisterNodeH\000\022\033\n\007request\030\r \001(\0132\010.Requ" +
+      "estH\000\022\035\n\010response\030\016 \001(\0132\t.ResponseH\000\022&\n\013" +
+      "cmd_message\030\017 \001(\0132\017.CommandMessageH\000B\t\n\007" +
+      "payloadB\r\n\tpipe.workH\001"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -5677,6 +5906,7 @@ public final class Work {
         new com.google.protobuf.Descriptors.FileDescriptor[] {
           pipe.common.Common.getDescriptor(),
           pipe.election.Election.getDescriptor(),
+          routing.Pipe.getDescriptor(),
         }, assigner);
     internal_static_WorkState_descriptor =
       getDescriptor().getMessageTypes().get(0);
@@ -5707,9 +5937,10 @@ public final class Work {
     internal_static_WorkMessage_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_WorkMessage_descriptor,
-        new java.lang.String[] { "Header", "Secret", "Err", "Ping", "Beat", "Task", "State", "Leader", "AVote", "ReqAVote", "ANode", "Request", "Response", "Payload", });
+        new java.lang.String[] { "Header", "Secret", "Err", "Ping", "Beat", "Task", "State", "Leader", "AVote", "ReqAVote", "ANode", "Request", "Response", "CmdMessage", "Payload", });
     pipe.common.Common.getDescriptor();
     pipe.election.Election.getDescriptor();
+    routing.Pipe.getDescriptor();
   }
 
   // @@protoc_insertion_point(outer_class_scope)

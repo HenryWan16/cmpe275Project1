@@ -21,6 +21,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.HashMap;
 
+import gash.router.server.messages.QOSWorker;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -172,6 +173,10 @@ public class MessageServer {
 
 		public StartCommandCommunication(RoutingConf conf) {
 			this.conf = conf;
+			QOSWorker qos = QOSWorker.getInstance();
+			System.out.println("Qos started");
+			Thread t = new Thread(qos);
+			t.start();
 		}
 
 		public void run() {

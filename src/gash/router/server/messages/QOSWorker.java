@@ -41,7 +41,8 @@ public class QOSWorker implements Runnable{
     @Override
     public void run() {
         while (forever) {
-            while (queue.isEmpty() == false) {
+            /*
+            if (queue.isEmpty() == false) {
                 logger.info("ThreadLimit is " + MessageServer.threadLimit + " now.");
                 if (MessageServer.threadLimit < 10) {
                     Session session = queue.dequeue();
@@ -49,6 +50,13 @@ public class QOSWorker implements Runnable{
                     Thread subThread = new Thread(session);
                     subThread.start();
                 }
+            }
+            */
+            logger.info("Queue Size: " + queue.size());
+            try {
+                Thread.sleep(3000);
+            }catch(InterruptedException e){
+                System.out.println(e.toString());
             }
         }
     }

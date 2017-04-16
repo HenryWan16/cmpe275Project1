@@ -5271,6 +5271,1259 @@ public final class Common {
 
   }
 
+  public interface ResponseOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:Response)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>required .TaskType responseType = 1;</code>
+     */
+    boolean hasResponseType();
+    /**
+     * <code>required .TaskType responseType = 1;</code>
+     */
+    pipe.common.Common.TaskType getResponseType();
+
+    /**
+     * <code>optional string filename = 3;</code>
+     */
+    boolean hasFilename();
+    /**
+     * <code>optional string filename = 3;</code>
+     */
+    java.lang.String getFilename();
+    /**
+     * <code>optional string filename = 3;</code>
+     */
+    com.google.protobuf.ByteString
+        getFilenameBytes();
+
+    /**
+     * <code>optional .WriteResponse writeResponse = 4;</code>
+     */
+    boolean hasWriteResponse();
+    /**
+     * <code>optional .WriteResponse writeResponse = 4;</code>
+     */
+    pipe.common.Common.WriteResponse getWriteResponse();
+    /**
+     * <code>optional .WriteResponse writeResponse = 4;</code>
+     */
+    pipe.common.Common.WriteResponseOrBuilder getWriteResponseOrBuilder();
+
+    /**
+     * <code>optional .ReadResponse readResponse = 5;</code>
+     */
+    boolean hasReadResponse();
+    /**
+     * <code>optional .ReadResponse readResponse = 5;</code>
+     */
+    pipe.common.Common.ReadResponse getReadResponse();
+    /**
+     * <code>optional .ReadResponse readResponse = 5;</code>
+     */
+    pipe.common.Common.ReadResponseOrBuilder getReadResponseOrBuilder();
+
+    public pipe.common.Common.Response.PayloadCase getPayloadCase();
+  }
+  /**
+   * Protobuf type {@code Response}
+   */
+  public  static final class Response extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:Response)
+      ResponseOrBuilder {
+    // Use Response.newBuilder() to construct.
+    private Response(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private Response() {
+      responseType_ = 1;
+      filename_ = "";
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    private Response(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 8: {
+              int rawValue = input.readEnum();
+              pipe.common.Common.TaskType value = pipe.common.Common.TaskType.valueOf(rawValue);
+              if (value == null) {
+                unknownFields.mergeVarintField(1, rawValue);
+              } else {
+                bitField0_ |= 0x00000001;
+                responseType_ = rawValue;
+              }
+              break;
+            }
+            case 26: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000002;
+              filename_ = bs;
+              break;
+            }
+            case 34: {
+              pipe.common.Common.WriteResponse.Builder subBuilder = null;
+              if (payloadCase_ == 4) {
+                subBuilder = ((pipe.common.Common.WriteResponse) payload_).toBuilder();
+              }
+              payload_ =
+                  input.readMessage(pipe.common.Common.WriteResponse.PARSER, extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom((pipe.common.Common.WriteResponse) payload_);
+                payload_ = subBuilder.buildPartial();
+              }
+              payloadCase_ = 4;
+              break;
+            }
+            case 42: {
+              pipe.common.Common.ReadResponse.Builder subBuilder = null;
+              if (payloadCase_ == 5) {
+                subBuilder = ((pipe.common.Common.ReadResponse) payload_).toBuilder();
+              }
+              payload_ =
+                  input.readMessage(pipe.common.Common.ReadResponse.PARSER, extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom((pipe.common.Common.ReadResponse) payload_);
+                payload_ = subBuilder.buildPartial();
+              }
+              payloadCase_ = 5;
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return pipe.common.Common.internal_static_Response_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return pipe.common.Common.internal_static_Response_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              pipe.common.Common.Response.class, pipe.common.Common.Response.Builder.class);
+    }
+
+    /**
+     * Protobuf enum {@code Response.Status}
+     */
+    public enum Status
+        implements com.google.protobuf.ProtocolMessageEnum {
+      /**
+       * <code>Success = 1;</code>
+       */
+      Success(1),
+      /**
+       * <code>Failure = 2;</code>
+       */
+      Failure(2),
+      ;
+
+      /**
+       * <code>Success = 1;</code>
+       */
+      public static final int Success_VALUE = 1;
+      /**
+       * <code>Failure = 2;</code>
+       */
+      public static final int Failure_VALUE = 2;
+
+
+      public final int getNumber() {
+        return value;
+      }
+
+      /**
+       * @deprecated Use {@link #forNumber(int)} instead.
+       */
+      @java.lang.Deprecated
+      public static Status valueOf(int value) {
+        return forNumber(value);
+      }
+
+      public static Status forNumber(int value) {
+        switch (value) {
+          case 1: return Success;
+          case 2: return Failure;
+          default: return null;
+        }
+      }
+
+      public static com.google.protobuf.Internal.EnumLiteMap<Status>
+          internalGetValueMap() {
+        return internalValueMap;
+      }
+      private static final com.google.protobuf.Internal.EnumLiteMap<
+          Status> internalValueMap =
+            new com.google.protobuf.Internal.EnumLiteMap<Status>() {
+              public Status findValueByNumber(int number) {
+                return Status.forNumber(number);
+              }
+            };
+
+      public final com.google.protobuf.Descriptors.EnumValueDescriptor
+          getValueDescriptor() {
+        return getDescriptor().getValues().get(ordinal());
+      }
+      public final com.google.protobuf.Descriptors.EnumDescriptor
+          getDescriptorForType() {
+        return getDescriptor();
+      }
+      public static final com.google.protobuf.Descriptors.EnumDescriptor
+          getDescriptor() {
+        return pipe.common.Common.Response.getDescriptor().getEnumTypes().get(0);
+      }
+
+      private static final Status[] VALUES = values();
+
+      public static Status valueOf(
+          com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
+        if (desc.getType() != getDescriptor()) {
+          throw new java.lang.IllegalArgumentException(
+            "EnumValueDescriptor is not for this type.");
+        }
+        return VALUES[desc.getIndex()];
+      }
+
+      private final int value;
+
+      private Status(int value) {
+        this.value = value;
+      }
+
+      // @@protoc_insertion_point(enum_scope:Response.Status)
+    }
+
+    private int bitField0_;
+    private int payloadCase_ = 0;
+    private java.lang.Object payload_;
+    public enum PayloadCase
+        implements com.google.protobuf.Internal.EnumLite {
+      WRITERESPONSE(4),
+      READRESPONSE(5),
+      PAYLOAD_NOT_SET(0);
+      private final int value;
+      private PayloadCase(int value) {
+        this.value = value;
+      }
+      /**
+       * @deprecated Use {@link #forNumber(int)} instead.
+       */
+      @java.lang.Deprecated
+      public static PayloadCase valueOf(int value) {
+        return forNumber(value);
+      }
+
+      public static PayloadCase forNumber(int value) {
+        switch (value) {
+          case 4: return WRITERESPONSE;
+          case 5: return READRESPONSE;
+          case 0: return PAYLOAD_NOT_SET;
+          default: return null;
+        }
+      }
+      public int getNumber() {
+        return this.value;
+      }
+    };
+
+    public PayloadCase
+    getPayloadCase() {
+      return PayloadCase.forNumber(
+          payloadCase_);
+    }
+
+    public static final int RESPONSETYPE_FIELD_NUMBER = 1;
+    private int responseType_;
+    /**
+     * <code>required .TaskType responseType = 1;</code>
+     */
+    public boolean hasResponseType() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>required .TaskType responseType = 1;</code>
+     */
+    public pipe.common.Common.TaskType getResponseType() {
+      pipe.common.Common.TaskType result = pipe.common.Common.TaskType.valueOf(responseType_);
+      return result == null ? pipe.common.Common.TaskType.READFILE : result;
+    }
+
+    public static final int FILENAME_FIELD_NUMBER = 3;
+    private volatile java.lang.Object filename_;
+    /**
+     * <code>optional string filename = 3;</code>
+     */
+    public boolean hasFilename() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>optional string filename = 3;</code>
+     */
+    public java.lang.String getFilename() {
+      java.lang.Object ref = filename_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          filename_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string filename = 3;</code>
+     */
+    public com.google.protobuf.ByteString
+        getFilenameBytes() {
+      java.lang.Object ref = filename_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        filename_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int WRITERESPONSE_FIELD_NUMBER = 4;
+    /**
+     * <code>optional .WriteResponse writeResponse = 4;</code>
+     */
+    public boolean hasWriteResponse() {
+      return payloadCase_ == 4;
+    }
+    /**
+     * <code>optional .WriteResponse writeResponse = 4;</code>
+     */
+    public pipe.common.Common.WriteResponse getWriteResponse() {
+      if (payloadCase_ == 4) {
+         return (pipe.common.Common.WriteResponse) payload_;
+      }
+      return pipe.common.Common.WriteResponse.getDefaultInstance();
+    }
+    /**
+     * <code>optional .WriteResponse writeResponse = 4;</code>
+     */
+    public pipe.common.Common.WriteResponseOrBuilder getWriteResponseOrBuilder() {
+      if (payloadCase_ == 4) {
+         return (pipe.common.Common.WriteResponse) payload_;
+      }
+      return pipe.common.Common.WriteResponse.getDefaultInstance();
+    }
+
+    public static final int READRESPONSE_FIELD_NUMBER = 5;
+    /**
+     * <code>optional .ReadResponse readResponse = 5;</code>
+     */
+    public boolean hasReadResponse() {
+      return payloadCase_ == 5;
+    }
+    /**
+     * <code>optional .ReadResponse readResponse = 5;</code>
+     */
+    public pipe.common.Common.ReadResponse getReadResponse() {
+      if (payloadCase_ == 5) {
+         return (pipe.common.Common.ReadResponse) payload_;
+      }
+      return pipe.common.Common.ReadResponse.getDefaultInstance();
+    }
+    /**
+     * <code>optional .ReadResponse readResponse = 5;</code>
+     */
+    public pipe.common.Common.ReadResponseOrBuilder getReadResponseOrBuilder() {
+      if (payloadCase_ == 5) {
+         return (pipe.common.Common.ReadResponse) payload_;
+      }
+      return pipe.common.Common.ReadResponse.getDefaultInstance();
+    }
+
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      if (!hasResponseType()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (hasReadResponse()) {
+        if (!getReadResponse().isInitialized()) {
+          memoizedIsInitialized = 0;
+          return false;
+        }
+      }
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeEnum(1, responseType_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 3, filename_);
+      }
+      if (payloadCase_ == 4) {
+        output.writeMessage(4, (pipe.common.Common.WriteResponse) payload_);
+      }
+      if (payloadCase_ == 5) {
+        output.writeMessage(5, (pipe.common.Common.ReadResponse) payload_);
+      }
+      unknownFields.writeTo(output);
+    }
+
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeEnumSize(1, responseType_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, filename_);
+      }
+      if (payloadCase_ == 4) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(4, (pipe.common.Common.WriteResponse) payload_);
+      }
+      if (payloadCase_ == 5) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(5, (pipe.common.Common.ReadResponse) payload_);
+      }
+      size += unknownFields.getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof pipe.common.Common.Response)) {
+        return super.equals(obj);
+      }
+      pipe.common.Common.Response other = (pipe.common.Common.Response) obj;
+
+      boolean result = true;
+      result = result && (hasResponseType() == other.hasResponseType());
+      if (hasResponseType()) {
+        result = result && responseType_ == other.responseType_;
+      }
+      result = result && (hasFilename() == other.hasFilename());
+      if (hasFilename()) {
+        result = result && getFilename()
+            .equals(other.getFilename());
+      }
+      result = result && getPayloadCase().equals(
+          other.getPayloadCase());
+      if (!result) return false;
+      switch (payloadCase_) {
+        case 4:
+          result = result && getWriteResponse()
+              .equals(other.getWriteResponse());
+          break;
+        case 5:
+          result = result && getReadResponse()
+              .equals(other.getReadResponse());
+          break;
+        case 0:
+        default:
+      }
+      result = result && unknownFields.equals(other.unknownFields);
+      return result;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      if (hasResponseType()) {
+        hash = (37 * hash) + RESPONSETYPE_FIELD_NUMBER;
+        hash = (53 * hash) + responseType_;
+      }
+      if (hasFilename()) {
+        hash = (37 * hash) + FILENAME_FIELD_NUMBER;
+        hash = (53 * hash) + getFilename().hashCode();
+      }
+      switch (payloadCase_) {
+        case 4:
+          hash = (37 * hash) + WRITERESPONSE_FIELD_NUMBER;
+          hash = (53 * hash) + getWriteResponse().hashCode();
+          break;
+        case 5:
+          hash = (37 * hash) + READRESPONSE_FIELD_NUMBER;
+          hash = (53 * hash) + getReadResponse().hashCode();
+          break;
+        case 0:
+        default:
+      }
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static pipe.common.Common.Response parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static pipe.common.Common.Response parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static pipe.common.Common.Response parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static pipe.common.Common.Response parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static pipe.common.Common.Response parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static pipe.common.Common.Response parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static pipe.common.Common.Response parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static pipe.common.Common.Response parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static pipe.common.Common.Response parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static pipe.common.Common.Response parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(pipe.common.Common.Response prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code Response}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:Response)
+        pipe.common.Common.ResponseOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return pipe.common.Common.internal_static_Response_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return pipe.common.Common.internal_static_Response_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                pipe.common.Common.Response.class, pipe.common.Common.Response.Builder.class);
+      }
+
+      // Construct using pipe.common.Common.Response.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+        }
+      }
+      public Builder clear() {
+        super.clear();
+        responseType_ = 1;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        filename_ = "";
+        bitField0_ = (bitField0_ & ~0x00000002);
+        payloadCase_ = 0;
+        payload_ = null;
+        return this;
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return pipe.common.Common.internal_static_Response_descriptor;
+      }
+
+      public pipe.common.Common.Response getDefaultInstanceForType() {
+        return pipe.common.Common.Response.getDefaultInstance();
+      }
+
+      public pipe.common.Common.Response build() {
+        pipe.common.Common.Response result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public pipe.common.Common.Response buildPartial() {
+        pipe.common.Common.Response result = new pipe.common.Common.Response(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.responseType_ = responseType_;
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        result.filename_ = filename_;
+        if (payloadCase_ == 4) {
+          if (writeResponseBuilder_ == null) {
+            result.payload_ = payload_;
+          } else {
+            result.payload_ = writeResponseBuilder_.build();
+          }
+        }
+        if (payloadCase_ == 5) {
+          if (readResponseBuilder_ == null) {
+            result.payload_ = payload_;
+          } else {
+            result.payload_ = readResponseBuilder_.build();
+          }
+        }
+        result.bitField0_ = to_bitField0_;
+        result.payloadCase_ = payloadCase_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder clone() {
+        return (Builder) super.clone();
+      }
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          Object value) {
+        return (Builder) super.setField(field, value);
+      }
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return (Builder) super.clearField(field);
+      }
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return (Builder) super.clearOneof(oneof);
+      }
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, Object value) {
+        return (Builder) super.setRepeatedField(field, index, value);
+      }
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          Object value) {
+        return (Builder) super.addRepeatedField(field, value);
+      }
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof pipe.common.Common.Response) {
+          return mergeFrom((pipe.common.Common.Response)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(pipe.common.Common.Response other) {
+        if (other == pipe.common.Common.Response.getDefaultInstance()) return this;
+        if (other.hasResponseType()) {
+          setResponseType(other.getResponseType());
+        }
+        if (other.hasFilename()) {
+          bitField0_ |= 0x00000002;
+          filename_ = other.filename_;
+          onChanged();
+        }
+        switch (other.getPayloadCase()) {
+          case WRITERESPONSE: {
+            mergeWriteResponse(other.getWriteResponse());
+            break;
+          }
+          case READRESPONSE: {
+            mergeReadResponse(other.getReadResponse());
+            break;
+          }
+          case PAYLOAD_NOT_SET: {
+            break;
+          }
+        }
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        if (!hasResponseType()) {
+          return false;
+        }
+        if (hasReadResponse()) {
+          if (!getReadResponse().isInitialized()) {
+            return false;
+          }
+        }
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        pipe.common.Common.Response parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (pipe.common.Common.Response) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int payloadCase_ = 0;
+      private java.lang.Object payload_;
+      public PayloadCase
+          getPayloadCase() {
+        return PayloadCase.forNumber(
+            payloadCase_);
+      }
+
+      public Builder clearPayload() {
+        payloadCase_ = 0;
+        payload_ = null;
+        onChanged();
+        return this;
+      }
+
+      private int bitField0_;
+
+      private int responseType_ = 1;
+      /**
+       * <code>required .TaskType responseType = 1;</code>
+       */
+      public boolean hasResponseType() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>required .TaskType responseType = 1;</code>
+       */
+      public pipe.common.Common.TaskType getResponseType() {
+        pipe.common.Common.TaskType result = pipe.common.Common.TaskType.valueOf(responseType_);
+        return result == null ? pipe.common.Common.TaskType.READFILE : result;
+      }
+      /**
+       * <code>required .TaskType responseType = 1;</code>
+       */
+      public Builder setResponseType(pipe.common.Common.TaskType value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        bitField0_ |= 0x00000001;
+        responseType_ = value.getNumber();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required .TaskType responseType = 1;</code>
+       */
+      public Builder clearResponseType() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        responseType_ = 1;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object filename_ = "";
+      /**
+       * <code>optional string filename = 3;</code>
+       */
+      public boolean hasFilename() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>optional string filename = 3;</code>
+       */
+      public java.lang.String getFilename() {
+        java.lang.Object ref = filename_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            filename_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string filename = 3;</code>
+       */
+      public com.google.protobuf.ByteString
+          getFilenameBytes() {
+        java.lang.Object ref = filename_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          filename_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string filename = 3;</code>
+       */
+      public Builder setFilename(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000002;
+        filename_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string filename = 3;</code>
+       */
+      public Builder clearFilename() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        filename_ = getDefaultInstance().getFilename();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string filename = 3;</code>
+       */
+      public Builder setFilenameBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000002;
+        filename_ = value;
+        onChanged();
+        return this;
+      }
+
+      private com.google.protobuf.SingleFieldBuilderV3<
+          pipe.common.Common.WriteResponse, pipe.common.Common.WriteResponse.Builder, pipe.common.Common.WriteResponseOrBuilder> writeResponseBuilder_;
+      /**
+       * <code>optional .WriteResponse writeResponse = 4;</code>
+       */
+      public boolean hasWriteResponse() {
+        return payloadCase_ == 4;
+      }
+      /**
+       * <code>optional .WriteResponse writeResponse = 4;</code>
+       */
+      public pipe.common.Common.WriteResponse getWriteResponse() {
+        if (writeResponseBuilder_ == null) {
+          if (payloadCase_ == 4) {
+            return (pipe.common.Common.WriteResponse) payload_;
+          }
+          return pipe.common.Common.WriteResponse.getDefaultInstance();
+        } else {
+          if (payloadCase_ == 4) {
+            return writeResponseBuilder_.getMessage();
+          }
+          return pipe.common.Common.WriteResponse.getDefaultInstance();
+        }
+      }
+      /**
+       * <code>optional .WriteResponse writeResponse = 4;</code>
+       */
+      public Builder setWriteResponse(pipe.common.Common.WriteResponse value) {
+        if (writeResponseBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          payload_ = value;
+          onChanged();
+        } else {
+          writeResponseBuilder_.setMessage(value);
+        }
+        payloadCase_ = 4;
+        return this;
+      }
+      /**
+       * <code>optional .WriteResponse writeResponse = 4;</code>
+       */
+      public Builder setWriteResponse(
+          pipe.common.Common.WriteResponse.Builder builderForValue) {
+        if (writeResponseBuilder_ == null) {
+          payload_ = builderForValue.build();
+          onChanged();
+        } else {
+          writeResponseBuilder_.setMessage(builderForValue.build());
+        }
+        payloadCase_ = 4;
+        return this;
+      }
+      /**
+       * <code>optional .WriteResponse writeResponse = 4;</code>
+       */
+      public Builder mergeWriteResponse(pipe.common.Common.WriteResponse value) {
+        if (writeResponseBuilder_ == null) {
+          if (payloadCase_ == 4 &&
+              payload_ != pipe.common.Common.WriteResponse.getDefaultInstance()) {
+            payload_ = pipe.common.Common.WriteResponse.newBuilder((pipe.common.Common.WriteResponse) payload_)
+                .mergeFrom(value).buildPartial();
+          } else {
+            payload_ = value;
+          }
+          onChanged();
+        } else {
+          if (payloadCase_ == 4) {
+            writeResponseBuilder_.mergeFrom(value);
+          }
+          writeResponseBuilder_.setMessage(value);
+        }
+        payloadCase_ = 4;
+        return this;
+      }
+      /**
+       * <code>optional .WriteResponse writeResponse = 4;</code>
+       */
+      public Builder clearWriteResponse() {
+        if (writeResponseBuilder_ == null) {
+          if (payloadCase_ == 4) {
+            payloadCase_ = 0;
+            payload_ = null;
+            onChanged();
+          }
+        } else {
+          if (payloadCase_ == 4) {
+            payloadCase_ = 0;
+            payload_ = null;
+          }
+          writeResponseBuilder_.clear();
+        }
+        return this;
+      }
+      /**
+       * <code>optional .WriteResponse writeResponse = 4;</code>
+       */
+      public pipe.common.Common.WriteResponse.Builder getWriteResponseBuilder() {
+        return getWriteResponseFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>optional .WriteResponse writeResponse = 4;</code>
+       */
+      public pipe.common.Common.WriteResponseOrBuilder getWriteResponseOrBuilder() {
+        if ((payloadCase_ == 4) && (writeResponseBuilder_ != null)) {
+          return writeResponseBuilder_.getMessageOrBuilder();
+        } else {
+          if (payloadCase_ == 4) {
+            return (pipe.common.Common.WriteResponse) payload_;
+          }
+          return pipe.common.Common.WriteResponse.getDefaultInstance();
+        }
+      }
+      /**
+       * <code>optional .WriteResponse writeResponse = 4;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilderV3<
+          pipe.common.Common.WriteResponse, pipe.common.Common.WriteResponse.Builder, pipe.common.Common.WriteResponseOrBuilder> 
+          getWriteResponseFieldBuilder() {
+        if (writeResponseBuilder_ == null) {
+          if (!(payloadCase_ == 4)) {
+            payload_ = pipe.common.Common.WriteResponse.getDefaultInstance();
+          }
+          writeResponseBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              pipe.common.Common.WriteResponse, pipe.common.Common.WriteResponse.Builder, pipe.common.Common.WriteResponseOrBuilder>(
+                  (pipe.common.Common.WriteResponse) payload_,
+                  getParentForChildren(),
+                  isClean());
+          payload_ = null;
+        }
+        payloadCase_ = 4;
+        onChanged();;
+        return writeResponseBuilder_;
+      }
+
+      private com.google.protobuf.SingleFieldBuilderV3<
+          pipe.common.Common.ReadResponse, pipe.common.Common.ReadResponse.Builder, pipe.common.Common.ReadResponseOrBuilder> readResponseBuilder_;
+      /**
+       * <code>optional .ReadResponse readResponse = 5;</code>
+       */
+      public boolean hasReadResponse() {
+        return payloadCase_ == 5;
+      }
+      /**
+       * <code>optional .ReadResponse readResponse = 5;</code>
+       */
+      public pipe.common.Common.ReadResponse getReadResponse() {
+        if (readResponseBuilder_ == null) {
+          if (payloadCase_ == 5) {
+            return (pipe.common.Common.ReadResponse) payload_;
+          }
+          return pipe.common.Common.ReadResponse.getDefaultInstance();
+        } else {
+          if (payloadCase_ == 5) {
+            return readResponseBuilder_.getMessage();
+          }
+          return pipe.common.Common.ReadResponse.getDefaultInstance();
+        }
+      }
+      /**
+       * <code>optional .ReadResponse readResponse = 5;</code>
+       */
+      public Builder setReadResponse(pipe.common.Common.ReadResponse value) {
+        if (readResponseBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          payload_ = value;
+          onChanged();
+        } else {
+          readResponseBuilder_.setMessage(value);
+        }
+        payloadCase_ = 5;
+        return this;
+      }
+      /**
+       * <code>optional .ReadResponse readResponse = 5;</code>
+       */
+      public Builder setReadResponse(
+          pipe.common.Common.ReadResponse.Builder builderForValue) {
+        if (readResponseBuilder_ == null) {
+          payload_ = builderForValue.build();
+          onChanged();
+        } else {
+          readResponseBuilder_.setMessage(builderForValue.build());
+        }
+        payloadCase_ = 5;
+        return this;
+      }
+      /**
+       * <code>optional .ReadResponse readResponse = 5;</code>
+       */
+      public Builder mergeReadResponse(pipe.common.Common.ReadResponse value) {
+        if (readResponseBuilder_ == null) {
+          if (payloadCase_ == 5 &&
+              payload_ != pipe.common.Common.ReadResponse.getDefaultInstance()) {
+            payload_ = pipe.common.Common.ReadResponse.newBuilder((pipe.common.Common.ReadResponse) payload_)
+                .mergeFrom(value).buildPartial();
+          } else {
+            payload_ = value;
+          }
+          onChanged();
+        } else {
+          if (payloadCase_ == 5) {
+            readResponseBuilder_.mergeFrom(value);
+          }
+          readResponseBuilder_.setMessage(value);
+        }
+        payloadCase_ = 5;
+        return this;
+      }
+      /**
+       * <code>optional .ReadResponse readResponse = 5;</code>
+       */
+      public Builder clearReadResponse() {
+        if (readResponseBuilder_ == null) {
+          if (payloadCase_ == 5) {
+            payloadCase_ = 0;
+            payload_ = null;
+            onChanged();
+          }
+        } else {
+          if (payloadCase_ == 5) {
+            payloadCase_ = 0;
+            payload_ = null;
+          }
+          readResponseBuilder_.clear();
+        }
+        return this;
+      }
+      /**
+       * <code>optional .ReadResponse readResponse = 5;</code>
+       */
+      public pipe.common.Common.ReadResponse.Builder getReadResponseBuilder() {
+        return getReadResponseFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>optional .ReadResponse readResponse = 5;</code>
+       */
+      public pipe.common.Common.ReadResponseOrBuilder getReadResponseOrBuilder() {
+        if ((payloadCase_ == 5) && (readResponseBuilder_ != null)) {
+          return readResponseBuilder_.getMessageOrBuilder();
+        } else {
+          if (payloadCase_ == 5) {
+            return (pipe.common.Common.ReadResponse) payload_;
+          }
+          return pipe.common.Common.ReadResponse.getDefaultInstance();
+        }
+      }
+      /**
+       * <code>optional .ReadResponse readResponse = 5;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilderV3<
+          pipe.common.Common.ReadResponse, pipe.common.Common.ReadResponse.Builder, pipe.common.Common.ReadResponseOrBuilder> 
+          getReadResponseFieldBuilder() {
+        if (readResponseBuilder_ == null) {
+          if (!(payloadCase_ == 5)) {
+            payload_ = pipe.common.Common.ReadResponse.getDefaultInstance();
+          }
+          readResponseBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              pipe.common.Common.ReadResponse, pipe.common.Common.ReadResponse.Builder, pipe.common.Common.ReadResponseOrBuilder>(
+                  (pipe.common.Common.ReadResponse) payload_,
+                  getParentForChildren(),
+                  isClean());
+          payload_ = null;
+        }
+        payloadCase_ = 5;
+        onChanged();;
+        return readResponseBuilder_;
+      }
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFields(unknownFields);
+      }
+
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:Response)
+    }
+
+    // @@protoc_insertion_point(class_scope:Response)
+    private static final pipe.common.Common.Response DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new pipe.common.Common.Response();
+    }
+
+    public static pipe.common.Common.Response getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    @java.lang.Deprecated public static final com.google.protobuf.Parser<Response>
+        PARSER = new com.google.protobuf.AbstractParser<Response>() {
+      public Response parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+          return new Response(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<Response> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<Response> getParserForType() {
+      return PARSER;
+    }
+
+    public pipe.common.Common.Response getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
   public interface WriteResponseOrBuilder extends
       // @@protoc_insertion_point(interface_extends:WriteResponse)
       com.google.protobuf.MessageOrBuilder {
@@ -8870,1259 +10123,6 @@ public final class Common {
 
   }
 
-  public interface ResponseOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:Response)
-      com.google.protobuf.MessageOrBuilder {
-
-    /**
-     * <code>required .TaskType responseType = 1;</code>
-     */
-    boolean hasResponseType();
-    /**
-     * <code>required .TaskType responseType = 1;</code>
-     */
-    pipe.common.Common.TaskType getResponseType();
-
-    /**
-     * <code>optional string filename = 3;</code>
-     */
-    boolean hasFilename();
-    /**
-     * <code>optional string filename = 3;</code>
-     */
-    java.lang.String getFilename();
-    /**
-     * <code>optional string filename = 3;</code>
-     */
-    com.google.protobuf.ByteString
-        getFilenameBytes();
-
-    /**
-     * <code>optional .WriteResponse writeResponse = 4;</code>
-     */
-    boolean hasWriteResponse();
-    /**
-     * <code>optional .WriteResponse writeResponse = 4;</code>
-     */
-    pipe.common.Common.WriteResponse getWriteResponse();
-    /**
-     * <code>optional .WriteResponse writeResponse = 4;</code>
-     */
-    pipe.common.Common.WriteResponseOrBuilder getWriteResponseOrBuilder();
-
-    /**
-     * <code>optional .ReadResponse readResponse = 5;</code>
-     */
-    boolean hasReadResponse();
-    /**
-     * <code>optional .ReadResponse readResponse = 5;</code>
-     */
-    pipe.common.Common.ReadResponse getReadResponse();
-    /**
-     * <code>optional .ReadResponse readResponse = 5;</code>
-     */
-    pipe.common.Common.ReadResponseOrBuilder getReadResponseOrBuilder();
-
-    public pipe.common.Common.Response.PayloadCase getPayloadCase();
-  }
-  /**
-   * Protobuf type {@code Response}
-   */
-  public  static final class Response extends
-      com.google.protobuf.GeneratedMessageV3 implements
-      // @@protoc_insertion_point(message_implements:Response)
-      ResponseOrBuilder {
-    // Use Response.newBuilder() to construct.
-    private Response(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
-      super(builder);
-    }
-    private Response() {
-      responseType_ = 1;
-      filename_ = "";
-    }
-
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
-    private Response(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      this();
-      int mutable_bitField0_ = 0;
-      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-          com.google.protobuf.UnknownFieldSet.newBuilder();
-      try {
-        boolean done = false;
-        while (!done) {
-          int tag = input.readTag();
-          switch (tag) {
-            case 0:
-              done = true;
-              break;
-            default: {
-              if (!parseUnknownField(input, unknownFields,
-                                     extensionRegistry, tag)) {
-                done = true;
-              }
-              break;
-            }
-            case 8: {
-              int rawValue = input.readEnum();
-              pipe.common.Common.TaskType value = pipe.common.Common.TaskType.valueOf(rawValue);
-              if (value == null) {
-                unknownFields.mergeVarintField(1, rawValue);
-              } else {
-                bitField0_ |= 0x00000001;
-                responseType_ = rawValue;
-              }
-              break;
-            }
-            case 26: {
-              com.google.protobuf.ByteString bs = input.readBytes();
-              bitField0_ |= 0x00000002;
-              filename_ = bs;
-              break;
-            }
-            case 34: {
-              pipe.common.Common.WriteResponse.Builder subBuilder = null;
-              if (payloadCase_ == 4) {
-                subBuilder = ((pipe.common.Common.WriteResponse) payload_).toBuilder();
-              }
-              payload_ =
-                  input.readMessage(pipe.common.Common.WriteResponse.PARSER, extensionRegistry);
-              if (subBuilder != null) {
-                subBuilder.mergeFrom((pipe.common.Common.WriteResponse) payload_);
-                payload_ = subBuilder.buildPartial();
-              }
-              payloadCase_ = 4;
-              break;
-            }
-            case 42: {
-              pipe.common.Common.ReadResponse.Builder subBuilder = null;
-              if (payloadCase_ == 5) {
-                subBuilder = ((pipe.common.Common.ReadResponse) payload_).toBuilder();
-              }
-              payload_ =
-                  input.readMessage(pipe.common.Common.ReadResponse.PARSER, extensionRegistry);
-              if (subBuilder != null) {
-                subBuilder.mergeFrom((pipe.common.Common.ReadResponse) payload_);
-                payload_ = subBuilder.buildPartial();
-              }
-              payloadCase_ = 5;
-              break;
-            }
-          }
-        }
-      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        throw e.setUnfinishedMessage(this);
-      } catch (java.io.IOException e) {
-        throw new com.google.protobuf.InvalidProtocolBufferException(
-            e).setUnfinishedMessage(this);
-      } finally {
-        this.unknownFields = unknownFields.build();
-        makeExtensionsImmutable();
-      }
-    }
-    public static final com.google.protobuf.Descriptors.Descriptor
-        getDescriptor() {
-      return pipe.common.Common.internal_static_Response_descriptor;
-    }
-
-    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-        internalGetFieldAccessorTable() {
-      return pipe.common.Common.internal_static_Response_fieldAccessorTable
-          .ensureFieldAccessorsInitialized(
-              pipe.common.Common.Response.class, pipe.common.Common.Response.Builder.class);
-    }
-
-    /**
-     * Protobuf enum {@code Response.Status}
-     */
-    public enum Status
-        implements com.google.protobuf.ProtocolMessageEnum {
-      /**
-       * <code>Success = 1;</code>
-       */
-      Success(1),
-      /**
-       * <code>Failure = 2;</code>
-       */
-      Failure(2),
-      ;
-
-      /**
-       * <code>Success = 1;</code>
-       */
-      public static final int Success_VALUE = 1;
-      /**
-       * <code>Failure = 2;</code>
-       */
-      public static final int Failure_VALUE = 2;
-
-
-      public final int getNumber() {
-        return value;
-      }
-
-      /**
-       * @deprecated Use {@link #forNumber(int)} instead.
-       */
-      @java.lang.Deprecated
-      public static Status valueOf(int value) {
-        return forNumber(value);
-      }
-
-      public static Status forNumber(int value) {
-        switch (value) {
-          case 1: return Success;
-          case 2: return Failure;
-          default: return null;
-        }
-      }
-
-      public static com.google.protobuf.Internal.EnumLiteMap<Status>
-          internalGetValueMap() {
-        return internalValueMap;
-      }
-      private static final com.google.protobuf.Internal.EnumLiteMap<
-          Status> internalValueMap =
-            new com.google.protobuf.Internal.EnumLiteMap<Status>() {
-              public Status findValueByNumber(int number) {
-                return Status.forNumber(number);
-              }
-            };
-
-      public final com.google.protobuf.Descriptors.EnumValueDescriptor
-          getValueDescriptor() {
-        return getDescriptor().getValues().get(ordinal());
-      }
-      public final com.google.protobuf.Descriptors.EnumDescriptor
-          getDescriptorForType() {
-        return getDescriptor();
-      }
-      public static final com.google.protobuf.Descriptors.EnumDescriptor
-          getDescriptor() {
-        return pipe.common.Common.Response.getDescriptor().getEnumTypes().get(0);
-      }
-
-      private static final Status[] VALUES = values();
-
-      public static Status valueOf(
-          com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
-        if (desc.getType() != getDescriptor()) {
-          throw new java.lang.IllegalArgumentException(
-            "EnumValueDescriptor is not for this type.");
-        }
-        return VALUES[desc.getIndex()];
-      }
-
-      private final int value;
-
-      private Status(int value) {
-        this.value = value;
-      }
-
-      // @@protoc_insertion_point(enum_scope:Response.Status)
-    }
-
-    private int bitField0_;
-    private int payloadCase_ = 0;
-    private java.lang.Object payload_;
-    public enum PayloadCase
-        implements com.google.protobuf.Internal.EnumLite {
-      WRITERESPONSE(4),
-      READRESPONSE(5),
-      PAYLOAD_NOT_SET(0);
-      private final int value;
-      private PayloadCase(int value) {
-        this.value = value;
-      }
-      /**
-       * @deprecated Use {@link #forNumber(int)} instead.
-       */
-      @java.lang.Deprecated
-      public static PayloadCase valueOf(int value) {
-        return forNumber(value);
-      }
-
-      public static PayloadCase forNumber(int value) {
-        switch (value) {
-          case 4: return WRITERESPONSE;
-          case 5: return READRESPONSE;
-          case 0: return PAYLOAD_NOT_SET;
-          default: return null;
-        }
-      }
-      public int getNumber() {
-        return this.value;
-      }
-    };
-
-    public PayloadCase
-    getPayloadCase() {
-      return PayloadCase.forNumber(
-          payloadCase_);
-    }
-
-    public static final int RESPONSETYPE_FIELD_NUMBER = 1;
-    private int responseType_;
-    /**
-     * <code>required .TaskType responseType = 1;</code>
-     */
-    public boolean hasResponseType() {
-      return ((bitField0_ & 0x00000001) == 0x00000001);
-    }
-    /**
-     * <code>required .TaskType responseType = 1;</code>
-     */
-    public pipe.common.Common.TaskType getResponseType() {
-      pipe.common.Common.TaskType result = pipe.common.Common.TaskType.valueOf(responseType_);
-      return result == null ? pipe.common.Common.TaskType.READFILE : result;
-    }
-
-    public static final int FILENAME_FIELD_NUMBER = 3;
-    private volatile java.lang.Object filename_;
-    /**
-     * <code>optional string filename = 3;</code>
-     */
-    public boolean hasFilename() {
-      return ((bitField0_ & 0x00000002) == 0x00000002);
-    }
-    /**
-     * <code>optional string filename = 3;</code>
-     */
-    public java.lang.String getFilename() {
-      java.lang.Object ref = filename_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        if (bs.isValidUtf8()) {
-          filename_ = s;
-        }
-        return s;
-      }
-    }
-    /**
-     * <code>optional string filename = 3;</code>
-     */
-    public com.google.protobuf.ByteString
-        getFilenameBytes() {
-      java.lang.Object ref = filename_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        filename_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-
-    public static final int WRITERESPONSE_FIELD_NUMBER = 4;
-    /**
-     * <code>optional .WriteResponse writeResponse = 4;</code>
-     */
-    public boolean hasWriteResponse() {
-      return payloadCase_ == 4;
-    }
-    /**
-     * <code>optional .WriteResponse writeResponse = 4;</code>
-     */
-    public pipe.common.Common.WriteResponse getWriteResponse() {
-      if (payloadCase_ == 4) {
-         return (pipe.common.Common.WriteResponse) payload_;
-      }
-      return pipe.common.Common.WriteResponse.getDefaultInstance();
-    }
-    /**
-     * <code>optional .WriteResponse writeResponse = 4;</code>
-     */
-    public pipe.common.Common.WriteResponseOrBuilder getWriteResponseOrBuilder() {
-      if (payloadCase_ == 4) {
-         return (pipe.common.Common.WriteResponse) payload_;
-      }
-      return pipe.common.Common.WriteResponse.getDefaultInstance();
-    }
-
-    public static final int READRESPONSE_FIELD_NUMBER = 5;
-    /**
-     * <code>optional .ReadResponse readResponse = 5;</code>
-     */
-    public boolean hasReadResponse() {
-      return payloadCase_ == 5;
-    }
-    /**
-     * <code>optional .ReadResponse readResponse = 5;</code>
-     */
-    public pipe.common.Common.ReadResponse getReadResponse() {
-      if (payloadCase_ == 5) {
-         return (pipe.common.Common.ReadResponse) payload_;
-      }
-      return pipe.common.Common.ReadResponse.getDefaultInstance();
-    }
-    /**
-     * <code>optional .ReadResponse readResponse = 5;</code>
-     */
-    public pipe.common.Common.ReadResponseOrBuilder getReadResponseOrBuilder() {
-      if (payloadCase_ == 5) {
-         return (pipe.common.Common.ReadResponse) payload_;
-      }
-      return pipe.common.Common.ReadResponse.getDefaultInstance();
-    }
-
-    private byte memoizedIsInitialized = -1;
-    public final boolean isInitialized() {
-      byte isInitialized = memoizedIsInitialized;
-      if (isInitialized == 1) return true;
-      if (isInitialized == 0) return false;
-
-      if (!hasResponseType()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      if (hasReadResponse()) {
-        if (!getReadResponse().isInitialized()) {
-          memoizedIsInitialized = 0;
-          return false;
-        }
-      }
-      memoizedIsInitialized = 1;
-      return true;
-    }
-
-    public void writeTo(com.google.protobuf.CodedOutputStream output)
-                        throws java.io.IOException {
-      if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        output.writeEnum(1, responseType_);
-      }
-      if (((bitField0_ & 0x00000002) == 0x00000002)) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 3, filename_);
-      }
-      if (payloadCase_ == 4) {
-        output.writeMessage(4, (pipe.common.Common.WriteResponse) payload_);
-      }
-      if (payloadCase_ == 5) {
-        output.writeMessage(5, (pipe.common.Common.ReadResponse) payload_);
-      }
-      unknownFields.writeTo(output);
-    }
-
-    public int getSerializedSize() {
-      int size = memoizedSize;
-      if (size != -1) return size;
-
-      size = 0;
-      if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeEnumSize(1, responseType_);
-      }
-      if (((bitField0_ & 0x00000002) == 0x00000002)) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, filename_);
-      }
-      if (payloadCase_ == 4) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(4, (pipe.common.Common.WriteResponse) payload_);
-      }
-      if (payloadCase_ == 5) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(5, (pipe.common.Common.ReadResponse) payload_);
-      }
-      size += unknownFields.getSerializedSize();
-      memoizedSize = size;
-      return size;
-    }
-
-    private static final long serialVersionUID = 0L;
-    @java.lang.Override
-    public boolean equals(final java.lang.Object obj) {
-      if (obj == this) {
-       return true;
-      }
-      if (!(obj instanceof pipe.common.Common.Response)) {
-        return super.equals(obj);
-      }
-      pipe.common.Common.Response other = (pipe.common.Common.Response) obj;
-
-      boolean result = true;
-      result = result && (hasResponseType() == other.hasResponseType());
-      if (hasResponseType()) {
-        result = result && responseType_ == other.responseType_;
-      }
-      result = result && (hasFilename() == other.hasFilename());
-      if (hasFilename()) {
-        result = result && getFilename()
-            .equals(other.getFilename());
-      }
-      result = result && getPayloadCase().equals(
-          other.getPayloadCase());
-      if (!result) return false;
-      switch (payloadCase_) {
-        case 4:
-          result = result && getWriteResponse()
-              .equals(other.getWriteResponse());
-          break;
-        case 5:
-          result = result && getReadResponse()
-              .equals(other.getReadResponse());
-          break;
-        case 0:
-        default:
-      }
-      result = result && unknownFields.equals(other.unknownFields);
-      return result;
-    }
-
-    @java.lang.Override
-    public int hashCode() {
-      if (memoizedHashCode != 0) {
-        return memoizedHashCode;
-      }
-      int hash = 41;
-      hash = (19 * hash) + getDescriptor().hashCode();
-      if (hasResponseType()) {
-        hash = (37 * hash) + RESPONSETYPE_FIELD_NUMBER;
-        hash = (53 * hash) + responseType_;
-      }
-      if (hasFilename()) {
-        hash = (37 * hash) + FILENAME_FIELD_NUMBER;
-        hash = (53 * hash) + getFilename().hashCode();
-      }
-      switch (payloadCase_) {
-        case 4:
-          hash = (37 * hash) + WRITERESPONSE_FIELD_NUMBER;
-          hash = (53 * hash) + getWriteResponse().hashCode();
-          break;
-        case 5:
-          hash = (37 * hash) + READRESPONSE_FIELD_NUMBER;
-          hash = (53 * hash) + getReadResponse().hashCode();
-          break;
-        case 0:
-        default:
-      }
-      hash = (29 * hash) + unknownFields.hashCode();
-      memoizedHashCode = hash;
-      return hash;
-    }
-
-    public static pipe.common.Common.Response parseFrom(
-        com.google.protobuf.ByteString data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static pipe.common.Common.Response parseFrom(
-        com.google.protobuf.ByteString data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static pipe.common.Common.Response parseFrom(byte[] data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static pipe.common.Common.Response parseFrom(
-        byte[] data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static pipe.common.Common.Response parseFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input);
-    }
-    public static pipe.common.Common.Response parseFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input, extensionRegistry);
-    }
-    public static pipe.common.Common.Response parseDelimitedFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseDelimitedWithIOException(PARSER, input);
-    }
-    public static pipe.common.Common.Response parseDelimitedFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
-    }
-    public static pipe.common.Common.Response parseFrom(
-        com.google.protobuf.CodedInputStream input)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input);
-    }
-    public static pipe.common.Common.Response parseFrom(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input, extensionRegistry);
-    }
-
-    public Builder newBuilderForType() { return newBuilder(); }
-    public static Builder newBuilder() {
-      return DEFAULT_INSTANCE.toBuilder();
-    }
-    public static Builder newBuilder(pipe.common.Common.Response prototype) {
-      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
-    }
-    public Builder toBuilder() {
-      return this == DEFAULT_INSTANCE
-          ? new Builder() : new Builder().mergeFrom(this);
-    }
-
-    @java.lang.Override
-    protected Builder newBuilderForType(
-        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-      Builder builder = new Builder(parent);
-      return builder;
-    }
-    /**
-     * Protobuf type {@code Response}
-     */
-    public static final class Builder extends
-        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:Response)
-        pipe.common.Common.ResponseOrBuilder {
-      public static final com.google.protobuf.Descriptors.Descriptor
-          getDescriptor() {
-        return pipe.common.Common.internal_static_Response_descriptor;
-      }
-
-      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-          internalGetFieldAccessorTable() {
-        return pipe.common.Common.internal_static_Response_fieldAccessorTable
-            .ensureFieldAccessorsInitialized(
-                pipe.common.Common.Response.class, pipe.common.Common.Response.Builder.class);
-      }
-
-      // Construct using pipe.common.Common.Response.newBuilder()
-      private Builder() {
-        maybeForceBuilderInitialization();
-      }
-
-      private Builder(
-          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-        super(parent);
-        maybeForceBuilderInitialization();
-      }
-      private void maybeForceBuilderInitialization() {
-        if (com.google.protobuf.GeneratedMessageV3
-                .alwaysUseFieldBuilders) {
-        }
-      }
-      public Builder clear() {
-        super.clear();
-        responseType_ = 1;
-        bitField0_ = (bitField0_ & ~0x00000001);
-        filename_ = "";
-        bitField0_ = (bitField0_ & ~0x00000002);
-        payloadCase_ = 0;
-        payload_ = null;
-        return this;
-      }
-
-      public com.google.protobuf.Descriptors.Descriptor
-          getDescriptorForType() {
-        return pipe.common.Common.internal_static_Response_descriptor;
-      }
-
-      public pipe.common.Common.Response getDefaultInstanceForType() {
-        return pipe.common.Common.Response.getDefaultInstance();
-      }
-
-      public pipe.common.Common.Response build() {
-        pipe.common.Common.Response result = buildPartial();
-        if (!result.isInitialized()) {
-          throw newUninitializedMessageException(result);
-        }
-        return result;
-      }
-
-      public pipe.common.Common.Response buildPartial() {
-        pipe.common.Common.Response result = new pipe.common.Common.Response(this);
-        int from_bitField0_ = bitField0_;
-        int to_bitField0_ = 0;
-        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
-          to_bitField0_ |= 0x00000001;
-        }
-        result.responseType_ = responseType_;
-        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
-          to_bitField0_ |= 0x00000002;
-        }
-        result.filename_ = filename_;
-        if (payloadCase_ == 4) {
-          if (writeResponseBuilder_ == null) {
-            result.payload_ = payload_;
-          } else {
-            result.payload_ = writeResponseBuilder_.build();
-          }
-        }
-        if (payloadCase_ == 5) {
-          if (readResponseBuilder_ == null) {
-            result.payload_ = payload_;
-          } else {
-            result.payload_ = readResponseBuilder_.build();
-          }
-        }
-        result.bitField0_ = to_bitField0_;
-        result.payloadCase_ = payloadCase_;
-        onBuilt();
-        return result;
-      }
-
-      public Builder clone() {
-        return (Builder) super.clone();
-      }
-      public Builder setField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
-        return (Builder) super.setField(field, value);
-      }
-      public Builder clearField(
-          com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return (Builder) super.clearField(field);
-      }
-      public Builder clearOneof(
-          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return (Builder) super.clearOneof(oneof);
-      }
-      public Builder setRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, Object value) {
-        return (Builder) super.setRepeatedField(field, index, value);
-      }
-      public Builder addRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
-        return (Builder) super.addRepeatedField(field, value);
-      }
-      public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof pipe.common.Common.Response) {
-          return mergeFrom((pipe.common.Common.Response)other);
-        } else {
-          super.mergeFrom(other);
-          return this;
-        }
-      }
-
-      public Builder mergeFrom(pipe.common.Common.Response other) {
-        if (other == pipe.common.Common.Response.getDefaultInstance()) return this;
-        if (other.hasResponseType()) {
-          setResponseType(other.getResponseType());
-        }
-        if (other.hasFilename()) {
-          bitField0_ |= 0x00000002;
-          filename_ = other.filename_;
-          onChanged();
-        }
-        switch (other.getPayloadCase()) {
-          case WRITERESPONSE: {
-            mergeWriteResponse(other.getWriteResponse());
-            break;
-          }
-          case READRESPONSE: {
-            mergeReadResponse(other.getReadResponse());
-            break;
-          }
-          case PAYLOAD_NOT_SET: {
-            break;
-          }
-        }
-        this.mergeUnknownFields(other.unknownFields);
-        onChanged();
-        return this;
-      }
-
-      public final boolean isInitialized() {
-        if (!hasResponseType()) {
-          return false;
-        }
-        if (hasReadResponse()) {
-          if (!getReadResponse().isInitialized()) {
-            return false;
-          }
-        }
-        return true;
-      }
-
-      public Builder mergeFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws java.io.IOException {
-        pipe.common.Common.Response parsedMessage = null;
-        try {
-          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
-        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (pipe.common.Common.Response) e.getUnfinishedMessage();
-          throw e.unwrapIOException();
-        } finally {
-          if (parsedMessage != null) {
-            mergeFrom(parsedMessage);
-          }
-        }
-        return this;
-      }
-      private int payloadCase_ = 0;
-      private java.lang.Object payload_;
-      public PayloadCase
-          getPayloadCase() {
-        return PayloadCase.forNumber(
-            payloadCase_);
-      }
-
-      public Builder clearPayload() {
-        payloadCase_ = 0;
-        payload_ = null;
-        onChanged();
-        return this;
-      }
-
-      private int bitField0_;
-
-      private int responseType_ = 1;
-      /**
-       * <code>required .TaskType responseType = 1;</code>
-       */
-      public boolean hasResponseType() {
-        return ((bitField0_ & 0x00000001) == 0x00000001);
-      }
-      /**
-       * <code>required .TaskType responseType = 1;</code>
-       */
-      public pipe.common.Common.TaskType getResponseType() {
-        pipe.common.Common.TaskType result = pipe.common.Common.TaskType.valueOf(responseType_);
-        return result == null ? pipe.common.Common.TaskType.READFILE : result;
-      }
-      /**
-       * <code>required .TaskType responseType = 1;</code>
-       */
-      public Builder setResponseType(pipe.common.Common.TaskType value) {
-        if (value == null) {
-          throw new NullPointerException();
-        }
-        bitField0_ |= 0x00000001;
-        responseType_ = value.getNumber();
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>required .TaskType responseType = 1;</code>
-       */
-      public Builder clearResponseType() {
-        bitField0_ = (bitField0_ & ~0x00000001);
-        responseType_ = 1;
-        onChanged();
-        return this;
-      }
-
-      private java.lang.Object filename_ = "";
-      /**
-       * <code>optional string filename = 3;</code>
-       */
-      public boolean hasFilename() {
-        return ((bitField0_ & 0x00000002) == 0x00000002);
-      }
-      /**
-       * <code>optional string filename = 3;</code>
-       */
-      public java.lang.String getFilename() {
-        java.lang.Object ref = filename_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            filename_ = s;
-          }
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
-      }
-      /**
-       * <code>optional string filename = 3;</code>
-       */
-      public com.google.protobuf.ByteString
-          getFilenameBytes() {
-        java.lang.Object ref = filename_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          filename_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <code>optional string filename = 3;</code>
-       */
-      public Builder setFilename(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000002;
-        filename_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional string filename = 3;</code>
-       */
-      public Builder clearFilename() {
-        bitField0_ = (bitField0_ & ~0x00000002);
-        filename_ = getDefaultInstance().getFilename();
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional string filename = 3;</code>
-       */
-      public Builder setFilenameBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000002;
-        filename_ = value;
-        onChanged();
-        return this;
-      }
-
-      private com.google.protobuf.SingleFieldBuilderV3<
-          pipe.common.Common.WriteResponse, pipe.common.Common.WriteResponse.Builder, pipe.common.Common.WriteResponseOrBuilder> writeResponseBuilder_;
-      /**
-       * <code>optional .WriteResponse writeResponse = 4;</code>
-       */
-      public boolean hasWriteResponse() {
-        return payloadCase_ == 4;
-      }
-      /**
-       * <code>optional .WriteResponse writeResponse = 4;</code>
-       */
-      public pipe.common.Common.WriteResponse getWriteResponse() {
-        if (writeResponseBuilder_ == null) {
-          if (payloadCase_ == 4) {
-            return (pipe.common.Common.WriteResponse) payload_;
-          }
-          return pipe.common.Common.WriteResponse.getDefaultInstance();
-        } else {
-          if (payloadCase_ == 4) {
-            return writeResponseBuilder_.getMessage();
-          }
-          return pipe.common.Common.WriteResponse.getDefaultInstance();
-        }
-      }
-      /**
-       * <code>optional .WriteResponse writeResponse = 4;</code>
-       */
-      public Builder setWriteResponse(pipe.common.Common.WriteResponse value) {
-        if (writeResponseBuilder_ == null) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          payload_ = value;
-          onChanged();
-        } else {
-          writeResponseBuilder_.setMessage(value);
-        }
-        payloadCase_ = 4;
-        return this;
-      }
-      /**
-       * <code>optional .WriteResponse writeResponse = 4;</code>
-       */
-      public Builder setWriteResponse(
-          pipe.common.Common.WriteResponse.Builder builderForValue) {
-        if (writeResponseBuilder_ == null) {
-          payload_ = builderForValue.build();
-          onChanged();
-        } else {
-          writeResponseBuilder_.setMessage(builderForValue.build());
-        }
-        payloadCase_ = 4;
-        return this;
-      }
-      /**
-       * <code>optional .WriteResponse writeResponse = 4;</code>
-       */
-      public Builder mergeWriteResponse(pipe.common.Common.WriteResponse value) {
-        if (writeResponseBuilder_ == null) {
-          if (payloadCase_ == 4 &&
-              payload_ != pipe.common.Common.WriteResponse.getDefaultInstance()) {
-            payload_ = pipe.common.Common.WriteResponse.newBuilder((pipe.common.Common.WriteResponse) payload_)
-                .mergeFrom(value).buildPartial();
-          } else {
-            payload_ = value;
-          }
-          onChanged();
-        } else {
-          if (payloadCase_ == 4) {
-            writeResponseBuilder_.mergeFrom(value);
-          }
-          writeResponseBuilder_.setMessage(value);
-        }
-        payloadCase_ = 4;
-        return this;
-      }
-      /**
-       * <code>optional .WriteResponse writeResponse = 4;</code>
-       */
-      public Builder clearWriteResponse() {
-        if (writeResponseBuilder_ == null) {
-          if (payloadCase_ == 4) {
-            payloadCase_ = 0;
-            payload_ = null;
-            onChanged();
-          }
-        } else {
-          if (payloadCase_ == 4) {
-            payloadCase_ = 0;
-            payload_ = null;
-          }
-          writeResponseBuilder_.clear();
-        }
-        return this;
-      }
-      /**
-       * <code>optional .WriteResponse writeResponse = 4;</code>
-       */
-      public pipe.common.Common.WriteResponse.Builder getWriteResponseBuilder() {
-        return getWriteResponseFieldBuilder().getBuilder();
-      }
-      /**
-       * <code>optional .WriteResponse writeResponse = 4;</code>
-       */
-      public pipe.common.Common.WriteResponseOrBuilder getWriteResponseOrBuilder() {
-        if ((payloadCase_ == 4) && (writeResponseBuilder_ != null)) {
-          return writeResponseBuilder_.getMessageOrBuilder();
-        } else {
-          if (payloadCase_ == 4) {
-            return (pipe.common.Common.WriteResponse) payload_;
-          }
-          return pipe.common.Common.WriteResponse.getDefaultInstance();
-        }
-      }
-      /**
-       * <code>optional .WriteResponse writeResponse = 4;</code>
-       */
-      private com.google.protobuf.SingleFieldBuilderV3<
-          pipe.common.Common.WriteResponse, pipe.common.Common.WriteResponse.Builder, pipe.common.Common.WriteResponseOrBuilder> 
-          getWriteResponseFieldBuilder() {
-        if (writeResponseBuilder_ == null) {
-          if (!(payloadCase_ == 4)) {
-            payload_ = pipe.common.Common.WriteResponse.getDefaultInstance();
-          }
-          writeResponseBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-              pipe.common.Common.WriteResponse, pipe.common.Common.WriteResponse.Builder, pipe.common.Common.WriteResponseOrBuilder>(
-                  (pipe.common.Common.WriteResponse) payload_,
-                  getParentForChildren(),
-                  isClean());
-          payload_ = null;
-        }
-        payloadCase_ = 4;
-        onChanged();;
-        return writeResponseBuilder_;
-      }
-
-      private com.google.protobuf.SingleFieldBuilderV3<
-          pipe.common.Common.ReadResponse, pipe.common.Common.ReadResponse.Builder, pipe.common.Common.ReadResponseOrBuilder> readResponseBuilder_;
-      /**
-       * <code>optional .ReadResponse readResponse = 5;</code>
-       */
-      public boolean hasReadResponse() {
-        return payloadCase_ == 5;
-      }
-      /**
-       * <code>optional .ReadResponse readResponse = 5;</code>
-       */
-      public pipe.common.Common.ReadResponse getReadResponse() {
-        if (readResponseBuilder_ == null) {
-          if (payloadCase_ == 5) {
-            return (pipe.common.Common.ReadResponse) payload_;
-          }
-          return pipe.common.Common.ReadResponse.getDefaultInstance();
-        } else {
-          if (payloadCase_ == 5) {
-            return readResponseBuilder_.getMessage();
-          }
-          return pipe.common.Common.ReadResponse.getDefaultInstance();
-        }
-      }
-      /**
-       * <code>optional .ReadResponse readResponse = 5;</code>
-       */
-      public Builder setReadResponse(pipe.common.Common.ReadResponse value) {
-        if (readResponseBuilder_ == null) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          payload_ = value;
-          onChanged();
-        } else {
-          readResponseBuilder_.setMessage(value);
-        }
-        payloadCase_ = 5;
-        return this;
-      }
-      /**
-       * <code>optional .ReadResponse readResponse = 5;</code>
-       */
-      public Builder setReadResponse(
-          pipe.common.Common.ReadResponse.Builder builderForValue) {
-        if (readResponseBuilder_ == null) {
-          payload_ = builderForValue.build();
-          onChanged();
-        } else {
-          readResponseBuilder_.setMessage(builderForValue.build());
-        }
-        payloadCase_ = 5;
-        return this;
-      }
-      /**
-       * <code>optional .ReadResponse readResponse = 5;</code>
-       */
-      public Builder mergeReadResponse(pipe.common.Common.ReadResponse value) {
-        if (readResponseBuilder_ == null) {
-          if (payloadCase_ == 5 &&
-              payload_ != pipe.common.Common.ReadResponse.getDefaultInstance()) {
-            payload_ = pipe.common.Common.ReadResponse.newBuilder((pipe.common.Common.ReadResponse) payload_)
-                .mergeFrom(value).buildPartial();
-          } else {
-            payload_ = value;
-          }
-          onChanged();
-        } else {
-          if (payloadCase_ == 5) {
-            readResponseBuilder_.mergeFrom(value);
-          }
-          readResponseBuilder_.setMessage(value);
-        }
-        payloadCase_ = 5;
-        return this;
-      }
-      /**
-       * <code>optional .ReadResponse readResponse = 5;</code>
-       */
-      public Builder clearReadResponse() {
-        if (readResponseBuilder_ == null) {
-          if (payloadCase_ == 5) {
-            payloadCase_ = 0;
-            payload_ = null;
-            onChanged();
-          }
-        } else {
-          if (payloadCase_ == 5) {
-            payloadCase_ = 0;
-            payload_ = null;
-          }
-          readResponseBuilder_.clear();
-        }
-        return this;
-      }
-      /**
-       * <code>optional .ReadResponse readResponse = 5;</code>
-       */
-      public pipe.common.Common.ReadResponse.Builder getReadResponseBuilder() {
-        return getReadResponseFieldBuilder().getBuilder();
-      }
-      /**
-       * <code>optional .ReadResponse readResponse = 5;</code>
-       */
-      public pipe.common.Common.ReadResponseOrBuilder getReadResponseOrBuilder() {
-        if ((payloadCase_ == 5) && (readResponseBuilder_ != null)) {
-          return readResponseBuilder_.getMessageOrBuilder();
-        } else {
-          if (payloadCase_ == 5) {
-            return (pipe.common.Common.ReadResponse) payload_;
-          }
-          return pipe.common.Common.ReadResponse.getDefaultInstance();
-        }
-      }
-      /**
-       * <code>optional .ReadResponse readResponse = 5;</code>
-       */
-      private com.google.protobuf.SingleFieldBuilderV3<
-          pipe.common.Common.ReadResponse, pipe.common.Common.ReadResponse.Builder, pipe.common.Common.ReadResponseOrBuilder> 
-          getReadResponseFieldBuilder() {
-        if (readResponseBuilder_ == null) {
-          if (!(payloadCase_ == 5)) {
-            payload_ = pipe.common.Common.ReadResponse.getDefaultInstance();
-          }
-          readResponseBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-              pipe.common.Common.ReadResponse, pipe.common.Common.ReadResponse.Builder, pipe.common.Common.ReadResponseOrBuilder>(
-                  (pipe.common.Common.ReadResponse) payload_,
-                  getParentForChildren(),
-                  isClean());
-          payload_ = null;
-        }
-        payloadCase_ = 5;
-        onChanged();;
-        return readResponseBuilder_;
-      }
-      public final Builder setUnknownFields(
-          final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return super.setUnknownFields(unknownFields);
-      }
-
-      public final Builder mergeUnknownFields(
-          final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return super.mergeUnknownFields(unknownFields);
-      }
-
-
-      // @@protoc_insertion_point(builder_scope:Response)
-    }
-
-    // @@protoc_insertion_point(class_scope:Response)
-    private static final pipe.common.Common.Response DEFAULT_INSTANCE;
-    static {
-      DEFAULT_INSTANCE = new pipe.common.Common.Response();
-    }
-
-    public static pipe.common.Common.Response getDefaultInstance() {
-      return DEFAULT_INSTANCE;
-    }
-
-    @java.lang.Deprecated public static final com.google.protobuf.Parser<Response>
-        PARSER = new com.google.protobuf.AbstractParser<Response>() {
-      public Response parsePartialFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-          return new Response(input, extensionRegistry);
-      }
-    };
-
-    public static com.google.protobuf.Parser<Response> parser() {
-      return PARSER;
-    }
-
-    @java.lang.Override
-    public com.google.protobuf.Parser<Response> getParserForType() {
-      return PARSER;
-    }
-
-    public pipe.common.Common.Response getDefaultInstanceForType() {
-      return DEFAULT_INSTANCE;
-    }
-
-  }
-
   private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_Header_descriptor;
   private static final 
@@ -10154,6 +10154,11 @@ public final class Common {
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_Chunk_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_Response_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_Response_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_WriteResponse_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
@@ -10173,11 +10178,6 @@ public final class Common {
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_Node_fieldAccessorTable;
-  private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_Response_descriptor;
-  private static final 
-    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_Response_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -10200,19 +10200,19 @@ public final class Common {
       "\001(\t\022\017\n\007file_id\030\002 \001(\003\022\020\n\010chunk_id\030\003 \001(\005\022\022" +
       "\n\nchunk_size\030\004 \001(\005\"A\n\005Chunk\022\020\n\010chunk_id\030" +
       "\001 \002(\005\022\022\n\nchunk_data\030\006 \002(\014\022\022\n\nchunk_size\030" +
-      "\t \001(\005\" \n\rWriteResponse\022\017\n\007ChunkId\030\001 \003(\005\"" +
-      "\231\001\n\014ReadResponse\022\017\n\007file_id\030\001 \001(\003\022\020\n\010fil" +
-      "ename\030\002 \002(\t\022\020\n\010file_ext\030\003 \001(\t\022\025\n\rnum_of_" +
-      "chunks\030\004 \001(\005\022&\n\016chunk_location\030\005 \003(\0132\016.C" +
-      "hunkLocation\022\025\n\005chunk\030\006 \001(\0132\006.Chunk\"5\n\rC" +
-      "hunkLocation\022\017\n\007chunkid\030\001 \001(\005\022\023\n\004node\030\002 " +
-      "\003(\0132\005.Node\"3\n\004Node\022\017\n\007node_id\030\001 \002(\005\022\014\n\004h",
-      "ost\030\002 \002(\t\022\014\n\004port\030\003 \002(\005\"\274\001\n\010Response\022\037\n\014" +
-      "responseType\030\001 \002(\0162\t.TaskType\022\020\n\010filenam" +
-      "e\030\003 \001(\t\022\'\n\rwriteResponse\030\004 \001(\0132\016.WriteRe" +
-      "sponseH\000\022%\n\014readResponse\030\005 \001(\0132\r.ReadRes" +
-      "ponseH\000\"\"\n\006Status\022\013\n\007Success\020\001\022\013\n\007Failur" +
-      "e\020\002B\t\n\007payload*G\n\010TaskType\022\014\n\010READFILE\020\001" +
+      "\t \001(\005\"\274\001\n\010Response\022\037\n\014responseType\030\001 \002(\016" +
+      "2\t.TaskType\022\020\n\010filename\030\003 \001(\t\022\'\n\rwriteRe" +
+      "sponse\030\004 \001(\0132\016.WriteResponseH\000\022%\n\014readRe" +
+      "sponse\030\005 \001(\0132\r.ReadResponseH\000\"\"\n\006Status\022" +
+      "\013\n\007Success\020\001\022\013\n\007Failure\020\002B\t\n\007payload\" \n\r" +
+      "WriteResponse\022\017\n\007ChunkId\030\001 \003(\005\"\231\001\n\014ReadR" +
+      "esponse\022\017\n\007file_id\030\001 \001(\003\022\020\n\010filename\030\002 \002",
+      "(\t\022\020\n\010file_ext\030\003 \001(\t\022\025\n\rnum_of_chunks\030\004 " +
+      "\001(\005\022&\n\016chunk_location\030\005 \003(\0132\016.ChunkLocat" +
+      "ion\022\025\n\005chunk\030\006 \001(\0132\006.Chunk\"5\n\rChunkLocat" +
+      "ion\022\017\n\007chunkid\030\001 \001(\005\022\023\n\004node\030\002 \003(\0132\005.Nod" +
+      "e\"3\n\004Node\022\017\n\007node_id\030\001 \002(\005\022\014\n\004host\030\002 \002(\t" +
+      "\022\014\n\004port\030\003 \002(\005*G\n\010TaskType\022\014\n\010READFILE\020\001" +
       "\022\r\n\tWRITEFILE\020\002\022\016\n\nDELETEFILE\020\003\022\016\n\nUPDAT" +
       "EFILE\020\004B\017\n\013pipe.commonH\001"
     };
@@ -10264,36 +10264,36 @@ public final class Common {
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_Chunk_descriptor,
         new java.lang.String[] { "ChunkId", "ChunkData", "ChunkSize", });
-    internal_static_WriteResponse_descriptor =
+    internal_static_Response_descriptor =
       getDescriptor().getMessageTypes().get(6);
+    internal_static_Response_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_Response_descriptor,
+        new java.lang.String[] { "ResponseType", "Filename", "WriteResponse", "ReadResponse", "Payload", });
+    internal_static_WriteResponse_descriptor =
+      getDescriptor().getMessageTypes().get(7);
     internal_static_WriteResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_WriteResponse_descriptor,
         new java.lang.String[] { "ChunkId", });
     internal_static_ReadResponse_descriptor =
-      getDescriptor().getMessageTypes().get(7);
+      getDescriptor().getMessageTypes().get(8);
     internal_static_ReadResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_ReadResponse_descriptor,
         new java.lang.String[] { "FileId", "Filename", "FileExt", "NumOfChunks", "ChunkLocation", "Chunk", });
     internal_static_ChunkLocation_descriptor =
-      getDescriptor().getMessageTypes().get(8);
+      getDescriptor().getMessageTypes().get(9);
     internal_static_ChunkLocation_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_ChunkLocation_descriptor,
         new java.lang.String[] { "Chunkid", "Node", });
     internal_static_Node_descriptor =
-      getDescriptor().getMessageTypes().get(9);
+      getDescriptor().getMessageTypes().get(10);
     internal_static_Node_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_Node_descriptor,
         new java.lang.String[] { "NodeId", "Host", "Port", });
-    internal_static_Response_descriptor =
-      getDescriptor().getMessageTypes().get(10);
-    internal_static_Response_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_Response_descriptor,
-        new java.lang.String[] { "ResponseType", "Filename", "WriteResponse", "ReadResponse", "Payload", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)

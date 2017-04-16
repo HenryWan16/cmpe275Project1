@@ -155,7 +155,9 @@ public class CommConnection {
 
 		group = new NioEventLoopGroup();
 		try {
-			CommandInit si = new CommandInit(null, false);
+			//CommandInit si = new CommandInit(null, false);
+			//Changed from CommandInit to CommInit by Nguyen
+			CommInit si = new CommInit(null, false);
 			Bootstrap b = new Bootstrap();
 			b.group(group).channel(NioSocketChannel.class).handler(si);
 			b.option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 10000);

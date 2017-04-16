@@ -23,12 +23,15 @@ import org.slf4j.LoggerFactory;
 import gash.router.container.RoutingConf.RoutingEntry;
 import gash.router.server.ServerState;
 import gash.router.server.WorkInit;
+import gash.router.server.messages.QOSWorker;
 import gash.router.server.raft.MessageUtil;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
+import pipe.common.Common;
+import pipe.work.Work;
 
 
 public class EdgeMonitor implements EdgeListener, Runnable {
@@ -114,6 +117,26 @@ public class EdgeMonitor implements EdgeListener, Runnable {
 	                        }
 						} catch (Exception e) { /*do not show anything */ }
 					} 
+					if(ei.getChannel() != null) {
+						//check all edges for work is this node's queue is empty
+						if (QOSWorker.getInstance().getQueue().isEmpty()) {
+							Common.Header.Builder hb = Common.Header.newBuilder();
+							hb.setNodeId(state.getConf().getNodeId());
+							hb.setTime(System.currentTimeMillis());
+
+							Work.WorkState.Builder ws = Work.WorkState.newBuilder();
+							ws.setEnqueued(0);
+							ws.setProcessed(1);
+
+							Work.WorkMessage.Builder wm = Work.WorkMessage.newBuilder();
+							wm.setHeader(hb);
+							wm.setState(ws);
+							wm.setSecret(100l);
+							ei.getChannel().writeAndFlush(wm.build());
+						}
+					}
+
+
 				}
 				
 				Thread.sleep(dt);

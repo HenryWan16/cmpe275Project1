@@ -68,6 +68,23 @@ message Chunk {
    optional int32 chunk_size = 9;
 }
 
+
+message Response{
+   required TaskType responseType = 1; 
+   optional string filename = 3; 
+   
+   enum Status{
+      Success = 1;
+      Failure = 2;
+   }
+   
+   oneof payload{
+      WriteResponse writeResponse = 4;
+      ReadResponse readResponse = 5;
+   }
+}
+
+
 //this payload will be only present when chunks are missing on server during write
 //and will request client to send it again.
 
@@ -96,20 +113,4 @@ message Node {
    required int32 node_id = 1;
    required string host = 2;
    required int32 port = 3;
-}
-   
-
-message Response{
-   required TaskType responseType = 1; 
-   optional string filename = 3; 
-   
-   enum Status{
-      Success = 1;
-      Failure = 2;
-   }
-   
-   oneof payload{
-      WriteResponse writeResponse = 4;
-      ReadResponse readResponse = 5;
-   }
 }

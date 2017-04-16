@@ -15,6 +15,10 @@
  */
 package gash.router.server;
 
+import gash.router.server.messages.CommandSession;
+import gash.router.server.messages.QOSWorker;
+import gash.router.server.messages.Session;
+import gash.router.server.messages.WorkSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,7 +27,9 @@ import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import pipe.common.Common.Failure;
+import routing.Pipe;
 import routing.Pipe.CommandMessage;
+import pipe.common.Common.Header;
 
 /**
  * The message handler processes json messages that are delimited by a 'newline'
@@ -36,11 +42,12 @@ import routing.Pipe.CommandMessage;
 public class CommandHandler extends SimpleChannelInboundHandler<CommandMessage> {
 	protected static Logger logger = LoggerFactory.getLogger("cmd");
 	protected RoutingConf conf;
-
+	QOSWorker qos;
 	public CommandHandler(RoutingConf conf) {
 		if (conf != null) {
 			this.conf = conf;
 		}
+
 	}
 
 	/**
@@ -56,8 +63,12 @@ public class CommandHandler extends SimpleChannelInboundHandler<CommandMessage> 
 			System.out.println("ERROR: Unexpected content - " + msg);
 			return;
 		}
-
-		//PrintUtil.printCommand(msg);
+		qos = QOSWorker.getInstance();
+		logger.info("QOSWorker Thread Working : ");
+		Session session = new CommandSession(conf, msg, channel);
+		qos.getQueue().enqueue(session);
+		/*
+		PrintUtil.printCommand(msg);
 
 		try {
 			// TODO How can you implement this without if-else statements?
@@ -66,21 +77,18 @@ public class CommandHandler extends SimpleChannelInboundHandler<CommandMessage> 
 				logger.info("ping from " + msg.getHeader().getNodeId());
 			} else if (msg.hasRequest()) {
 				logger.info("server get request: "+msg.getRequest().toString());
-				
-				
-				
-				
-			} 
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			else {
+
+        Header.Builder hb = Header.newBuilder();
+        hb.setNodeId(-4);
+        hb.setTime(System.currentTimeMillis());
+
+
+        CommandMessage.Builder cm = CommandMessage.newBuilder();
+        cm.setHeader(hb);
+        cm.setPing(true);
+        channel.writeAndFlush(cm);
+
+			} else {
 			}
 
 		} catch (Exception e) {
@@ -95,6 +103,7 @@ public class CommandHandler extends SimpleChannelInboundHandler<CommandMessage> 
 		}
 
 		System.out.flush();
+		*/
 	}
 
 	/**

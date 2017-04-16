@@ -7,4 +7,5 @@ public interface QueueInterface {
     public Session dequeue();
     public void enqueue(Session message);
     public boolean isEmpty();
+    public int size();
 }

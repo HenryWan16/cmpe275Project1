@@ -26,4 +26,6 @@ public class SimpleQueue implements QueueInterface{
     public boolean isEmpty() {
         return this.simpleMsgQueue.isEmpty();
     }
+    @Override
+    public int size() {return this.simpleMsgQueue.size();}
 }
