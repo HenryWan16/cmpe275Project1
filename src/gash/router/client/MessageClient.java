@@ -75,7 +75,7 @@ public class MessageClient {
 	commandMessage
 		header
 		request
-			requestType
+			TaskType
 			payload: writeBody
 				file_id
 				filename
@@ -84,23 +84,22 @@ public class MessageClient {
 					chunk_data
 					chunk_size
 	 */
-	public static void chunkAndSend(String fname){
+	public void chunkAndSend(String fname){
 		File file = new File(fname);
 		FileInputStream fis;
-		FileOutputStream fos;
+
 		int file_size = (int)file.length();
 		final int CHUNK_SIZE = 1024;
 		int numberOfChunks = 0;
 		int readLength = CHUNK_SIZE;
 		byte[] byteChunk;
 		int read = 0;
-		String newFileName;
-		int requestId = 0;
+
 		int chunkSize = file_size / readLength + (file_size % readLength == 0 ? 0 : 1);
 		
-		try{
+		try {
 			fis = new FileInputStream(file);
-			while(file_size > 0){
+			while(file_size > 0) {
 				if(file_size <= CHUNK_SIZE)
 					readLength = file_size;
 				byteChunk = new byte[readLength];
@@ -110,7 +109,7 @@ public class MessageClient {
 				numberOfChunks++;
 				//get hash key for store, to do
 				logger.info("bytechunk: "+byteChunk.toString());
-				newFileName = String.format("%s.part%06d",fname, numberOfChunks);
+
 				CommandMessage.Builder cmdb = CommandMessage.newBuilder();
 				Common.Request.Builder r = Common.Request.newBuilder();
 				Common.WriteBody.Builder wb = Common.WriteBody.newBuilder();
@@ -121,34 +120,32 @@ public class MessageClient {
 				hb.setTime(System.currentTimeMillis());
 				hb.setDestination(-1);
 
-				r.setRequestType(Common.TaskType.WRITEFILE);
-
 				cb.setChunkId(numberOfChunks);
 				cb.setChunkSize(chunkSize);
 				cb.setChunkData(ByteString.copyFrom(byteChunk));
 
 				wb.setFilename(fname);
 				wb.setChunk(cb);
+				wb.setNumOfChunks(chunkSize);
+				
+				r.setRequestType(Common.TaskType.WRITEFILE);
 				r.setRwb(wb);
 
 				cmdb.setHeader(hb);
 				cmdb.setRequest(r);
 
-
 				logger.info("build success, start to enque");
 				logger.info("msg enque is: "+cmdb.getRequest().getRwb().getChunk().toString());
 				CommConnection.getInstance().enqueue(cmdb.build());
 				logger.info("enque success");
-//                fos = new FileOutputStream(new File(newFileName));
-//                fos.write(byteChunk);
-//                fos.flush();
-//                fos.close();
+
 				byteChunk = null;
-				fos = null;
 
 			}
-		}catch(Exception e){
+		} catch(Exception e){
 			e.printStackTrace();
+		} finally {
+			fis = null;
 		}
 	}
 

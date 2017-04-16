@@ -35,7 +35,7 @@ public class EdgeMonitor implements EdgeListener, Runnable {
 	protected static Logger logger = LoggerFactory.getLogger("edge monitor");
 
 	private EdgeList outboundEdges;
-	private EdgeList inboundEdges;
+//	private EdgeList inboundEdges;
 	private long dt = 2000;
 	private ServerState state;
 	private boolean forever = true;
@@ -47,7 +47,7 @@ public class EdgeMonitor implements EdgeListener, Runnable {
 			throw new RuntimeException("state is null");
 
 		this.outboundEdges = new EdgeList();
-		this.inboundEdges = new EdgeList();
+//		this.inboundEdges = new EdgeList();
 		this.state = state;
 		this.state.setEmon(this);
 
@@ -62,9 +62,9 @@ public class EdgeMonitor implements EdgeListener, Runnable {
 			this.dt = state.getConf().getHeartbeatDt();
 	}
 
-	public void createInboundIfNew(int ref, String host, int port) {
-		inboundEdges.createIfNew(ref, host, port);
-	}
+//	public void createInboundIfNew(int ref, String host, int port) {
+//		inboundEdges.createIfNew(ref, host, port);
+//	}
 
 	public void createOutboundIfNew(int ref, String host, int port) {
 		outboundEdges.createIfNew(ref, host, port);
@@ -86,11 +86,13 @@ public class EdgeMonitor implements EdgeListener, Runnable {
 				if (!isStarted) {
 					for (EdgeInfo ei:this.outboundEdges.map.values()) {
 						logger.info("Init the node itself and register to other\n");
-						if (ei.isActive() && ei.getChannel().isActive()) {	
-							int host = state.getConf().getNodeId();
-							int port = state.getConf().getWorkPort();
+						//update the its outboundEdges with neighboor, add missing ones
+						if (ei.isActive() && ei.getChannel().isActive()) {
+							int nodeId = ei.getRef();
+							String host = ei.getHost();
+							int port = ei.getPort();
 
-							ei.getChannel().writeAndFlush(MessageUtil.registerANewNode(host, port));
+							ei.getChannel().writeAndFlush(MessageUtil.registerANewNode(nodeId, host, port));
 						}				
 					 }
 					isStarted = true;

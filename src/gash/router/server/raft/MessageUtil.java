@@ -1,6 +1,5 @@
 package gash.router.server.raft;
 
-import java.net.Inet4Address;
 import java.net.UnknownHostException;
 
 import pipe.common.Common.Header;
@@ -70,14 +69,14 @@ public class MessageUtil {
 		return wb.build();
 	}
 	
-	public static WorkMessage registerANewNode(int nodeId, int port) throws UnknownHostException {
+	public static WorkMessage registerANewNode(int nodeId, String host, int port) throws UnknownHostException {
 		Header.Builder hb = Header.newBuilder();
 		hb.setNodeId(nodeId);
 		hb.setDestination(-1);
 		hb.setTime(System.currentTimeMillis());
 		
 		RegisterNode.Builder rnb= RegisterNode.newBuilder();
-		rnb.setHost(Inet4Address.getLocalHost().getHostAddress());
+		rnb.setHost(host);
 		rnb.setPort(port);
 		
 		WorkMessage.Builder wb = WorkMessage.newBuilder();

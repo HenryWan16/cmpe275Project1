@@ -60,48 +60,49 @@ public class ClientApp implements CommListener {
 	@Override
 	public void onMessage(CommandMessage msg) {
 		System.out.println("---> " + msg);
+	}	
+
+	private void deleteFile(String fname) {
 	}
-	private void chunkAndSend(String fname){
+
+	private void readFile(String fname) {
 		mc.chunkAndSend(fname);
 	}
 
-  private void deleteFile(String fname){
-  }
-
-  private void readFile(String fname){
-  }
-
-  private void menu(){
+	private void menu() {
     //chunkAndSend("/home/nguyen/test.txt");
-    
+	
+	Scanner scanner = new Scanner(System.in);
+	 
+	String command = null;
+	String[] commands;
 
-
-      Scanner scanner = new Scanner(System.in);
-      String command = null;
-      String[] commands;
-      do{
-        System.out.println("Ping\n" + 
-                         "Read <fileName>\n" + 
-                         "Write <filePath>\n" +
-                         "Delete <fileName>\n" +
-                         "quit\n");
+	do {
+        System.out.print("\n\n------------------------\n" +
+        				"Menu\n------------------------\n" +
+        				"* ping\n" + 
+                        "* read <fileName>\n" + 
+                        "* write <filePath>\n" +
+                        "* delete <fileName>\n" +
+                        "* quit\n\n\n" +
+                        "> ");
 
 
         command = scanner.nextLine();
         commands = command.split("\\s+");
-        switch(commands[0]){
-          case "Ping": ping(2);
-                  break;
-          case "Read" : 
+        switch(commands[0]) {
+          case "ping": ping(2);
+          	break;
+          case "read" : 
                   if(commands.length > 1)
                     readFile(commands[1]);
                   break;
-          case "Write" : {
+          case "write" : {
                   if(commands.length > 1)
-                    chunkAndSend(commands[1]);
+                	  mc.chunkAndSend(commands[1]);
                   break;
                   }
-          case "Delete" : 
+          case "delete" : 
                   if(commands.length >1)
                     deleteFile(commands[1]);
                   break;
@@ -120,10 +121,12 @@ public class ClientApp implements CommListener {
 	public static void main(String[] args) {
 		String host = "localhost";
 		int port = 4168;
+		
+		
 		try {
 			MessageClient mc = new MessageClient(host, port);
 			ClientApp ca = new ClientApp(mc);
-      ca.menu();
+			ca.menu();
 
 			System.out.println("\n** exiting in 10 seconds. **");
 			System.out.flush();

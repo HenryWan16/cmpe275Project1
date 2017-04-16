@@ -57,7 +57,7 @@ public class CommandHandler extends SimpleChannelInboundHandler<CommandMessage> 
 			return;
 		}
 
-		PrintUtil.printCommand(msg);
+		//PrintUtil.printCommand(msg);
 
 		try {
 			// TODO How can you implement this without if-else statements?
@@ -66,7 +66,21 @@ public class CommandHandler extends SimpleChannelInboundHandler<CommandMessage> 
 				logger.info("ping from " + msg.getHeader().getNodeId());
 			} else if (msg.hasRequest()) {
 				logger.info("server get request: "+msg.getRequest().toString());
-			} else {
+				
+				
+				
+				
+			} 
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			else {
 			}
 
 		} catch (Exception e) {

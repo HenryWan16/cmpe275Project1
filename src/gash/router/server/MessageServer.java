@@ -30,12 +30,24 @@ import gash.router.server.edges.EdgeMonitor;
 import gash.router.server.raft.RaftHandler;
 import gash.router.server.tasks.NoOpBalancer;
 import gash.router.server.tasks.TaskList;
+import gash.router.server.storage.MySQLStorage;
+import gash.router.server.storage.TestSQLOperations;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Properties;
 
 public class MessageServer {
 	protected static Logger logger = LoggerFactory.getLogger("server");
@@ -48,6 +60,7 @@ public class MessageServer {
 	protected RoutingConf conf;
 	protected boolean background = false;
 
+	public MySQLStorage mySQLStorage = null;
 	public static int threadLimit = 0;
 	/**
 	 * initialize the server with a configuration of it's resources
@@ -113,6 +126,19 @@ public class MessageServer {
 		BufferedInputStream br = null;
 		try {
 			byte[] raw = new byte[(int) cfg.length()];
+			Properties properties = new Properties();
+//			properties.setProperty("sDriver", "com.mysql.jdbc.Driver");
+//			properties.setProperty("sUrl", "jdbc:mysql://localhost:3306/FileDB");
+//			properties.setProperty("root", "root");
+//			properties.setProperty("sPass", "cmpe275");
+			mySQLStorage = new MySQLStorage();
+			TestSQLOperations testSQLOperations = new TestSQLOperations();
+			testSQLOperations.createTable();
+//			testSQLOperations.insertRecordFileChunk();
+//			testSQLOperations.updateRecordFileChunk();
+//			testSQLOperations.deleteRecordFileChunk();
+//			testSQLOperations.selectRecordFileChunk();
+//			testSQLOperations.dropTable();
 			br = new BufferedInputStream(new FileInputStream(cfg));
 			br.read(raw);
 			conf = JsonUtil.decode(new String(raw), RoutingConf.class);
@@ -167,7 +193,7 @@ public class MessageServer {
 
 				boolean compressComm = false;
 				b.childHandler(new CommandInit(conf, compressComm));
-//				b.childHandler(new FileInit(conf, compressComm));
+
 				// Start the server.
 				logger.info("Starting command server (" + conf.getNodeId() + "), listening on port = "
 						+ conf.getCommandPort());

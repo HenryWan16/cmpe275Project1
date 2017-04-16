@@ -1,102 +1,105 @@
 package gash.router.server.storage;
 
-import com.jolbox.bonecp.BoneCP;
-import com.jolbox.bonecp.BoneCPConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.Properties;
+import java.sql.*;
+import java.util.ArrayList;
+
 
 /**
- * Created by henrywan16 on 4/13/17.
+ * Created by henrywan16 on 4/16/17.
  */
-public class MySQLStorage implements FileStorage {
-    private FileChunk fileChunk;
+public class MySQLStorage {
+    protected static Logger logger = LoggerFactory.getLogger("MySQL");
 
-    protected static Logger logger = LoggerFactory.getLogger("database");
+    private Connection conn;
 
-    public static final String sDriver = "jdbc.driver";
-    public static final String sUrl = "jdbc.url";
-    public static final String sUser = "jdbc.user";
-    public static final String sPass = "jdbc.password";
-
-    protected Properties cfg;
-    protected BoneCP cpool;
-
-    public MySQLStorage(FileChunk fileChunk, Properties cfg) {
-        init(cfg);
-        this.fileChunk = fileChunk;
+    public MySQLStorage() {
+        init();
     }
 
-    public MySQLStorage(String fileName, int chunkId, String file_id, byte[] data, int totalNoOfChunks, Properties cfg) {
-        init(cfg);
-        this.fileChunk = new FileChunk(fileName, chunkId, file_id, data, totalNoOfChunks);
-    }
-
-    public MySQLStorage(String fileName, int chunkId, byte[] data, int totalNoOfChunks, Properties cfg) {
-        init(cfg);
-        this.fileChunk = new FileChunk(fileName, chunkId, data, totalNoOfChunks);
-    }
-
-    public MySQLStorage(String fileName, int chunkId, byte[] data, Properties cfg) {
-        init(cfg);
-        this.fileChunk = new FileChunk(fileName, chunkId, data, 1);
-    }
-
-    public MySQLStorage(String fileName, int chunkId, Properties cfg) {
-        init(cfg);
-        String data = "";
-        byte[] dataArray = data.getBytes();
-        this.fileChunk = new FileChunk(fileName, chunkId, dataArray,1);
-    }
-
-    public MySQLStorage(Properties cfg) {
-        init(cfg);
-    }
-
-    public void init(Properties cfg) {
-        if (cpool != null)
-            return;
-
-        this.cfg = cfg;
+    public void init() {
 
         try {
-            Class.forName(cfg.getProperty(sDriver));
-            BoneCPConfig config = new BoneCPConfig();
-            config.setJdbcUrl(cfg.getProperty(sUrl));
-            config.setUsername(cfg.getProperty(sUser, "sa"));
-            config.setPassword(cfg.getProperty(sPass, ""));
-            config.setMinConnectionsPerPartition(5);
-            config.setMaxConnectionsPerPartition(10);
-            config.setPartitionCount(1);
-
-            cpool = new BoneCP(config);
-        } catch (Exception e) {
+            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/FileDB?&useSSL=true", "root", "cmpe275");
+        } catch (SQLException e) {
             e.printStackTrace();
         }
+        try {
+            Class.forName("com.mysql.jdbc.Driver").newInstance();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        logger.info("Connecting to MySQL successed.");
+        if (conn != null) {
+            logger.info("FileDB Connection successful!");
+        }
     }
+//  Be used only for trying;
+//    public void init() {
+//        try {
+//            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/LearnSQL?&useSSL=true","root","cmpe275");
+//            Class.forName("com.mysql.jdbc.Driver").newInstance();
+//            logger.info("Connecting to MySQL successed.");
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        } catch (IllegalAccessException e) {
+//            e.printStackTrace();
+//        } catch (InstantiationException e) {
+//            e.printStackTrace();
+//        } catch (ClassNotFoundException e) {
+//            e.printStackTrace();
+//        }
+//    }
 
     /**
-     * (non-Javadoc)
-     * @see gash.jdbc.repo.Repository#release()
+     * testing database can be used.
+     * @return
      */
-    public void release() {
-        if (cpool == null)
-            return;
-
-        cpool.shutdown();
-        cpool = null;
+    public boolean testSQL() {
+        boolean result = false;
+        try {
+            // Do something with the Connection
+            Statement stmt = conn.createStatement();
+            String createStmt = "CREATE TABLE Persons\n" +
+                    "(\n" +
+                    "PersonID int,\n" +
+                    "LastName varchar(255),\n" +
+                    "FirstName varchar(255),\n" +
+                    "Address varchar(255),\n" +
+                    "City varchar(255),\n" +
+                    "Primary Key(PersonID, Address)\n" +
+                    ");\n";
+            result = stmt.execute(createStmt);
+            result = stmt.execute("INSERT into Persons (PersonID, LastName, FirstName, Address, City)\n" +
+                    "VALUES (1, 'Henry', 'Wan','Modern', 'SJ');");
+            result = stmt.execute("INSERT into Persons (PersonID, LastName, FirstName, Address, City)\n" +
+                    "VALUES (2, 'Jerry', 'Gao','SJSU', 'CA');");
+            result = stmt.execute("INSERT into Persons (PersonID, LastName, FirstName, Address, City)\n" +
+                    "VALUES (3, 'John', 'White','ICE', 'SJ');");
+            result = stmt.execute("INSERT into Persons (PersonID, LastName, FirstName, Address, City)\n" +
+                    "VALUES (4, 'Tom', 'Nash','Done', 'SJ');");
+            ResultSet rs=stmt.executeQuery("select * from Persons");
+            while(rs.next())
+                System.out.println(rs.getInt(1)+"  "+rs.getString(2)+"  "+rs.getString(3));
+            conn.close();
+        } catch (SQLException ex) {
+            // handle any errors
+            System.out.println("SQLException: " + ex.getMessage());
+            System.out.println("SQLState: " + ex.getSQLState());
+            System.out.println("VendorError: " + ex.getErrorCode());
+        }
+        return result;
     }
 
     public boolean createTable() {
-        Connection conn = null;
+        init();
         try {
-            conn = cpool.getConnection();
-            conn.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
             // TODO complete code to use JDBC
             if (conn != null){
                 logger.info("FileDB Connection successful!");
@@ -105,10 +108,10 @@ public class MySQLStorage implements FileStorage {
                         "(\n" +
                         "fileName varchar(255),\n" +
                         "chunkID int,\n" +
-                        "data varbinary(8388608),\n" +
+                        "data varchar(10240),\n" +
                         "file_id varchar(255),\n" +
                         "totalNoOfChunks int,\n" +
-                        "Primary Key(fileName, chuckID),\n" +
+                        "Primary Key(fileName, chunkID)\n" +
                         ");";
                 boolean createResult = stmt.execute(createTable);
                 if (createResult == false) {
@@ -122,10 +125,10 @@ public class MySQLStorage implements FileStorage {
 //                    System.out.println(rs.getString(1)); // should print out "1"'
 //                }
             }
-            release(); // shutdown connection pool.
+            // release(); // shutdown connection pool.
         } catch (Exception ex) {
             ex.printStackTrace();
-            logger.error("failed/exception on creating chunkId " + this.fileChunk.getChunkId() + " of the file " + this.fileChunk.getFileName(), ex);
+            logger.error("failed/exception on creating Table FileChunk of the FileDB.", ex);
             try {
                 conn.rollback();
             } catch (SQLException e) {
@@ -146,10 +149,8 @@ public class MySQLStorage implements FileStorage {
     }
 
     public boolean dropTable() {
-        Connection conn = null;
+        init();
         try {
-            conn = cpool.getConnection();
-            conn.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
             // TODO complete code to use JDBC
             if (conn != null){
                 logger.info("FileDB Connection successful!");
@@ -167,10 +168,10 @@ public class MySQLStorage implements FileStorage {
 //                    System.out.println(rs.getString(1)); // should print out "1"'
 //                }
             }
-            release(); // shutdown connection pool.
+            // release(); // shutdown connection pool.
         } catch (Exception ex) {
             ex.printStackTrace();
-            logger.error("failed/exception on dropping chunkId " + this.fileChunk.getChunkId() + " of the file " + this.fileChunk.getFileName(), ex);
+            logger.error("failed/exception on dropping Table FileChunk from the FileDB. ", ex);
             try {
                 conn.rollback();
             } catch (SQLException e) {
@@ -190,37 +191,42 @@ public class MySQLStorage implements FileStorage {
         return true;
     }
 
-    public boolean insertRecordFileChunk() {
-        if (this.fileChunk == null) {
-            logger.info("No fileChunk to insert.");
+    public boolean insertRecordFileChunk(String fileName, int chunkID, byte[] data, int totalNoOfChunks, String file_id) {
+        init();
+        if (fileName == null || fileName.length() == 0) {
+            logger.info("No record to insert.");
             return false;
         }
-        Connection conn = null;
         try {
-            conn = cpool.getConnection();
-            conn.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
+            String str = "";
             // TODO complete code to use JDBC
-            if (conn != null){
+            if (conn != null) {
                 System.out.println("Connection successful!");
                 Statement stmt = conn.createStatement();
-                String insertRecord = "INSERT INTO FileChunk (fileName, chunkID, data, file_id, totalNoOfChunks)\n" +
-                        "VALUES ('" + this.fileChunk.getFileName() + "'," + this.fileChunk.getChunkId() + ",'" + this.fileChunk.getData() + "','" + this.fileChunk.getFile_id() + "'," + this.fileChunk.getTotalNoOfChunks() + ");";
-                boolean insertResult = stmt.execute(insertRecord);
-                if (insertResult == false) {
-                    logger.info("Insert a new record to Table FileChunk in the FileDB failed. ");
+                if (data != null) {
+                    str = new String(data);
                 }
-                else {
+                String insertRecord = "INSERT INTO FileChunk (fileName, chunkID, data, file_id, totalNoOfChunks)\n" +
+                        "VALUES ('" + fileName + "'," + chunkID + ",'" + str + "','" + file_id + "'," + totalNoOfChunks + ");";
+                logger.info(insertRecord);
+                boolean insertResult = stmt.execute(insertRecord);
+                if (insertResult == true) {
                     logger.info("Insert table FileChunk in the FileDB successfully. ");
                 }
+//                if (insertResult == false) {
+//                    logger.info("Insert a new record to Table FileChunk in the FileDB failed. ");
+//                } else {
+//                    logger.info("Insert table FileChunk in the FileDB successfully. ");
+//                }
 //                ResultSet rs = stmt.executeQuery("SELECT 1 FROM INFORMATION_SCHEMA.SYSTEM_USERS"); // do something with the connection.
 //                while(rs.next()){
 //                    System.out.println(rs.getString(1)); // should print out "1"'
 //                }
             }
-            release(); // shutdown connection pool.
+            // release(); // shutdown connection pool.
         } catch (Exception ex) {
             ex.printStackTrace();
-            logger.error("failed/exception on inserting a record: chunkId " + this.fileChunk.getChunkId() + " of the file " + this.fileChunk.getFileName(), ex);
+            logger.error("failed/exception on inserting a record: chunkId " + chunkID + " of the file " + fileName, ex);
             try {
                 conn.rollback();
             } catch (SQLException e) {
@@ -240,17 +246,20 @@ public class MySQLStorage implements FileStorage {
         return true;
     }
 
-    public boolean deleteRecordFileChunk() {
-        Connection conn = null;
+    public boolean deleteRecordFileChunk(String fileName, int chunkID) {
+        init();
         try {
-            conn = cpool.getConnection();
-            conn.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
+            if (fileName == null || fileName.length() == 0) {
+                logger.info("No record to delete.");
+                return false;
+            }
             // TODO complete code to use JDBC
             if (conn != null){
                 System.out.println("Connection successful!");
                 Statement stmt = conn.createStatement();
                 String deleteRecord = "DELETE FROM FileChunk\n" +
-                        "WHERE fileName='" + this.fileChunk.getFileName() + "' and chunkID=" + this.fileChunk.getChunkId() + ";";
+                        "WHERE fileName='" + fileName + "' and chunkID=" + chunkID + ";";
+                logger.info(deleteRecord);
                 boolean deleteResult = stmt.execute(deleteRecord);
                 if (deleteResult == false) {
                     logger.info("Delete a new record from Table FileChunk in the FileDB failed. ");
@@ -263,10 +272,10 @@ public class MySQLStorage implements FileStorage {
 //                    System.out.println(rs.getString(1)); // should print out "1"'
 //                }
             }
-            release(); // shutdown connection pool.
+            // release(); // shutdown connection pool.
         } catch (Exception ex) {
             ex.printStackTrace();
-            logger.error("failed/exception on deleting a record: chunkId " + this.fileChunk.getChunkId() + " of the file " + this.fileChunk.getFileName(), ex);
+            logger.error("failed/exception on deleting a record: chunkId " + chunkID + " of the file " + fileName, ex);
             try {
                 conn.rollback();
             } catch (SQLException e) {
@@ -286,19 +295,26 @@ public class MySQLStorage implements FileStorage {
         return true;
     }
 
-    public int updateRecordFileChunk() {
-        Connection conn = null;
+    public int updateRecordFileChunk(String fileName, int chunkID, byte[] data, int totalNoOfChunks, String file_id) {
+        init();
         int result = 0;
+        if (fileName == null || fileName.length() == 0) {
+            logger.info("No record to update.");
+            return -1;
+        }
         try {
-            conn = cpool.getConnection();
-            conn.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
+            String str = "";
             // TODO complete code to use JDBC
             if (conn != null){
                 System.out.println("Connection successful!");
                 Statement stmt = conn.createStatement();
+                if (data != null) {
+                    str = new String(data);
+                }
                 String updateRecord = "UPDATE FileChunk\n" +
-                        "SET fileName='" + this.fileChunk.getFileName() + "', chunkID='" + this.fileChunk.getChunkId() + "', data='" + this.fileChunk.getData() + "', totalNoOfChunks='" + this.fileChunk.getData() + "', file_id='" + this.fileChunk.getFile_id() + "\n" +
-                        "WHERE fileName='" + this.fileChunk.getFileName() + "' and chunkID=" + this.fileChunk.getChunkId() + ";";
+                        "SET fileName='" + fileName + "', chunkID=" + chunkID + ", data='" + str + "', totalNoOfChunks=" + totalNoOfChunks + ", file_id='" + file_id + "'\n" +
+                        "WHERE fileName='" + fileName + "' and chunkID=" + chunkID + ";";
+                logger.info(updateRecord);
                 result = stmt.executeUpdate(updateRecord);
                 if (result == 0) {
                     logger.info("No record in Table FileChunk in the FileDB updated. ");
@@ -311,10 +327,10 @@ public class MySQLStorage implements FileStorage {
 //                    System.out.println(rs.getString(1)); // should print out "1"'
 //                }
             }
-            release(); // shutdown connection pool.
+            // release(); // shutdown connection pool.
         } catch (Exception ex) {
             ex.printStackTrace();
-            logger.error("failed/exception on updating a record: chunkId " + this.fileChunk.getChunkId() + " of the file " + this.fileChunk.getFileName(), ex);
+            logger.error("failed/exception on updating a record: chunkId " + chunkID + " of the file " + fileName, ex);
             try {
                 conn.rollback();
             } catch (SQLException e) {
@@ -334,21 +350,29 @@ public class MySQLStorage implements FileStorage {
         return result;
     }
 
-    public ResultSet selectRecordFileChunk() {
-        if (this.fileChunk == null) {
-            logger.info("FileChunk is null when select from FileChunk Table.");
+    /**
+     * We don't use this method.
+     * @param fileName
+     * @param chunkID
+     * @param data
+     * @param totalNoOfChunks
+     * @param file_id
+     * @return
+     */
+    public ResultSet selectRecordFileChunk(String fileName, int chunkID, byte[] data, int totalNoOfChunks, String file_id) {
+        init();
+        if (fileName == null || fileName.length() == 0) {
+            logger.info("No record to select.");
             return null;
         }
-        Connection conn = null;
         try {
-            conn = cpool.getConnection();
-            conn.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
             // TODO complete code to use JDBC
             if (conn != null){
                 System.out.println("Connection successful!");
                 Statement stmt = conn.createStatement();
                 String selectRecord = "SELECT * FROM FileChunk\n" +
-                        "WHERE fileName='" + this.fileChunk.getFileName() + "' and chunkID=" + this.fileChunk.getChunkId() + ";";
+                        "WHERE fileName='" + fileName + "' and chunkID=" + chunkID + ";";
+                logger.info(selectRecord);
                 ResultSet rs = stmt.executeQuery(selectRecord);
                 if (rs == null) {
                     logger.info("No record in Table FileChunk in the FileDB. Selecting...");
@@ -356,15 +380,16 @@ public class MySQLStorage implements FileStorage {
                 else {
                     logger.info("Select table FileChunk in the FileDB successfully. ");
                 }
+                return rs;
 //                ResultSet rs = stmt.executeQuery("SELECT 1 FROM INFORMATION_SCHEMA.SYSTEM_USERS"); // do something with the connection.
 //                while(rs.next()){
 //                    System.out.println(rs.getString(1)); // should print out "1"'
 //                }
             }
-            release(); // shutdown connection pool.
+            // release(); // shutdown connection pool.
         } catch (Exception ex) {
             ex.printStackTrace();
-            logger.error("failed/exception on selecting a record: chunkId " + this.fileChunk.getChunkId() + " of the file " + this.fileChunk.getFileName(), ex);
+            logger.error("failed/exception on selecting a record: chunkId " + chunkID + " of the file " + fileName, ex);
             try {
                 conn.rollback();
             } catch (SQLException e) {
@@ -384,81 +409,63 @@ public class MySQLStorage implements FileStorage {
         return null;
     }
 
-    public FileChunk getFileChunk() {
-        return fileChunk;
-    }
-
-    public void setFileChunk(FileChunk fileChunk) {
-        this.fileChunk = fileChunk;
-    }
-
-    //    optional int32 chunkId = 1;
-//    optional bytes data = 2;
-//    required string filename = 3;
-//    optional int32 totalNoOfChunks = 4;  //total number of chunks of a requested file
-//    optional string file_id = 5; // can be a message digest of file. Will also serve as file validation code
-
-    private class FileChunk {
-        private String fileName;
-        private int chunkId;
-        private byte[] data;
-        private int totalNoOfChunks;
-        private String file_id; //optional default is "0";
-
-        public FileChunk(String fileName, int chunkId, byte[] data, int totalNoOfChunks) {
-            this.file_id = "0";
-            this.chunkId = chunkId;
-            this.fileName = fileName;
-            this.data = data;
-            this.totalNoOfChunks = totalNoOfChunks;
+    public ArrayList<ClassFileChunkRecord> selectRecordFileChunk(String fileName, int chunkID) {
+        init();
+        if (fileName == null || fileName.length() == 0) {
+            logger.info("No record to select.");
+            return null;
         }
+        ArrayList<ClassFileChunkRecord> arrayList = new ArrayList<ClassFileChunkRecord>();
+        try {
+            // TODO complete code to use JDBC
+            if (conn != null){
+                System.out.println("Connection successful!");
+                Statement stmt = conn.createStatement();
+                String selectRecord = "SELECT * FROM FileChunk\n" +
+                        "WHERE fileName='" + fileName + "' and chunkID=" + chunkID + ";";
+                ResultSet rs = stmt.executeQuery(selectRecord);
+                if (rs == null) {
+                    logger.info("No record in Table FileChunk in the FileDB. Selecting...");
+                }
+                else {
+                    logger.info("Select table FileChunk in the FileDB successfully. ");
+                }
 
-        public FileChunk(String fileName, int chunkId, String file_id, byte[] data, int totalNoOfChunks) {
-            this.file_id = file_id;
-            this.chunkId = chunkId;
-            this.fileName = fileName;
-            this.data = data;
-            this.totalNoOfChunks = totalNoOfChunks;
+                while(rs.next()){
+                    String fileNamePrint = rs.getString(1);
+                    System.out.println(fileNamePrint); // should print out "1"'     fileName
+                    int chunkIDPrint = rs.getInt(2);
+                    System.out.println(chunkIDPrint); // should print out "2"'      chunkID
+                    String dataPrint = rs.getString(3);
+                    byte[] databyte = dataPrint.getBytes();
+                    System.out.println(dataPrint); // should print out "3"'         data
+                    String file_id_Print = rs.getString(4);
+                    System.out.println(file_id_Print); // should print out "4"'     file_id
+                    int totalNoOfChunksPrint = rs.getInt(5);
+                    System.out.println(totalNoOfChunksPrint); // should print out "5"'      totalNoOfChunks
+                    arrayList.add(new ClassFileChunkRecord(fileNamePrint, chunkIDPrint, databyte, totalNoOfChunksPrint, file_id_Print));
+                }
+                return arrayList;
+            }
+            // release(); // shutdown connection pool.
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            logger.error("failed/exception on selecting a record: chunkId " + chunkID + " of the file " + fileName, ex);
+            try {
+                conn.rollback();
+            } catch (SQLException e) {
+            } finally {
+                if (conn != null) {
+                    try {
+                        conn.close();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+            // indicate failure
+            return null;
         }
-
-        public String getFile_id() {
-            return file_id;
-        }
-
-        public void setFile_id(String file_id) {
-            this.file_id = file_id;
-        }
-
-        public int getChunkId() {
-            return chunkId;
-        }
-
-        public void setChunkId(int chunkId) {
-            this.chunkId = chunkId;
-        }
-
-        public String getFileName() {
-            return fileName;
-        }
-
-        public void setFileName(String fileName) {
-            this.fileName = fileName;
-        }
-
-        public byte[] getData() {
-            return data;
-        }
-
-        public void setData(byte[] data) {
-            this.data = data;
-        }
-
-        public int getTotalNoOfChunks() {
-            return totalNoOfChunks;
-        }
-
-        public void setTotalNoOfChunks(int totalNoOfChunks) {
-            this.totalNoOfChunks = totalNoOfChunks;
-        }
+        return null;
     }
 }

@@ -87,6 +87,7 @@ public class CommHandler extends SimpleChannelInboundHandler<CommandMessage> {
 			System.out.println("ERROR: Unexpected content - " + msg);
 			return;
 		}else if(msg.hasResponse()){
+			System.out.println("IN HERE*******");
 			if(msg.getResponse().getReadResponse().getChunkLocationList() == null){
 				//second response from server
 				Common.Chunk chunk = msg.getResponse().getReadResponse().getChunk();
@@ -119,7 +120,6 @@ public class CommHandler extends SimpleChannelInboundHandler<CommandMessage> {
 						e.printStackTrace();
 					}
 				}
-
 			}
 
 
@@ -128,10 +128,10 @@ public class CommHandler extends SimpleChannelInboundHandler<CommandMessage> {
 		if (debug)
 			PrintUtil.printCommand(msg);
 
-//		QOSWorker qos = QOSWorker.getInstance();
-//		logger.info("QOSWorker Thread Working on CommandSession: ");
-//		Session session = new CommandSession(this.state, msg);
-//		qos.getQueue().enqueue(session);
+		QOSWorker qos = QOSWorker.getInstance();
+		logger.info("QOSWorker Thread Working on CommandSession: ");
+		Session session = new CommandSession(this.state, msg);
+		qos.getQueue().enqueue(session);
 	}
 
 	/**
