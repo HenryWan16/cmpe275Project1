@@ -94,7 +94,8 @@ public class CommHandler extends SimpleChannelInboundHandler<CommandMessage> {
 		}else if(msg.hasPing()){
 			//if the destination is this node's id then it is a returned ping
 			if(msg.getHeader().getDestination() == -1) {
-				logger.info("Received returned ping from " + msg.getHeader().getNodeId());
+				//logger.info("Received returned ping from " + msg.getHeader().getNodeId());
+				logger.info("Ping success");
 			}else{
 				Common.Header.Builder hb = Common.Header.newBuilder();
 				//node id -1 is client
