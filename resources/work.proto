@@ -36,7 +36,7 @@ message Location {
     required bool leaderOrNot = 4;
 }
 
-/ chunk_id -- locationlist
+// chunk_id -- locationlist
 message Hash {
     message LocationList {
         repeated Location location = 1;
