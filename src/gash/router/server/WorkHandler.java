@@ -16,21 +16,19 @@
 package gash.router.server;
 
 import gash.router.server.messages.CommandSession;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import gash.router.server.messages.QOSWorker;
 import gash.router.server.messages.Session;
 import gash.router.server.messages.WorkSession;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import pipe.common.Common;
 import pipe.common.Common.Failure;
 import pipe.work.Work.Heartbeat;
 import pipe.work.Work.Task;
 import pipe.work.Work.WorkMessage;
-import pipe.work.Work.WorkState;
 import routing.Pipe;
 
 /**
@@ -131,7 +129,10 @@ public class WorkHandler extends SimpleChannelInboundHandler<WorkMessage> {
 				
 			} else if (msg.hasTask()) {
 				Task t = msg.getTask();
+			} else if (msg.hasLog()) {
+
 			}
+
 		} catch (Exception e) {
 			// TODO add logging
 			Failure.Builder eb = Failure.newBuilder();

@@ -29,28 +29,14 @@ message RegisterNode{
    required int32 port = 2;
 }
 
-message Location {
-    required int32 node_id = 1;
-    required string host = 2;
-    required int32 port = 3;
-    required bool leaderOrNot = 4;
+message TaskStatus {
+    required string filename;
+    required int32 chunk_id;
+    required int32 chunk_size;
+    required RegisterNode node;
 }
 
-// chunk_id -- locationlist
-message Hash {
- message LocationList {
-   repeated Location location = 1;
- }
- map<int32, LocationList> chunklocmap = 1;
-}
-
-//file_name -- Hash list
-message Log {
-   message HashList {
-       repeated Hash hash =1;
-   }
-   map<string, HashList> filehashmap =1;
-}
+// Where is the message coming from
 
 // These are messages to keep the network running (not to perform work)
 message WorkMessage {
@@ -81,7 +67,8 @@ message WorkMessage {
       Request request = 13;      
       Response response = 14;
       CommandMessage cmd_message = 15;
-      Log log = 16;
+      map<string, string> log = 16;
+      TaskStatus task_status = 17;
    }
 }
 
