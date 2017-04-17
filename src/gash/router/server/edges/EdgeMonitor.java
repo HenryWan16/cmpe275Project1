@@ -117,24 +117,24 @@ public class EdgeMonitor implements EdgeListener, Runnable {
 	                        }
 						} catch (Exception e) { /*do not show anything */ }
 					} 
-					if(ei.getChannel() != null) {
-						//check all edges for work is this node's queue is empty
-						if (QOSWorker.getInstance().getQueue().isEmpty()) {
-							Common.Header.Builder hb = Common.Header.newBuilder();
-							hb.setNodeId(state.getConf().getNodeId());
-							hb.setTime(System.currentTimeMillis());
-
-							Work.WorkState.Builder ws = Work.WorkState.newBuilder();
-							ws.setEnqueued(0);
-							ws.setProcessed(1);
-
-							Work.WorkMessage.Builder wm = Work.WorkMessage.newBuilder();
-							wm.setHeader(hb);
-							wm.setState(ws);
-							wm.setSecret(1234);
-							ei.getChannel().writeAndFlush(wm.build());
-						}
-					}
+//					if(ei.getChannel() != null) {
+//						//check all edges for work is this node's queue is empty
+//						if (QOSWorker.getInstance().getQueue().isEmpty()) {
+//							Common.Header.Builder hb = Common.Header.newBuilder();
+//							hb.setNodeId(state.getConf().getNodeId());
+//							hb.setTime(System.currentTimeMillis());
+//
+//							Work.WorkState.Builder ws = Work.WorkState.newBuilder();
+//							ws.setEnqueued(0);
+//							ws.setProcessed(1);
+//
+//							Work.WorkMessage.Builder wm = Work.WorkMessage.newBuilder();
+//							wm.setHeader(hb);
+//							wm.setState(ws);
+//							wm.setSecret(1234);
+//							ei.getChannel().writeAndFlush(wm.build());
+//						}
+//					}
 
 
 				}

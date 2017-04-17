@@ -64,7 +64,7 @@ public class QOSWorker implements Runnable{
         	}
         	
 
-        	logger.info("Queue Size: " + queue.size());
+//        	logger.info("Queue Size: " + queue.size());
             try { Thread.sleep(200); } catch(Exception e){ }
 
         }

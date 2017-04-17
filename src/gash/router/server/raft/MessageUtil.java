@@ -46,7 +46,7 @@ public class MessageUtil {
 		Header.Builder hb = Header.newBuilder();
 		hb.setNodeId(handler.getNodeId());
 		hb.setDestination(-1);	
-		
+		hb.setTime(System.currentTimeMillis());
 		RequestVote.Builder rvb= RequestVote.newBuilder();
 		rvb.setCandidateID(handler.getNodeId());	
 		rvb.setCurrentTerm(handler.getTerm());

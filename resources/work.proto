@@ -30,10 +30,10 @@ message RegisterNode{
 }
 
 message TaskStatus {
-    required string filename;
-    required int32 chunk_id;
-    required int32 chunk_size;
-    required RegisterNode node;
+    required string filename = 1;
+    required int32 chunk_id = 2;
+    required int32 chunk_size = 3;
+    required RegisterNode node = 4;
 }
 
 // Where is the message coming from
@@ -42,7 +42,8 @@ message TaskStatus {
 message WorkMessage {
    optional Header header = 1;
    required int64 secret = 2;
-   
+   map<string, string> log = 16;
+
    /**
     * The actions (request or response) is
     * implicit through which data structure is in the payload.
@@ -67,7 +68,6 @@ message WorkMessage {
       Request request = 13;      
       Response response = 14;
       CommandMessage cmd_message = 15;
-      map<string, string> log = 16;
       TaskStatus task_status = 17;
    }
 }

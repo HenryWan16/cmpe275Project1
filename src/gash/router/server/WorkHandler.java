@@ -129,7 +129,7 @@ public class WorkHandler extends SimpleChannelInboundHandler<WorkMessage> {
 				
 			} else if (msg.hasTask()) {
 				Task t = msg.getTask();
-			} else if (msg.hasLog()) {
+			} else if (msg.hasTaskStatus()) {
 
 			}
 
