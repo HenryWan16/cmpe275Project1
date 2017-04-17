@@ -1,6 +1,7 @@
 package gash.router.server.raft;
 
 import java.net.Inet4Address;
+import java.util.Hashtable;
 import java.util.Random;
 import gash.router.server.ServerState;
 import gash.router.server.edges.EdgeInfo;
@@ -21,7 +22,6 @@ public class RaftHandler implements Runnable {
 	private String host;
 	private int port;
 	private EdgeMonitor edgeMonitor;
-//	private 
 
 	private long timerStart = 0;
 
@@ -31,14 +31,22 @@ public class RaftHandler implements Runnable {
 	public NodeState candidate;
 	public NodeState follower;
 
-
+	public static RaftHandler instance;
+	public Hashtable<String, String> logs = new Hashtable<String, String>();
+	
 	private Random rand = new Random();
 	private int term = 0;
 
 	public RaftHandler(ServerState state) {
 		this.serverState = state;
+		instance = this;
 	}
+	
 
+	public static RaftHandler getInstance() {
+		return instance;
+	}
+	
 	public void init() {
 		try {	
 			leader = new LeaderNode(this);
@@ -168,6 +176,7 @@ public class RaftHandler implements Runnable {
 
 	public synchronized void setLeaderNodeId(int id) {
 		this.leaderNodeId = id;
+		this.serverState.setLeaderId(id);
 	}
 	
 	public synchronized int getLeaderNodeId() {

@@ -1,6 +1,8 @@
 package gash.router.server.raft;
 
 import java.net.UnknownHostException;
+import java.util.Hashtable;
+import java.util.Map;
 
 import com.google.protobuf.ByteString;
 
@@ -23,6 +25,7 @@ import pipe.election.Election.Vote;
 import pipe.work.Work.Heartbeat;
 import pipe.work.Work.WorkMessage;
 import pipe.work.Work.WorkState;
+import pipe.work.Work.TaskStatus;
 import routing.Pipe.CommandMessage;
 
 public class MessageUtil {
@@ -119,7 +122,7 @@ public class MessageUtil {
 		return node;
 	}
 	
-	public static ChunkLocation.Builder buildChunkLocation(int id, Node node) {
+	public static ChunkLocation.Builder buildChunkLocation(int id, Node.Builder node) {
 		ChunkLocation.Builder location = ChunkLocation.newBuilder();
 		location.setChunkid(id);
 		location.addNode(node);
@@ -127,12 +130,20 @@ public class MessageUtil {
 	}
 	
 	public static ReadResponse.Builder buildReadResponse(int fileId, String name, String ext, int noChunks, 
-			ChunkLocation.Builder location, Chunk.Builder chunk) {
+			Hashtable<Integer, String> location, Chunk.Builder chunk) {
 		ReadResponse.Builder rr = ReadResponse.newBuilder();
-		rr.setFileId(fileId);
+		if (fileId != -1) rr.setFileId(fileId);
 		rr.setFilename(name);
 		if (ext != null) rr.setFileExt(ext);
-		if (location != null) rr.addChunkLocation(location);
+		if (location != null) {
+			for(Integer sKey: location.keySet()) {
+				String list = location.get(sKey);
+				String[] parts = list.split(";");
+				
+				rr.addChunkLocation(buildChunkLocation(sKey, buildNode(Integer.parseInt(parts[0]),
+									parts[1], Integer.parseInt(parts[2]))));
+			}
+		}
 		if (chunk != null) rr.setChunk(chunk);
 		return rr;
 	}
@@ -196,5 +207,51 @@ public class MessageUtil {
 		return cm.build();
 	}
 	
-		
+	public static RegisterNode.Builder buildRegisterNode(String host, int port) {
+		RegisterNode.Builder rb = RegisterNode.newBuilder();
+		rb.setHost(host);
+		rb.setPort(port);
+		return rb;
+	}
+	
+	public static TaskStatus.Builder buildTaskStatus(String fname, int chunkId, int chunkSize, RegisterNode.Builder node) {
+		TaskStatus.Builder ts = TaskStatus.newBuilder();
+		ts.setFilename(fname);
+		ts.setChunkId(chunkId);
+		ts.setChunkSize(chunkSize);
+		ts.setNode(node);
+		return ts;
+	}
+	
+	public static WorkMessage buildWMLogs(Header.Builder h, Map<String, String> logs) {
+		WorkMessage.Builder wm = WorkMessage.newBuilder();
+		wm.setHeader(h);
+		wm.setSecret(secret);
+		wm.putAllLog(logs);
+		return wm.build();
+	}
+	
+	public static WorkMessage buildWMTaskStatus(Header.Builder h, TaskStatus.Builder t) {
+		WorkMessage.Builder wm = WorkMessage.newBuilder();
+		wm.setHeader(h);
+		wm.setSecret(secret);
+		wm.setTaskStatus(t);
+		return wm.build();
+	}
+	
+	public static WorkMessage buildWMDeleteFile(Header.Builder h, String fname) {
+		WorkMessage.Builder wm = WorkMessage.newBuilder();
+		wm.setHeader(h);
+		wm.setSecret(secret);
+		wm.setDeleteFile(fname);
+		return wm.build();
+	}
+	
+	public static WorkMessage buildWMDeleteLog(Header.Builder h, String fname) {
+		WorkMessage.Builder wm = WorkMessage.newBuilder();
+		wm.setHeader(h);
+		wm.setSecret(secret);
+		wm.setDeleteLog(fname);
+		return wm.build();
+	}
 }

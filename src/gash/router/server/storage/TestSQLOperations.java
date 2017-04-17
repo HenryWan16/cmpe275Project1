@@ -29,7 +29,7 @@ public class TestSQLOperations {
         for (ClassFileChunkRecord record : result) {
             System.out.println(record);
         }
-        mySQLStorage.deleteRecordFileChunk(fileName, chunkID);
+        //mySQLStorage.deleteRecordFileChunk(fileName, chunkID);
     }
 
     public void dropTable() throws Exception {
@@ -78,7 +78,7 @@ public class TestSQLOperations {
     public void deleteRecordFileChunk() throws Exception {
         String fileName = "test.txt";
         int chunkID = 1;
-        mySQLStorage.deleteRecordFileChunk(fileName, chunkID);
+       // mySQLStorage.deleteRecordFileChunk(fileName, chunkID);
     }
 
     public void updateRecordFileChunk() throws Exception {

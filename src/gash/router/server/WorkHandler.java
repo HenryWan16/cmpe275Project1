@@ -15,18 +15,26 @@
  */
 package gash.router.server;
 
+import gash.router.server.edges.EdgeInfo;
 import gash.router.server.messages.CommandSession;
+
+import java.net.Inet4Address;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import gash.router.server.messages.QOSWorker;
 import gash.router.server.messages.Session;
 import gash.router.server.messages.WorkSession;
+import gash.router.server.raft.MessageUtil;
+import gash.router.server.raft.RaftHandler;
+import gash.router.server.storage.MySQLStorage;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import pipe.common.Common;
 import pipe.common.Common.Failure;
+import pipe.common.Common.ResponseStatus;
 import pipe.work.Work.Heartbeat;
 import pipe.work.Work.Task;
 import pipe.work.Work.WorkMessage;
@@ -99,7 +107,27 @@ public class WorkHandler extends SimpleChannelInboundHandler<WorkMessage> {
 			} else if (msg.hasANode()) {
 				state.getHandler().getEdgeMonitor().createOutboundIfNew(msg.getHeader().getNodeId(), 
 									msg.getANode().getHost(), msg.getANode().getPort());
-								
+				
+			} else if (msg.hasTaskStatus()) {
+				state.getHandler().getNodeState().processSendUpdateLogs(msg);
+				
+			} else if (msg.getLogCount() > 0) {
+				state.getHandler().getNodeState().processAddLogs(msg);
+				
+			} else if (msg.hasDeleteFile()) {
+				boolean result = MySQLStorage.getInstance().deleteRecordFileChunk(msg.getDeleteFile());
+				
+        		if (result) {
+        			String host = Inet4Address.getLocalHost().getHostAddress();
+        			WorkMessage wm = MessageUtil.buildWMDeleteLog(
+        					MessageUtil.buildHeader(this.state.getConf().getNodeId(), System.currentTimeMillis()),
+        					msg.getDeleteFile());
+        			EdgeInfo leaderEdgeInfo = RaftHandler.getInstance().getEdgeMonitor().getOutboundEdges().getMap().get(RaftHandler.getInstance().getLeaderNodeId());
+        			leaderEdgeInfo.getChannel().writeAndFlush(wm);
+        		}
+			} else if (msg.hasDeleteLog()) {
+				state.getHandler().getNodeState().processSendRemoveLogs(msg);
+				
 			} else if (msg.hasErr()) {
 				Failure err = msg.getErr();
 				logger.error("failure from " + msg.getHeader().getNodeId());
