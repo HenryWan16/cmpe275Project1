@@ -71,6 +71,7 @@ public class LeaderNode implements NodeState {
 		String host =  wm.getTaskStatus().getNode().getHost();
 		int port =  wm.getTaskStatus().getNode().getPort();
 		
+		System.out.println("****************************");
 		//add log into hashtable
 		String key = fname + ";" + chunkId + ";" + chunkSize;
 		String value = sourceId + ";" + host + ";" + port;

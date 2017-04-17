@@ -19,6 +19,7 @@ import com.google.protobuf.ByteString;
 
 import pipe.common.Common;
 import pipe.common.Common.Header;
+import pipe.common.Common.ReadBody;
 import pipe.common.Common.Response;
 import pipe.common.Common.ResponseStatus;
 import pipe.common.Common.TaskType;
@@ -67,31 +68,61 @@ public class CommandSession implements Session, Runnable{
             } else if (msg.hasRequest()) {
             	TaskType type = msg.getRequest().getRequestType();
             	if (type == TaskType.READFILE) {
+
             		//get a list of location from logs
-            		String fname = msg.getRequest().getRwb().getFilename();
-            		Hashtable<Integer, String> location = LogUtil.getListNodesToReadFile(fname);
-            		if (location != null) {
-            			//return to client a list of locations
-            			CommandMessage cm = MessageUtil.buildCommandMessage(
+            		String fname = msg.getRequest().getRrb().getFilename();
+
+        			if (fname.equals("log.txt")) { //return all the list of file
+        				Hashtable<String, String> location = RaftHandler.getInstance().logs;
+        				//parse the hashtable to get the list
+        				String list ="";
+        				for(String sKey: location.keySet()) {
+        					String sValue = location.get(sKey);
+        					System.out.println(sKey + "****" + sValue);
+        					String keyParts[] = sKey.split(";");
+        					String valueParts[] = sValue.split(";");
+        					list += keyParts[0] + "-chunkID:" + keyParts[1] + "-chunkSize:" + keyParts[2] + " at nodes:\n";
+        					for (int i=0; i<valueParts.length; i=i+3) {
+        						list += "\tNode " + valueParts[i] + ": " + valueParts[i+1] + "\n";
+        					}
+        				}
+        				System.out.println(list);
+
+        				CommandMessage cm = MessageUtil.buildCommandMessage(
             					MessageUtil.buildHeader(conf.getNodeId(), System.currentTimeMillis()),
             					null,
             					null,
             					MessageUtil.buildResponse(TaskType.READFILE, fname, null , null, 
-            								MessageUtil.buildReadResponse(-1, fname, null, location.size(), 
-            										location, null)));
+            								MessageUtil.buildReadResponseAllListFiles(-1, fname, list)));
             			channel.writeAndFlush(cm);
-            			
-            		} else {
-            			//return to client FAIL to read
-            			CommandMessage cm = MessageUtil.buildCommandMessage(
-            					MessageUtil.buildHeader(conf.getNodeId(), System.currentTimeMillis()),
-            					null,
-            					null,
-            					MessageUtil.buildResponse(TaskType.READFILE, fname, ResponseStatus.Fail , null, null));
-                        
-                        channel.writeAndFlush(cm);
-            		}
+        				
+        			} else {
             		
+	            		Hashtable<Integer, String> location = LogUtil.getListNodesToReadFile(fname);            		
+	
+	            		
+	            		if (location != null) {
+	            			//return to client a list of locations
+	            			CommandMessage cm = MessageUtil.buildCommandMessage(
+	            					MessageUtil.buildHeader(conf.getNodeId(), System.currentTimeMillis()),
+	            					null,
+	            					null,
+	            					MessageUtil.buildResponse(TaskType.READFILE, fname, null , null, 
+	            								MessageUtil.buildReadResponse(-1, fname, null, location.size(), 
+	            										location, null)));
+	            			channel.writeAndFlush(cm);
+	            			
+	            		} else {
+	            			//return to client FAIL to read
+	            			CommandMessage cm = MessageUtil.buildCommandMessage(
+	            					MessageUtil.buildHeader(conf.getNodeId(), System.currentTimeMillis()),
+	            					null,
+	            					null,
+	            					MessageUtil.buildResponse(TaskType.READFILE, fname, ResponseStatus.Fail , null, null));
+	                        
+	                        channel.writeAndFlush(cm);
+	            		}
+        			}
             		
             	} else if (type == TaskType.WRITEFILE) {
             		WriteBody wb = msg.getRequest().getRwb();
@@ -106,19 +137,29 @@ public class CommandSession implements Session, Runnable{
             		}
             			
             		boolean result = MySQLStorage.getInstance().insertRecordFileChunk(fname, chunkId, data, numOfChunk, fileId);
-            		
+
             		//write to logs
-            		
-            		
             		if (result) {
             			//send logs to leader
+
             			String host = Inet4Address.getLocalHost().getHostAddress();
+                		System.out.println("*******1result:" + result);
             			WorkMessage wm = MessageUtil.buildWMTaskStatus(
             					MessageUtil.buildHeader(conf.getNodeId(), System.currentTimeMillis()),
             					MessageUtil.buildTaskStatus(fname, chunkId, numOfChunk,
             							MessageUtil.buildRegisterNode(host, conf.getWorkPort())));
+                		System.out.println("*******2result:" + result);
             			EdgeInfo leaderEdgeInfo = RaftHandler.getInstance().getEdgeMonitor().getOutboundEdges().getMap().get(RaftHandler.getInstance().getLeaderNodeId());
-            			leaderEdgeInfo.getChannel().writeAndFlush(wm);
+                		System.out.println("*******3result:" + result);
+            			System.out.println("*******EDGE LEADER: " + RaftHandler.getInstance().getLeaderNodeId());
+            			
+            			//check if it is a leader of not
+            			if (conf.getNodeId() == RaftHandler.getInstance().getLeaderNodeId()) {
+            				RaftHandler.getInstance().getNodeState().processSendUpdateLogs(wm);
+            			} else if (leaderEdgeInfo.getChannel() != null && leaderEdgeInfo.getChannel().isActive())
+            				leaderEdgeInfo.getChannel().writeAndFlush(wm);
+            			else
+            				System.out.println("***NOT ACTIVE****EDGE LEADER: " + RaftHandler.getInstance().getLeaderNodeId());
             			
             			//send success message back to client
                         CommandMessage cm = MessageUtil.buildCommandMessage(
@@ -130,51 +171,52 @@ public class CommandSession implements Session, Runnable{
             		}
             	} else if (type == TaskType.DELETEFILE) {
             		
-            		WriteBody wb = msg.getRequest().getRwb();
-            		String fname = wb.getFilename();
+            		System.out.println("****DELETEFILE****");
+            		ReadBody rb = msg.getRequest().getRrb();
+            		String fname = rb.getFilename();
             		Hashtable<Integer, String> location = LogUtil.getListNodesToReadFile(fname);
-            		
+
             		//send to all nodes to delete the file
-            		for (int i=0; i<location.size(); i++) {
+            		System.out.println("*******location size:" + location.size());
+            		boolean result = false;
+            		if (location != null) {
             			for(Integer sKey: location.keySet()) {
             				String list = location.get(sKey);
             				String[] parts = list.split(";");
             				
             				for(int j=0; j<parts.length; j=j+3) {
             					int nodeId = Integer.parseInt(parts[j]);
-            					String host = parts[j+1];
-            					int port = Integer.parseInt(parts[j+2]);
+//            					String host = parts[j+1];
+//            					int port = Integer.parseInt(parts[j+2]);
             					
-            					//send WM
-                    			WorkMessage wm = MessageUtil.buildWMDeleteFile(MessageUtil.buildHeader(conf.getNodeId(), System.currentTimeMillis()), fname);
-                    			EdgeInfo node = RaftHandler.getInstance().getEdgeMonitor().getOutboundEdges().getMap().get(nodeId);
-                    			node.getChannel().writeAndFlush(wm);
+            					//send WM to remove file and logs
+            					WorkMessage wm = MessageUtil.buildWMDeleteFile(
+                    					MessageUtil.buildHeader(conf.getNodeId(), System.currentTimeMillis()), fname);
+            					if (conf.getNodeId() != nodeId) {
+	                    			EdgeInfo node = RaftHandler.getInstance().getEdgeMonitor().getOutboundEdges().getMap().get(nodeId);
+	                    			if (node.getChannel() != null && node.getChannel().isActive())
+	                    				node.getChannel().writeAndFlush(wm);
+            					} else { //the node is in itself
+            						MySQLStorage.getInstance().deleteRecordFileChunk(fname);
+            						RaftHandler.getInstance().getNodeState().processSendRemoveLogs(wm);
+            					}
             				}
             			}
+	            		result = true;
             		}
-            		
-            		//update logs to leader
-            		
-            		boolean result = MySQLStorage.getInstance().deleteRecordFileChunk(fname);
             		ResponseStatus status;
             		if (result) {
             			status = ResponseStatus.Success;
             		} else status = ResponseStatus.Fail;
-            		
-            		//remove in all replica
-            		//remove from the log
-            		
-
-            		
-            		//send back to client
-            		CommandMessage cm = MessageUtil.buildCommandMessage(
-        					MessageUtil.buildHeader(conf.getNodeId(), System.currentTimeMillis()),
-        					null,
-        					null,
-        					MessageUtil.buildResponse(TaskType.DELETEFILE, fname, status , null, null));
-                    
-                    channel.writeAndFlush(cm);
-            		
+	            		
+	            		//send back to client
+	            		CommandMessage cm = MessageUtil.buildCommandMessage(
+	        					MessageUtil.buildHeader(conf.getNodeId(), System.currentTimeMillis()),
+	        					null,
+	        					null,
+	        					MessageUtil.buildResponse(TaskType.DELETEFILE, fname, status , null, null));
+	                    
+	                    channel.writeAndFlush(cm);
             	} else { //UPDATEFILE: 
             		
             	}
@@ -190,6 +232,7 @@ public class CommandSession implements Session, Runnable{
             CommandMessage.Builder rb = CommandMessage.newBuilder(msg);
             rb.setErr(eb);
             channel.write(rb.build());
+            e.printStackTrace();
         }
         System.out.flush();
     }

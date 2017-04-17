@@ -64,7 +64,7 @@ public class CommandHandler extends SimpleChannelInboundHandler<CommandMessage> 
 			return;
 		}
 
-		PrintUtil.printCommand(msg);
+		//PrintUtil.printCommand(msg);
 
 		try {
 			// TODO How can you implement this without if-else statements?
@@ -88,16 +88,6 @@ public class CommandHandler extends SimpleChannelInboundHandler<CommandMessage> 
 
 			} else if (msg.hasRequest()) {
 				logger.info("server get request: "+msg.getRequest().toString());
-				System.out.println("IN HERE***1****");
-
-//				Header.Builder hb = Header.newBuilder();
-//				hb.setNodeId(-4);
-//				hb.setTime(System.currentTimeMillis());
-//
-//				CommandMessage.Builder cm = CommandMessage.newBuilder();
-//				cm.setHeader(hb);
-//				cm.setPing(true);
-//				channel.writeAndFlush(cm);
 				
 				qos = QOSWorker.getInstance();
 				logger.info("QOSWorker Thread Working : ");

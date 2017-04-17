@@ -112,6 +112,15 @@ public class CommHandler extends SimpleChannelInboundHandler<CommandMessage> {
 			
 			if (type == TaskType.READFILE) {
 				
+				if (msg.getResponse().getFilename().equals("log.txt")) {
+					String result = msg.getResponse().getReadResponse().getFileExt();
+					
+					if (result.equals("")) result = "All the servers are empty!!";
+					System.out.print(result);
+					
+					return;
+				}
+				
 				if(msg.getResponse().getReadResponse().getChunkLocationList() == null){
 					//second response from server
 					Common.Chunk chunk = msg.getResponse().getReadResponse().getChunk();

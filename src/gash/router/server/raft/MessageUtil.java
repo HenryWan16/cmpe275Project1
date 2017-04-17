@@ -148,6 +148,17 @@ public class MessageUtil {
 		return rr;
 	}
 	
+	public static ReadResponse.Builder buildReadResponseAllListFiles(int fileId, String name, String ext) {
+		ReadResponse.Builder rr = ReadResponse.newBuilder();
+		if (fileId != -1) rr.setFileId(fileId);
+		rr.setFilename(name);
+		//will be used for the list
+		if (ext != null) rr.setFileExt(ext);
+
+		return rr;
+	}
+	
+	
 	public static WriteResponse.Builder buildWriteResponse(int chunkId) {
 		WriteResponse.Builder wr = WriteResponse.newBuilder();
 		wr.addChunkId(chunkId);
@@ -185,6 +196,7 @@ public class MessageUtil {
 	
 	public static Request.Builder buildRequest(TaskType t, WriteBody.Builder wb, ReadBody.Builder rb) {
 		Request.Builder r = Request.newBuilder();
+		r.setRequestType(t);
 		if (wb != null) r.setRwb(wb);
 		if (rb != null) r.setRrb(rb);
 		return r;
