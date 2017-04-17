@@ -76,7 +76,7 @@ public class MessageClient {
 		FileInputStream fis;
 
 		int file_size = (int)file.length();
-		final int CHUNK_SIZE = 1024;
+		final int CHUNK_SIZE = 64 * 1024;
 		int numberOfChunks = 0;
 		int readLength = CHUNK_SIZE;
 		byte[] byteChunk;
@@ -146,6 +146,7 @@ public class MessageClient {
 			readbody
 
 		 */
+		MergeWorker.getMergeWorkerInstance().getFileName(fname);
 		CommandMessage.Builder cmdb = CommandMessage.newBuilder();
 		Header.Builder hb = Header.newBuilder();
 		Common.Request.Builder rb = Common.Request.newBuilder();
