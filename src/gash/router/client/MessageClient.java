@@ -89,6 +89,7 @@ public class MessageClient {
 		int chunkSize = file_size / readLength + (file_size % readLength == 0 ? 0 : 1);
 		
 		try {
+			numberOfChunks = file_size/CHUNK_SIZE;
 			fis = new FileInputStream(file);
 			while(file_size > 0) {
 				if(file_size <= CHUNK_SIZE)
@@ -101,34 +102,36 @@ public class MessageClient {
 				//get hash key for store, to do
 				logger.info("bytechunk: "+byteChunk.toString());
 
-//				MessageUtil.buildCommandMessage(MessageUtil.buildHeader(999,System.currentTimeMillis()),null,MessageUtil.buildRequest())
-				CommandMessage.Builder cmdb = CommandMessage.newBuilder();
-				Common.Request.Builder r = Common.Request.newBuilder();
-				Common.WriteBody.Builder wb = Common.WriteBody.newBuilder();
-				Common.Chunk.Builder cb = Common.Chunk.newBuilder();
-				Header.Builder hb = Header.newBuilder();
-
-				hb.setNodeId(999);
-				hb.setTime(System.currentTimeMillis());
-				hb.setDestination(-1);
-
-				cb.setChunkId(numberOfChunks);
-				cb.setChunkSize(chunkSize);
-				cb.setChunkData(ByteString.copyFrom(byteChunk));
-
-				wb.setFilename(fname);
-				wb.setChunk(cb);
-				wb.setNumOfChunks(chunkSize);
-				
-				r.setRequestType(Common.TaskType.WRITEFILE);
-				r.setRwb(wb);
-
-				cmdb.setHeader(hb);
-				cmdb.setRequest(r);
+				CommandMessage cm = MessageUtil.buildCommandMessage(MessageUtil.buildHeader(999,System.currentTimeMillis()),null,
+						MessageUtil.buildRequest(TaskType.WRITEFILE, MessageUtil.buildWriteBody(-1,fname,"txt",
+								MessageUtil.buildChunk(numberOfChunks,byteChunk,chunkSize),numberOfChunks),null),null);
+//				CommandMessage.Builder cmdb = CommandMessage.newBuilder();
+//				Common.Request.Builder r = Common.Request.newBuilder();
+//				Common.WriteBody.Builder wb = Common.WriteBody.newBuilder();
+//				Common.Chunk.Builder cb = Common.Chunk.newBuilder();
+//				Header.Builder hb = Header.newBuilder();
+//
+//				hb.setNodeId(999);
+//				hb.setTime(System.currentTimeMillis());
+//				hb.setDestination(-1);
+//
+//				cb.setChunkId(numberOfChunks);
+//				cb.setChunkSize(chunkSize);
+//				cb.setChunkData(ByteString.copyFrom(byteChunk));
+//
+//				wb.setFilename(fname);
+//				wb.setChunk(cb);
+//				wb.setNumOfChunks(chunkSize);
+//
+//				r.setRequestType(Common.TaskType.WRITEFILE);
+//				r.setRwb(wb);
+//
+//				cmdb.setHeader(hb);
+//				cmdb.setRequest(r);
 
 				logger.info("build success, start to enque");
-				logger.info("msg enque is: "+cmdb.getRequest().getRwb().getChunk().toString());
-				CommConnection.getInstance().enqueue(cmdb.build());
+				logger.info("msg enque is: "+cm.getRequest().getRwb().getChunk().toString());
+				CommConnection.getInstance().enqueue(cm);
 				logger.info("enque success");
 
 				byteChunk = null;
@@ -154,6 +157,7 @@ public class MessageClient {
 
 		MergeWorker.getMergeWorkerInstance().getFileName(fname);
 
+
 		if (fname.equals("log.txt")) {
 			CommandMessage cmdb = MessageUtil.buildCommandMessage(
 				MessageUtil.buildHeader(999, System.currentTimeMillis()),
@@ -168,7 +172,31 @@ public class MessageClient {
 				e.printStackTrace();
 			}
 
+		}else{
+			CommandMessage cmdb = MessageUtil.buildCommandMessage(MessageUtil.buildHeader(999,System.currentTimeMillis()),null,
+					MessageUtil.buildRequest(TaskType.READFILE,null,
+							MessageUtil.buildReadBody(fname,-1,-1,-1)),null);
+//			CommandMessage.Builder cmdb = CommandMessage.newBuilder();
+//			Header.Builder hb = Header.newBuilder();
+//			Common.Request.Builder rb = Common.Request.newBuilder();
+//			Common.ReadBody.Builder rdb = Common.ReadBody.newBuilder();
+//
+//			hb.setNodeId(999);
+//			rb.setRequestType(Common.TaskType.READFILE);
+//			rdb.setFilename(fname);
+//
+//			rb.setRrb(rdb.build());
+//			cmdb.setHeader(hb.build());
+//			cmdb.setRequest(rb.build());
+
+			try {
+				CommConnection.getInstance().enqueue(cmdb);
+
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
+
 
 		//start the thread for waiting the chunks from server
 	}
