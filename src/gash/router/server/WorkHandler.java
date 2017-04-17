@@ -121,7 +121,7 @@ public class WorkHandler extends SimpleChannelInboundHandler<WorkMessage> {
 	
 					wm.setHeader(hd);
 					wm.setCmdMessage(cMsg);
-					wm.setSecret(100l);
+					wm.setSecret(1234);
 					channel.writeAndFlush(wm);
 				}
 			} else if (msg.hasCmdMessage()){

@@ -131,7 +131,7 @@ public class EdgeMonitor implements EdgeListener, Runnable {
 							Work.WorkMessage.Builder wm = Work.WorkMessage.newBuilder();
 							wm.setHeader(hb);
 							wm.setState(ws);
-							wm.setSecret(100l);
+							wm.setSecret(1234);
 							ei.getChannel().writeAndFlush(wm.build());
 						}
 					}

@@ -71,19 +71,7 @@ public class MessageClient {
 			e.printStackTrace();
 		}
 	}
-	/*
-	commandMessage
-		header
-		request
-			TaskType
-			payload: writeBody
-				file_id
-				filename
-				Chunk
-					chunk_id
-					chunk_data
-					chunk_size
-	 */
+
 	public void chunkAndSend(String fname){
 		File file = new File(fname);
 		FileInputStream fis;
@@ -142,10 +130,9 @@ public class MessageClient {
 				byteChunk = null;
 
 			}
+			fis.close();
 		} catch(Exception e){
 			e.printStackTrace();
-		} finally {
-			fis = null;
 		}
 	}
 
@@ -175,6 +162,7 @@ public class MessageClient {
 
 		try {
 			CommConnection.getInstance().enqueue(cmdb.build());
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -212,6 +200,10 @@ public class MessageClient {
 		}
 	}
 
+	public void deleteFile(String fname) {
+		
+	}
+	
 	public void release() {
 		CommConnection.getInstance().release();
 	}

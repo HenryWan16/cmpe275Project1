@@ -32,6 +32,8 @@ import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import pipe.common.Common;
+import pipe.common.Common.Response;
+import pipe.common.Common.TaskType;
 import routing.Pipe.CommandMessage;
 
 /**
@@ -89,39 +91,53 @@ public class CommHandler extends SimpleChannelInboundHandler<CommandMessage> {
 			System.out.println("ERROR: Unexpected content - " + msg);
 			return;
 		}else if(msg.hasResponse()){
-			System.out.println("IN HERE*******");
-			if(msg.getResponse().getReadResponse().getChunkLocationList() == null){
-				//second response from server
-				Common.Chunk chunk = msg.getResponse().getReadResponse().getChunk();
-				mergeWorker = MergeWorker.getMergeWorkerInstance();
-				mergeWorker.upDateTable(chunk);
-			}else{
-				//first response from server
-				int numChunks = msg.getResponse().getReadResponse().getNumOfChunks();
-				mergeWorker = MergeWorker.getMergeWorkerInstance();
-				Thread mergeThread = new Thread(mergeWorker);
-				mergeThread.start();
-				mergeWorker.setTotalNoOfChunks(numChunks);
-				//ask directly from server nodes for file chunks
-				List<Common.ChunkLocation> list = msg.getResponse().getReadResponse().getChunkLocationList();
-				String fname = msg.getResponse().getReadResponse().getFilename();
-				for(int i=0;i<list.size();i++){
-					CommandMessage.Builder cmb = CommandMessage.newBuilder();
-					Common.Request.Builder rb = Common.Request.newBuilder();
-					Common.ReadBody.Builder rdb = Common.ReadBody.newBuilder();
-					rdb.setFilename(fname);
-					rdb.setChunkId(list.get(i).getChunkid());
-					rb.setRrb(rdb);
-					cmb.setRequest(rb);
-					String host = list.get(i).getNode(0).getHost();
-					int port = list.get(i).getNode(0).getPort();
-					CommConnection.initConnection(host, port);
-					try {
-						CommConnection.getInstance().enqueue(cmb.build());
-					} catch (Exception e) {
-						e.printStackTrace();
+			TaskType type = msg.getResponse().getResponseType();
+			
+			if (type == TaskType.READFILE) {
+				
+				if(msg.getResponse().getReadResponse().getChunkLocationList() == null){
+					//second response from server
+					Common.Chunk chunk = msg.getResponse().getReadResponse().getChunk();
+					mergeWorker = MergeWorker.getMergeWorkerInstance();
+					mergeWorker.upDateTable(chunk);
+					
+				} else {
+					//first response from server
+					int numChunks = msg.getResponse().getReadResponse().getNumOfChunks();
+					mergeWorker = MergeWorker.getMergeWorkerInstance();
+					Thread mergeThread = new Thread(mergeWorker);
+					mergeThread.start();
+					mergeWorker.setTotalNoOfChunks(numChunks);
+					//ask directly from server nodes for file chunks
+					List<Common.ChunkLocation> list = msg.getResponse().getReadResponse().getChunkLocationList();
+					String fname = msg.getResponse().getReadResponse().getFilename();
+					for(int i=0;i<list.size();i++){
+						CommandMessage.Builder cmb = CommandMessage.newBuilder();
+						Common.Request.Builder rb = Common.Request.newBuilder();
+						Common.ReadBody.Builder rdb = Common.ReadBody.newBuilder();
+						rdb.setFilename(fname);
+						rdb.setChunkId(list.get(i).getChunkid());
+						rb.setRrb(rdb);
+						cmb.setRequest(rb);
+						String host = list.get(i).getNode(0).getHost();
+						int port = list.get(i).getNode(0).getPort();
+						CommConnection.initConnection(host, port);
+						try {
+							CommConnection.getInstance().enqueue(cmb.build());
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
 					}
 				}
+			} else if (type == TaskType.WRITEFILE) {
+				Response a;
+				//if (msg.getResponse().success)
+				System.out.println("File " );
+				
+			} else if (type == TaskType.DELETEFILE) {
+				
+			} else { //UPDATEFILE
+				
 			}
 
 

@@ -77,6 +77,7 @@ message Response{
       Success = 1;
       Failure = 2;
    }
+   optional Status status = 6;
    
    oneof payload{
       WriteResponse writeResponse = 4;

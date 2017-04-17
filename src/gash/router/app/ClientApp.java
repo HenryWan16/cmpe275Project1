@@ -62,55 +62,48 @@ public class ClientApp implements CommListener {
 		System.out.println("---> " + msg);
 	}	
 
-	private void deleteFile(String fname) {
-	}
-
-	private void readFile(String fname) {
-		mc.chunkAndSend(fname);
-	}
-
 	private void menu() {
-    //chunkAndSend("/home/nguyen/test.txt");
 	
-	Scanner scanner = new Scanner(System.in);
-	 
-	String command = null;
-	String[] commands;
-
-	do {
-        System.out.print("\n\n------------------------\n" +
-        				"Menu\n------------------------\n" +
-        				"* ping\n" + 
-                        "* read <fileName>\n" + 
-                        "* write <filePath>\n" +
-                        "* delete <fileName>\n" +
-                        "* quit\n\n\n" +
-                        "> ");
-
-
-        command = scanner.nextLine();
-        commands = command.split("\\s+");
-        switch(commands[0]) {
-          case "ping": ping(2);
-          	break;
-          case "read" : 
-                  if(commands.length > 1)
-                    readFile(commands[1]);
-                  break;
-          case "write" : {
-                  if(commands.length > 1)
-                	  mc.chunkAndSend(commands[1]);
-                  break;
-                  }
-          case "delete" : 
-                  if(commands.length >1)
-                    deleteFile(commands[1]);
-                  break;
-          default:
-                  break;
-        }
-      } while(!commands[0].equals("quit"));
-      
+		Scanner scanner = new Scanner(System.in);
+		 
+		String command = null;
+		String[] commands;
+	
+		do {
+	        System.out.print("\n\n------------------------\n" +
+	        				"Menu\n------------------------\n" +
+	        				"* ping\n" + 
+	                        "* read <fileName>\n" + 
+	                        "* write <filePath>\n" +
+	                        "* delete <fileName>\n" +
+	                        "* quit\n\n\n" +
+	                        "> ");
+	        System.out.flush();
+	
+	        command = scanner.nextLine();
+	        commands = command.split("\\s+");
+	        switch(commands[0]) {
+	          case "ping":
+	        	  	  mc.ping();
+	        	  	  break;
+	          case "read" : 
+	                  if(commands.length > 1)
+	                	  mc.sendReadRequest(commands[1]);
+	                  break;
+	          case "write" : {
+	                  if(commands.length > 1)
+	                	  mc.chunkAndSend(commands[1]);
+	                  break;
+	                  }
+	          case "delete" : 
+	                  if(commands.length >1)
+	                	  mc.deleteFile(commands[1]);
+	                  break;
+	          default:
+	                  break;
+	        }
+	      } while(!commands[0].equals("quit"));
+	      
   }
 
 	/**

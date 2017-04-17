@@ -63,11 +63,7 @@ public class CommandHandler extends SimpleChannelInboundHandler<CommandMessage> 
 			System.out.println("ERROR: Unexpected content - " + msg);
 			return;
 		}
-		qos = QOSWorker.getInstance();
-		logger.info("QOSWorker Thread Working : ");
-		Session session = new CommandSession(conf, msg, channel);
-		qos.getQueue().enqueue(session);
-		/*
+
 		PrintUtil.printCommand(msg);
 
 		try {
@@ -75,18 +71,24 @@ public class CommandHandler extends SimpleChannelInboundHandler<CommandMessage> 
 			if (msg.hasPing()) {
 				logger.info("Server CommandHandler received ping message!");
 				logger.info("ping from " + msg.getHeader().getNodeId());
+				
 			} else if (msg.hasRequest()) {
 				logger.info("server get request: "+msg.getRequest().toString());
+				System.out.println("IN HERE***1****");
 
-        Header.Builder hb = Header.newBuilder();
-        hb.setNodeId(-4);
-        hb.setTime(System.currentTimeMillis());
-
-
-        CommandMessage.Builder cm = CommandMessage.newBuilder();
-        cm.setHeader(hb);
-        cm.setPing(true);
-        channel.writeAndFlush(cm);
+//				Header.Builder hb = Header.newBuilder();
+//				hb.setNodeId(-4);
+//				hb.setTime(System.currentTimeMillis());
+//
+//				CommandMessage.Builder cm = CommandMessage.newBuilder();
+//				cm.setHeader(hb);
+//				cm.setPing(true);
+//				channel.writeAndFlush(cm);
+				
+				qos = QOSWorker.getInstance();
+				logger.info("QOSWorker Thread Working : ");
+				Session session = new CommandSession(conf, msg, channel);
+				qos.getQueue().enqueue(session);
 
 			} else {
 			}
@@ -103,7 +105,7 @@ public class CommandHandler extends SimpleChannelInboundHandler<CommandMessage> 
 		}
 
 		System.out.flush();
-		*/
+		
 	}
 
 	/**

@@ -5299,6 +5299,15 @@ public final class Common {
         getFilenameBytes();
 
     /**
+     * <code>optional .Response.Status status = 6;</code>
+     */
+    boolean hasStatus();
+    /**
+     * <code>optional .Response.Status status = 6;</code>
+     */
+    pipe.common.Common.Response.Status getStatus();
+
+    /**
      * <code>optional .WriteResponse writeResponse = 4;</code>
      */
     boolean hasWriteResponse();
@@ -5340,6 +5349,7 @@ public final class Common {
     private Response() {
       responseType_ = 1;
       filename_ = "";
+      status_ = 1;
     }
 
     @java.lang.Override
@@ -5413,6 +5423,17 @@ public final class Common {
                 payload_ = subBuilder.buildPartial();
               }
               payloadCase_ = 5;
+              break;
+            }
+            case 48: {
+              int rawValue = input.readEnum();
+              pipe.common.Common.Response.Status value = pipe.common.Common.Response.Status.valueOf(rawValue);
+              if (value == null) {
+                unknownFields.mergeVarintField(6, rawValue);
+              } else {
+                bitField0_ |= 0x00000004;
+                status_ = rawValue;
+              }
               break;
             }
           }
@@ -5626,6 +5647,22 @@ public final class Common {
       }
     }
 
+    public static final int STATUS_FIELD_NUMBER = 6;
+    private int status_;
+    /**
+     * <code>optional .Response.Status status = 6;</code>
+     */
+    public boolean hasStatus() {
+      return ((bitField0_ & 0x00000004) == 0x00000004);
+    }
+    /**
+     * <code>optional .Response.Status status = 6;</code>
+     */
+    public pipe.common.Common.Response.Status getStatus() {
+      pipe.common.Common.Response.Status result = pipe.common.Common.Response.Status.valueOf(status_);
+      return result == null ? pipe.common.Common.Response.Status.Success : result;
+    }
+
     public static final int WRITERESPONSE_FIELD_NUMBER = 4;
     /**
      * <code>optional .WriteResponse writeResponse = 4;</code>
@@ -5712,6 +5749,9 @@ public final class Common {
       if (payloadCase_ == 5) {
         output.writeMessage(5, (pipe.common.Common.ReadResponse) payload_);
       }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        output.writeEnum(6, status_);
+      }
       unknownFields.writeTo(output);
     }
 
@@ -5734,6 +5774,10 @@ public final class Common {
       if (payloadCase_ == 5) {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(5, (pipe.common.Common.ReadResponse) payload_);
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeEnumSize(6, status_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -5760,6 +5804,10 @@ public final class Common {
       if (hasFilename()) {
         result = result && getFilename()
             .equals(other.getFilename());
+      }
+      result = result && (hasStatus() == other.hasStatus());
+      if (hasStatus()) {
+        result = result && status_ == other.status_;
       }
       result = result && getPayloadCase().equals(
           other.getPayloadCase());
@@ -5794,6 +5842,10 @@ public final class Common {
       if (hasFilename()) {
         hash = (37 * hash) + FILENAME_FIELD_NUMBER;
         hash = (53 * hash) + getFilename().hashCode();
+      }
+      if (hasStatus()) {
+        hash = (37 * hash) + STATUS_FIELD_NUMBER;
+        hash = (53 * hash) + status_;
       }
       switch (payloadCase_) {
         case 4:
@@ -5929,6 +5981,8 @@ public final class Common {
         bitField0_ = (bitField0_ & ~0x00000001);
         filename_ = "";
         bitField0_ = (bitField0_ & ~0x00000002);
+        status_ = 1;
+        bitField0_ = (bitField0_ & ~0x00000004);
         payloadCase_ = 0;
         payload_ = null;
         return this;
@@ -5963,6 +6017,10 @@ public final class Common {
           to_bitField0_ |= 0x00000002;
         }
         result.filename_ = filename_;
+        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
+          to_bitField0_ |= 0x00000004;
+        }
+        result.status_ = status_;
         if (payloadCase_ == 4) {
           if (writeResponseBuilder_ == null) {
             result.payload_ = payload_;
@@ -6027,6 +6085,9 @@ public final class Common {
           bitField0_ |= 0x00000002;
           filename_ = other.filename_;
           onChanged();
+        }
+        if (other.hasStatus()) {
+          setStatus(other.getStatus());
         }
         switch (other.getPayloadCase()) {
           case WRITERESPONSE: {
@@ -6200,6 +6261,42 @@ public final class Common {
   }
   bitField0_ |= 0x00000002;
         filename_ = value;
+        onChanged();
+        return this;
+      }
+
+      private int status_ = 1;
+      /**
+       * <code>optional .Response.Status status = 6;</code>
+       */
+      public boolean hasStatus() {
+        return ((bitField0_ & 0x00000004) == 0x00000004);
+      }
+      /**
+       * <code>optional .Response.Status status = 6;</code>
+       */
+      public pipe.common.Common.Response.Status getStatus() {
+        pipe.common.Common.Response.Status result = pipe.common.Common.Response.Status.valueOf(status_);
+        return result == null ? pipe.common.Common.Response.Status.Success : result;
+      }
+      /**
+       * <code>optional .Response.Status status = 6;</code>
+       */
+      public Builder setStatus(pipe.common.Common.Response.Status value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        bitField0_ |= 0x00000004;
+        status_ = value.getNumber();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional .Response.Status status = 6;</code>
+       */
+      public Builder clearStatus() {
+        bitField0_ = (bitField0_ & ~0x00000004);
+        status_ = 1;
         onChanged();
         return this;
       }
@@ -10200,21 +10297,22 @@ public final class Common {
       "\001(\t\022\017\n\007file_id\030\002 \001(\003\022\020\n\010chunk_id\030\003 \001(\005\022\022" +
       "\n\nchunk_size\030\004 \001(\005\"A\n\005Chunk\022\020\n\010chunk_id\030" +
       "\001 \002(\005\022\022\n\nchunk_data\030\006 \002(\014\022\022\n\nchunk_size\030" +
-      "\t \001(\005\"\274\001\n\010Response\022\037\n\014responseType\030\001 \002(\016" +
-      "2\t.TaskType\022\020\n\010filename\030\003 \001(\t\022\'\n\rwriteRe" +
-      "sponse\030\004 \001(\0132\016.WriteResponseH\000\022%\n\014readRe" +
-      "sponse\030\005 \001(\0132\r.ReadResponseH\000\"\"\n\006Status\022" +
-      "\013\n\007Success\020\001\022\013\n\007Failure\020\002B\t\n\007payload\" \n\r" +
-      "WriteResponse\022\017\n\007ChunkId\030\001 \003(\005\"\231\001\n\014ReadR" +
-      "esponse\022\017\n\007file_id\030\001 \001(\003\022\020\n\010filename\030\002 \002",
-      "(\t\022\020\n\010file_ext\030\003 \001(\t\022\025\n\rnum_of_chunks\030\004 " +
-      "\001(\005\022&\n\016chunk_location\030\005 \003(\0132\016.ChunkLocat" +
-      "ion\022\025\n\005chunk\030\006 \001(\0132\006.Chunk\"5\n\rChunkLocat" +
-      "ion\022\017\n\007chunkid\030\001 \001(\005\022\023\n\004node\030\002 \003(\0132\005.Nod" +
-      "e\"3\n\004Node\022\017\n\007node_id\030\001 \002(\005\022\014\n\004host\030\002 \002(\t" +
-      "\022\014\n\004port\030\003 \002(\005*G\n\010TaskType\022\014\n\010READFILE\020\001" +
-      "\022\r\n\tWRITEFILE\020\002\022\016\n\nDELETEFILE\020\003\022\016\n\nUPDAT" +
-      "EFILE\020\004B\017\n\013pipe.commonH\001"
+      "\t \001(\005\"\336\001\n\010Response\022\037\n\014responseType\030\001 \002(\016" +
+      "2\t.TaskType\022\020\n\010filename\030\003 \001(\t\022 \n\006status\030" +
+      "\006 \001(\0162\020.Response.Status\022\'\n\rwriteResponse" +
+      "\030\004 \001(\0132\016.WriteResponseH\000\022%\n\014readResponse" +
+      "\030\005 \001(\0132\r.ReadResponseH\000\"\"\n\006Status\022\013\n\007Suc" +
+      "cess\020\001\022\013\n\007Failure\020\002B\t\n\007payload\" \n\rWriteR" +
+      "esponse\022\017\n\007ChunkId\030\001 \003(\005\"\231\001\n\014ReadRespons",
+      "e\022\017\n\007file_id\030\001 \001(\003\022\020\n\010filename\030\002 \002(\t\022\020\n\010" +
+      "file_ext\030\003 \001(\t\022\025\n\rnum_of_chunks\030\004 \001(\005\022&\n" +
+      "\016chunk_location\030\005 \003(\0132\016.ChunkLocation\022\025\n" +
+      "\005chunk\030\006 \001(\0132\006.Chunk\"5\n\rChunkLocation\022\017\n" +
+      "\007chunkid\030\001 \001(\005\022\023\n\004node\030\002 \003(\0132\005.Node\"3\n\004N" +
+      "ode\022\017\n\007node_id\030\001 \002(\005\022\014\n\004host\030\002 \002(\t\022\014\n\004po" +
+      "rt\030\003 \002(\005*G\n\010TaskType\022\014\n\010READFILE\020\001\022\r\n\tWR" +
+      "ITEFILE\020\002\022\016\n\nDELETEFILE\020\003\022\016\n\nUPDATEFILE\020" +
+      "\004B\017\n\013pipe.commonH\001"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -10269,7 +10367,7 @@ public final class Common {
     internal_static_Response_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_Response_descriptor,
-        new java.lang.String[] { "ResponseType", "Filename", "WriteResponse", "ReadResponse", "Payload", });
+        new java.lang.String[] { "ResponseType", "Filename", "Status", "WriteResponse", "ReadResponse", "Payload", });
     internal_static_WriteResponse_descriptor =
       getDescriptor().getMessageTypes().get(7);
     internal_static_WriteResponse_fieldAccessorTable = new

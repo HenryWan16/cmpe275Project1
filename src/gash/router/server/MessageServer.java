@@ -134,7 +134,7 @@ public class MessageServer {
 //			properties.setProperty("sPass", "cmpe275");
 			mySQLStorage = new MySQLStorage();
 			TestSQLOperations testSQLOperations = new TestSQLOperations();
-			testSQLOperations.createTable();
+//			testSQLOperations.createTable();
 //			testSQLOperations.insertRecordFileChunk();
 //			testSQLOperations.updateRecordFileChunk();
 //			testSQLOperations.deleteRecordFileChunk();
@@ -175,8 +175,8 @@ public class MessageServer {
 			this.conf = conf;
 			QOSWorker qos = QOSWorker.getInstance();
 			System.out.println("Qos started");
-			Thread t = new Thread(qos);
-			t.start();
+//			Thread t = new Thread(qos);
+//			t.start();
 		}
 
 		public void run() {

@@ -35,6 +35,15 @@ public final class Work {
      * <code>required int32 processed = 2;</code>
      */
     int getProcessed();
+
+    /**
+     * <code>optional int32 queue_size = 3;</code>
+     */
+    boolean hasQueueSize();
+    /**
+     * <code>optional int32 queue_size = 3;</code>
+     */
+    int getQueueSize();
   }
   /**
    * Protobuf type {@code WorkState}
@@ -50,6 +59,7 @@ public final class Work {
     private WorkState() {
       enqueued_ = 0;
       processed_ = 0;
+      queueSize_ = 0;
     }
 
     @java.lang.Override
@@ -88,6 +98,11 @@ public final class Work {
             case 16: {
               bitField0_ |= 0x00000002;
               processed_ = input.readInt32();
+              break;
+            }
+            case 24: {
+              bitField0_ |= 0x00000004;
+              queueSize_ = input.readInt32();
               break;
             }
           }
@@ -145,6 +160,21 @@ public final class Work {
       return processed_;
     }
 
+    public static final int QUEUE_SIZE_FIELD_NUMBER = 3;
+    private int queueSize_;
+    /**
+     * <code>optional int32 queue_size = 3;</code>
+     */
+    public boolean hasQueueSize() {
+      return ((bitField0_ & 0x00000004) == 0x00000004);
+    }
+    /**
+     * <code>optional int32 queue_size = 3;</code>
+     */
+    public int getQueueSize() {
+      return queueSize_;
+    }
+
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
@@ -171,6 +201,9 @@ public final class Work {
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
         output.writeInt32(2, processed_);
       }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        output.writeInt32(3, queueSize_);
+      }
       unknownFields.writeTo(output);
     }
 
@@ -186,6 +219,10 @@ public final class Work {
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
         size += com.google.protobuf.CodedOutputStream
           .computeInt32Size(2, processed_);
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(3, queueSize_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -214,6 +251,11 @@ public final class Work {
         result = result && (getProcessed()
             == other.getProcessed());
       }
+      result = result && (hasQueueSize() == other.hasQueueSize());
+      if (hasQueueSize()) {
+        result = result && (getQueueSize()
+            == other.getQueueSize());
+      }
       result = result && unknownFields.equals(other.unknownFields);
       return result;
     }
@@ -232,6 +274,10 @@ public final class Work {
       if (hasProcessed()) {
         hash = (37 * hash) + PROCESSED_FIELD_NUMBER;
         hash = (53 * hash) + getProcessed();
+      }
+      if (hasQueueSize()) {
+        hash = (37 * hash) + QUEUE_SIZE_FIELD_NUMBER;
+        hash = (53 * hash) + getQueueSize();
       }
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
@@ -355,6 +401,8 @@ public final class Work {
         bitField0_ = (bitField0_ & ~0x00000001);
         processed_ = 0;
         bitField0_ = (bitField0_ & ~0x00000002);
+        queueSize_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000004);
         return this;
       }
 
@@ -387,6 +435,10 @@ public final class Work {
           to_bitField0_ |= 0x00000002;
         }
         result.processed_ = processed_;
+        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
+          to_bitField0_ |= 0x00000004;
+        }
+        result.queueSize_ = queueSize_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -434,6 +486,9 @@ public final class Work {
         }
         if (other.hasProcessed()) {
           setProcessed(other.getProcessed());
+        }
+        if (other.hasQueueSize()) {
+          setQueueSize(other.getQueueSize());
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -529,6 +584,38 @@ public final class Work {
       public Builder clearProcessed() {
         bitField0_ = (bitField0_ & ~0x00000002);
         processed_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int queueSize_ ;
+      /**
+       * <code>optional int32 queue_size = 3;</code>
+       */
+      public boolean hasQueueSize() {
+        return ((bitField0_ & 0x00000004) == 0x00000004);
+      }
+      /**
+       * <code>optional int32 queue_size = 3;</code>
+       */
+      public int getQueueSize() {
+        return queueSize_;
+      }
+      /**
+       * <code>optional int32 queue_size = 3;</code>
+       */
+      public Builder setQueueSize(int value) {
+        bitField0_ |= 0x00000004;
+        queueSize_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional int32 queue_size = 3;</code>
+       */
+      public Builder clearQueueSize() {
+        bitField0_ = (bitField0_ & ~0x00000004);
+        queueSize_ = 0;
         onChanged();
         return this;
       }
@@ -5876,22 +5963,23 @@ public final class Work {
   static {
     java.lang.String[] descriptorData = {
       "\n\nwork.proto\032\014common.proto\032\016election.pro" +
-      "to\032\npipe.proto\"0\n\tWorkState\022\020\n\010enqueued\030" +
-      "\001 \002(\005\022\021\n\tprocessed\030\002 \002(\005\"&\n\tHeartbeat\022\031\n" +
-      "\005state\030\001 \002(\0132\n.WorkState\")\n\004Task\022\021\n\tseri" +
-      "es_id\030\001 \002(\003\022\016\n\006seq_id\030\002 \002(\005\"*\n\014RegisterN" +
-      "ode\022\014\n\004host\030\001 \002(\t\022\014\n\004port\030\002 \002(\005\"\235\003\n\013Work" +
-      "Message\022\027\n\006header\030\001 \001(\0132\007.Header\022\016\n\006secr" +
-      "et\030\002 \002(\003\022\027\n\003err\030\003 \001(\0132\010.FailureH\000\022\016\n\004pin" +
-      "g\030\004 \001(\010H\000\022\032\n\004beat\030\005 \001(\0132\n.HeartbeatH\000\022\025\n" +
-      "\004task\030\006 \001(\0132\005.TaskH\000\022\033\n\005state\030\007 \001(\0132\n.Wo",
-      "rkStateH\000\022\037\n\006leader\030\010 \001(\0132\r.LeaderStatus" +
-      "H\000\022\027\n\006a_vote\030\n \001(\0132\005.VoteH\000\022\"\n\nreq_a_vot" +
-      "e\030\013 \001(\0132\014.RequestVoteH\000\022\037\n\006a_node\030\014 \001(\0132" +
-      "\r.RegisterNodeH\000\022\033\n\007request\030\r \001(\0132\010.Requ" +
-      "estH\000\022\035\n\010response\030\016 \001(\0132\t.ResponseH\000\022&\n\013" +
-      "cmd_message\030\017 \001(\0132\017.CommandMessageH\000B\t\n\007" +
-      "payloadB\r\n\tpipe.workH\001"
+      "to\032\npipe.proto\"D\n\tWorkState\022\020\n\010enqueued\030" +
+      "\001 \002(\005\022\021\n\tprocessed\030\002 \002(\005\022\022\n\nqueue_size\030\003" +
+      " \001(\005\"&\n\tHeartbeat\022\031\n\005state\030\001 \002(\0132\n.WorkS" +
+      "tate\")\n\004Task\022\021\n\tseries_id\030\001 \002(\003\022\016\n\006seq_i" +
+      "d\030\002 \002(\005\"*\n\014RegisterNode\022\014\n\004host\030\001 \002(\t\022\014\n" +
+      "\004port\030\002 \002(\005\"\235\003\n\013WorkMessage\022\027\n\006header\030\001 " +
+      "\001(\0132\007.Header\022\016\n\006secret\030\002 \002(\003\022\027\n\003err\030\003 \001(" +
+      "\0132\010.FailureH\000\022\016\n\004ping\030\004 \001(\010H\000\022\032\n\004beat\030\005 " +
+      "\001(\0132\n.HeartbeatH\000\022\025\n\004task\030\006 \001(\0132\005.TaskH\000",
+      "\022\033\n\005state\030\007 \001(\0132\n.WorkStateH\000\022\037\n\006leader\030" +
+      "\010 \001(\0132\r.LeaderStatusH\000\022\027\n\006a_vote\030\n \001(\0132\005" +
+      ".VoteH\000\022\"\n\nreq_a_vote\030\013 \001(\0132\014.RequestVot" +
+      "eH\000\022\037\n\006a_node\030\014 \001(\0132\r.RegisterNodeH\000\022\033\n\007" +
+      "request\030\r \001(\0132\010.RequestH\000\022\035\n\010response\030\016 " +
+      "\001(\0132\t.ResponseH\000\022&\n\013cmd_message\030\017 \001(\0132\017." +
+      "CommandMessageH\000B\t\n\007payloadB\r\n\tpipe.work" +
+      "H\001"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -5913,7 +6001,7 @@ public final class Work {
     internal_static_WorkState_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_WorkState_descriptor,
-        new java.lang.String[] { "Enqueued", "Processed", });
+        new java.lang.String[] { "Enqueued", "Processed", "QueueSize", });
     internal_static_Heartbeat_descriptor =
       getDescriptor().getMessageTypes().get(1);
     internal_static_Heartbeat_fieldAccessorTable = new

@@ -21,6 +21,7 @@ public class RaftHandler implements Runnable {
 	private String host;
 	private int port;
 	private EdgeMonitor edgeMonitor;
+//	private 
 
 	private long timerStart = 0;
 

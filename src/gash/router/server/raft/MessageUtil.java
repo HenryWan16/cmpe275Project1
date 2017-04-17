@@ -2,6 +2,9 @@ package gash.router.server.raft;
 
 import java.net.UnknownHostException;
 
+import com.google.protobuf.ByteString;
+
+import pipe.common.Common.Chunk;
 import pipe.common.Common.Header;
 import pipe.work.Work.RegisterNode;
 import pipe.election.Election.LeaderStatus;
@@ -87,4 +90,19 @@ public class MessageUtil {
 		return wb.build();
 	}
 
+	/************ COMMAND MESSAGES ********/
+	
+	//public static CommandMessage 
+	
+	
+	public static Chunk buildChunk(int id, byte[] data, int size) {
+		Chunk.Builder chunk = Chunk.newBuilder();
+		chunk.setChunkId(id);
+		chunk.setChunkData(ByteString.copyFrom(data));
+		chunk.setChunkSize(size);
+		return chunk.build(); 
+	}
+	
+	
+	
 }

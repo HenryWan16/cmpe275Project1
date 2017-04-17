@@ -3,6 +3,8 @@ package gash.router.server.storage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import gash.router.server.messages.QOSWorker;
+
 import java.sql.*;
 import java.util.ArrayList;
 
@@ -14,9 +16,19 @@ public class MySQLStorage {
     protected static Logger logger = LoggerFactory.getLogger("MySQL");
 
     private Connection conn;
+    public static MySQLStorage instance;
+    
 
     public MySQLStorage() {
         init();
+        instance = this;
+    }
+    
+    public static MySQLStorage getInstance() {
+        if (instance == null) {
+            instance = new MySQLStorage();
+        }
+        return instance;
     }
 
     public void init() {
@@ -40,22 +52,6 @@ public class MySQLStorage {
             logger.info("FileDB Connection successful!");
         }
     }
-//  Be used only for trying;
-//    public void init() {
-//        try {
-//            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/LearnSQL?&useSSL=true","root","cmpe275");
-//            Class.forName("com.mysql.jdbc.Driver").newInstance();
-//            logger.info("Connecting to MySQL successed.");
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        } catch (IllegalAccessException e) {
-//            e.printStackTrace();
-//        } catch (InstantiationException e) {
-//            e.printStackTrace();
-//        } catch (ClassNotFoundException e) {
-//            e.printStackTrace();
-//        }
-//    }
 
     /**
      * testing database can be used.
@@ -120,19 +116,13 @@ public class MySQLStorage {
                 else {
                     logger.info("Create table FileChunk in the FileDB successfully. ");
                 }
-//                ResultSet rs = stmt.executeQuery("SELECT 1 FROM INFORMATION_SCHEMA.SYSTEM_USERS"); // do something with the connection.
-//                while(rs.next()){
-//                    System.out.println(rs.getString(1)); // should print out "1"'
-//                }
             }
-            // release(); // shutdown connection pool.
         } catch (Exception ex) {
             ex.printStackTrace();
             logger.error("failed/exception on creating Table FileChunk of the FileDB.", ex);
             try {
                 conn.rollback();
-            } catch (SQLException e) {
-            }
+            } catch (SQLException e) { }
 
             // indicate failure
             return false;
@@ -159,14 +149,9 @@ public class MySQLStorage {
                 boolean dropResult = stmt.execute(dropTable);
                 if (dropResult == false) {
                     logger.info("Drop table FileChunk in the FileDB failed. ");
-                }
-                else {
+                } else {
                     logger.info("Drop table FileChunk in the FileDB successfully. ");
                 }
-//                ResultSet rs = stmt.executeQuery("SELECT 1 FROM INFORMATION_SCHEMA.SYSTEM_USERS"); // do something with the connection.
-//                while(rs.next()){
-//                    System.out.println(rs.getString(1)); // should print out "1"'
-//                }
             }
             // release(); // shutdown connection pool.
         } catch (Exception ex) {
@@ -213,24 +198,14 @@ public class MySQLStorage {
                 if (insertResult == true) {
                     logger.info("Insert table FileChunk in the FileDB successfully. ");
                 }
-//                if (insertResult == false) {
-//                    logger.info("Insert a new record to Table FileChunk in the FileDB failed. ");
-//                } else {
-//                    logger.info("Insert table FileChunk in the FileDB successfully. ");
-//                }
-//                ResultSet rs = stmt.executeQuery("SELECT 1 FROM INFORMATION_SCHEMA.SYSTEM_USERS"); // do something with the connection.
-//                while(rs.next()){
-//                    System.out.println(rs.getString(1)); // should print out "1"'
-//                }
             }
-            // release(); // shutdown connection pool.
+
         } catch (Exception ex) {
             ex.printStackTrace();
             logger.error("failed/exception on inserting a record: chunkId " + chunkID + " of the file " + fileName, ex);
             try {
                 conn.rollback();
-            } catch (SQLException e) {
-            }
+            } catch (SQLException e) { }
 
             // indicate failure
             return false;

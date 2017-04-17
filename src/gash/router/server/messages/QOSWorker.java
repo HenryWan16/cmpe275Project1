@@ -12,6 +12,7 @@ public class QOSWorker implements Runnable{
     protected static QOSWorker instance;
     private boolean forever;
     private QueueInterface queue;
+//    private EdgeMonitor emon;
 
     public QOSWorker() {
         this.forever = true;
@@ -52,12 +53,20 @@ public class QOSWorker implements Runnable{
                 }
             }
             */
-            logger.info("Queue Size: " + queue.size());
-            try {
-                Thread.sleep(3000);
-            }catch(InterruptedException e){
-                System.out.println(e.toString());
-            }
+        	
+        	if (!queue.isEmpty()) {
+        		//do work in queue
+        		Session task = queue.dequeue();
+        		task.handleMessage();
+        		
+        	} else {//queue is empty, ask for work ** stealing work
+        		
+        	}
+        	
+
+        	logger.info("Queue Size: " + queue.size());
+            try { Thread.sleep(200); } catch(Exception e){ }
+
         }
     }
 

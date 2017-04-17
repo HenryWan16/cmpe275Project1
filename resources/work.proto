@@ -9,6 +9,7 @@ import "pipe.proto";
 message WorkState {
    required int32 enqueued = 1;
    required int32 processed = 2;
+   optional int32 queue_size = 3;
 }
 
 message Heartbeat {
