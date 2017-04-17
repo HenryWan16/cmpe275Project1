@@ -108,6 +108,88 @@ public final class Common {
     // @@protoc_insertion_point(enum_scope:TaskType)
   }
 
+  /**
+   * Protobuf enum {@code ResponseStatus}
+   */
+  public enum ResponseStatus
+      implements com.google.protobuf.ProtocolMessageEnum {
+    /**
+     * <code>Success = 1;</code>
+     */
+    Success(0, 1),
+    /**
+     * <code>Fail = 2;</code>
+     */
+    Fail(1, 2),
+    ;
+
+    /**
+     * <code>Success = 1;</code>
+     */
+    public static final int Success_VALUE = 1;
+    /**
+     * <code>Fail = 2;</code>
+     */
+    public static final int Fail_VALUE = 2;
+
+
+    public final int getNumber() { return value; }
+
+    public static ResponseStatus valueOf(int value) {
+      switch (value) {
+        case 1: return Success;
+        case 2: return Fail;
+        default: return null;
+      }
+    }
+
+    public static com.google.protobuf.Internal.EnumLiteMap<ResponseStatus>
+        internalGetValueMap() {
+      return internalValueMap;
+    }
+    private static com.google.protobuf.Internal.EnumLiteMap<ResponseStatus>
+        internalValueMap =
+          new com.google.protobuf.Internal.EnumLiteMap<ResponseStatus>() {
+            public ResponseStatus findValueByNumber(int number) {
+              return ResponseStatus.valueOf(number);
+            }
+          };
+
+    public final com.google.protobuf.Descriptors.EnumValueDescriptor
+        getValueDescriptor() {
+      return getDescriptor().getValues().get(index);
+    }
+    public final com.google.protobuf.Descriptors.EnumDescriptor
+        getDescriptorForType() {
+      return getDescriptor();
+    }
+    public static final com.google.protobuf.Descriptors.EnumDescriptor
+        getDescriptor() {
+      return pipe.common.Common.getDescriptor().getEnumTypes().get(1);
+    }
+
+    private static final ResponseStatus[] VALUES = values();
+
+    public static ResponseStatus valueOf(
+        com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
+      if (desc.getType() != getDescriptor()) {
+        throw new java.lang.IllegalArgumentException(
+          "EnumValueDescriptor is not for this type.");
+      }
+      return VALUES[desc.getIndex()];
+    }
+
+    private final int index;
+    private final int value;
+
+    private ResponseStatus(int index, int value) {
+      this.index = index;
+      this.value = value;
+    }
+
+    // @@protoc_insertion_point(enum_scope:ResponseStatus)
+  }
+
   public interface HeaderOrBuilder extends
       // @@protoc_insertion_point(interface_extends:Header)
       com.google.protobuf.MessageOrBuilder {
@@ -4713,13 +4795,13 @@ public final class Common {
         getFilenameBytes();
 
     /**
-     * <code>optional .Response.Status status = 6;</code>
+     * <code>optional .ResponseStatus ack = 6;</code>
      */
-    boolean hasStatus();
+    boolean hasAck();
     /**
-     * <code>optional .Response.Status status = 6;</code>
+     * <code>optional .ResponseStatus ack = 6;</code>
      */
-    pipe.common.Common.Response.Status getStatus();
+    pipe.common.Common.ResponseStatus getAck();
 
     /**
      * <code>optional .WriteResponse writeResponse = 4;</code>
@@ -4844,12 +4926,12 @@ public final class Common {
             }
             case 48: {
               int rawValue = input.readEnum();
-              pipe.common.Common.Response.Status value = pipe.common.Common.Response.Status.valueOf(rawValue);
+              pipe.common.Common.ResponseStatus value = pipe.common.Common.ResponseStatus.valueOf(rawValue);
               if (value == null) {
                 unknownFields.mergeVarintField(6, rawValue);
               } else {
                 bitField0_ |= 0x00000004;
-                status_ = value;
+                ack_ = value;
               }
               break;
             }
@@ -4890,88 +4972,6 @@ public final class Common {
     @java.lang.Override
     public com.google.protobuf.Parser<Response> getParserForType() {
       return PARSER;
-    }
-
-    /**
-     * Protobuf enum {@code Response.Status}
-     */
-    public enum Status
-        implements com.google.protobuf.ProtocolMessageEnum {
-      /**
-       * <code>Success = 1;</code>
-       */
-      Success(0, 1),
-      /**
-       * <code>Failure = 2;</code>
-       */
-      Failure(1, 2),
-      ;
-
-      /**
-       * <code>Success = 1;</code>
-       */
-      public static final int Success_VALUE = 1;
-      /**
-       * <code>Failure = 2;</code>
-       */
-      public static final int Failure_VALUE = 2;
-
-
-      public final int getNumber() { return value; }
-
-      public static Status valueOf(int value) {
-        switch (value) {
-          case 1: return Success;
-          case 2: return Failure;
-          default: return null;
-        }
-      }
-
-      public static com.google.protobuf.Internal.EnumLiteMap<Status>
-          internalGetValueMap() {
-        return internalValueMap;
-      }
-      private static com.google.protobuf.Internal.EnumLiteMap<Status>
-          internalValueMap =
-            new com.google.protobuf.Internal.EnumLiteMap<Status>() {
-              public Status findValueByNumber(int number) {
-                return Status.valueOf(number);
-              }
-            };
-
-      public final com.google.protobuf.Descriptors.EnumValueDescriptor
-          getValueDescriptor() {
-        return getDescriptor().getValues().get(index);
-      }
-      public final com.google.protobuf.Descriptors.EnumDescriptor
-          getDescriptorForType() {
-        return getDescriptor();
-      }
-      public static final com.google.protobuf.Descriptors.EnumDescriptor
-          getDescriptor() {
-        return pipe.common.Common.Response.getDescriptor().getEnumTypes().get(0);
-      }
-
-      private static final Status[] VALUES = values();
-
-      public static Status valueOf(
-          com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
-        if (desc.getType() != getDescriptor()) {
-          throw new java.lang.IllegalArgumentException(
-            "EnumValueDescriptor is not for this type.");
-        }
-        return VALUES[desc.getIndex()];
-      }
-
-      private final int index;
-      private final int value;
-
-      private Status(int index, int value) {
-        this.index = index;
-        this.value = value;
-      }
-
-      // @@protoc_insertion_point(enum_scope:Response.Status)
     }
 
     private int bitField0_;
@@ -5063,19 +5063,19 @@ public final class Common {
       }
     }
 
-    public static final int STATUS_FIELD_NUMBER = 6;
-    private pipe.common.Common.Response.Status status_;
+    public static final int ACK_FIELD_NUMBER = 6;
+    private pipe.common.Common.ResponseStatus ack_;
     /**
-     * <code>optional .Response.Status status = 6;</code>
+     * <code>optional .ResponseStatus ack = 6;</code>
      */
-    public boolean hasStatus() {
+    public boolean hasAck() {
       return ((bitField0_ & 0x00000004) == 0x00000004);
     }
     /**
-     * <code>optional .Response.Status status = 6;</code>
+     * <code>optional .ResponseStatus ack = 6;</code>
      */
-    public pipe.common.Common.Response.Status getStatus() {
-      return status_;
+    public pipe.common.Common.ResponseStatus getAck() {
+      return ack_;
     }
 
     public static final int WRITERESPONSE_FIELD_NUMBER = 4;
@@ -5133,7 +5133,7 @@ public final class Common {
     private void initFields() {
       responseType_ = pipe.common.Common.TaskType.READFILE;
       filename_ = "";
-      status_ = pipe.common.Common.Response.Status.Success;
+      ack_ = pipe.common.Common.ResponseStatus.Success;
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -5171,7 +5171,7 @@ public final class Common {
         output.writeMessage(5, (pipe.common.Common.ReadResponse) payload_);
       }
       if (((bitField0_ & 0x00000004) == 0x00000004)) {
-        output.writeEnum(6, status_.getNumber());
+        output.writeEnum(6, ack_.getNumber());
       }
       getUnknownFields().writeTo(output);
     }
@@ -5200,7 +5200,7 @@ public final class Common {
       }
       if (((bitField0_ & 0x00000004) == 0x00000004)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeEnumSize(6, status_.getNumber());
+          .computeEnumSize(6, ack_.getNumber());
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -5323,7 +5323,7 @@ public final class Common {
         bitField0_ = (bitField0_ & ~0x00000001);
         filename_ = "";
         bitField0_ = (bitField0_ & ~0x00000002);
-        status_ = pipe.common.Common.Response.Status.Success;
+        ack_ = pipe.common.Common.ResponseStatus.Success;
         bitField0_ = (bitField0_ & ~0x00000004);
         payloadCase_ = 0;
         payload_ = null;
@@ -5366,7 +5366,7 @@ public final class Common {
         if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
           to_bitField0_ |= 0x00000004;
         }
-        result.status_ = status_;
+        result.ack_ = ack_;
         if (payloadCase_ == 4) {
           if (writeResponseBuilder_ == null) {
             result.payload_ = payload_;
@@ -5406,8 +5406,8 @@ public final class Common {
           filename_ = other.filename_;
           onChanged();
         }
-        if (other.hasStatus()) {
-          setStatus(other.getStatus());
+        if (other.hasAck()) {
+          setAck(other.getAck());
         }
         switch (other.getPayloadCase()) {
           case WRITERESPONSE: {
@@ -5585,37 +5585,37 @@ public final class Common {
         return this;
       }
 
-      private pipe.common.Common.Response.Status status_ = pipe.common.Common.Response.Status.Success;
+      private pipe.common.Common.ResponseStatus ack_ = pipe.common.Common.ResponseStatus.Success;
       /**
-       * <code>optional .Response.Status status = 6;</code>
+       * <code>optional .ResponseStatus ack = 6;</code>
        */
-      public boolean hasStatus() {
+      public boolean hasAck() {
         return ((bitField0_ & 0x00000004) == 0x00000004);
       }
       /**
-       * <code>optional .Response.Status status = 6;</code>
+       * <code>optional .ResponseStatus ack = 6;</code>
        */
-      public pipe.common.Common.Response.Status getStatus() {
-        return status_;
+      public pipe.common.Common.ResponseStatus getAck() {
+        return ack_;
       }
       /**
-       * <code>optional .Response.Status status = 6;</code>
+       * <code>optional .ResponseStatus ack = 6;</code>
        */
-      public Builder setStatus(pipe.common.Common.Response.Status value) {
+      public Builder setAck(pipe.common.Common.ResponseStatus value) {
         if (value == null) {
           throw new NullPointerException();
         }
         bitField0_ |= 0x00000004;
-        status_ = value;
+        ack_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>optional .Response.Status status = 6;</code>
+       * <code>optional .ResponseStatus ack = 6;</code>
        */
-      public Builder clearStatus() {
+      public Builder clearAck() {
         bitField0_ = (bitField0_ & ~0x00000004);
-        status_ = pipe.common.Common.Response.Status.Success;
+        ack_ = pipe.common.Common.ResponseStatus.Success;
         onChanged();
         return this;
       }
@@ -9244,14 +9244,13 @@ public final class Common {
       "\001(\t\022\017\n\007file_id\030\002 \001(\003\022\020\n\010chunk_id\030\003 \001(\005\022\022" +
       "\n\nchunk_size\030\004 \001(\005\"A\n\005Chunk\022\020\n\010chunk_id\030" +
       "\001 \002(\005\022\022\n\nchunk_data\030\006 \002(\014\022\022\n\nchunk_size\030" +
-      "\t \001(\005\"\336\001\n\010Response\022\037\n\014responseType\030\001 \002(\016" +
-      "2\t.TaskType\022\020\n\010filename\030\003 \001(\t\022 \n\006status\030" +
-      "\006 \001(\0162\020.Response.Status\022\'\n\rwriteResponse" +
-      "\030\004 \001(\0132\016.WriteResponseH\000\022%\n\014readResponse" +
-      "\030\005 \001(\0132\r.ReadResponseH\000\"\"\n\006Status\022\013\n\007Suc" +
-      "cess\020\001\022\013\n\007Failure\020\002B\t\n\007payload\" \n\rWriteR" +
-      "esponse\022\017\n\007ChunkId\030\001 \003(\005\"\231\001\n\014ReadRespons",
-      "e\022\017\n\007file_id\030\001 \001(\003\022\020\n\010filename\030\002 \002(\t\022\020\n\010" +
+      "\t \001(\005\"\266\001\n\010Response\022\037\n\014responseType\030\001 \002(\016" +
+      "2\t.TaskType\022\020\n\010filename\030\003 \001(\t\022\034\n\003ack\030\006 \001" +
+      "(\0162\017.ResponseStatus\022\'\n\rwriteResponse\030\004 \001" +
+      "(\0132\016.WriteResponseH\000\022%\n\014readResponse\030\005 \001" +
+      "(\0132\r.ReadResponseH\000B\t\n\007payload\" \n\rWriteR" +
+      "esponse\022\017\n\007ChunkId\030\001 \003(\005\"\231\001\n\014ReadRespons" +
+      "e\022\017\n\007file_id\030\001 \001(\003\022\020\n\010filename\030\002 \002(\t\022\020\n\010",
       "file_ext\030\003 \001(\t\022\025\n\rnum_of_chunks\030\004 \001(\005\022&\n" +
       "\016chunk_location\030\005 \003(\0132\016.ChunkLocation\022\025\n" +
       "\005chunk\030\006 \001(\0132\006.Chunk\"5\n\rChunkLocation\022\017\n" +
@@ -9259,7 +9258,8 @@ public final class Common {
       "ode\022\017\n\007node_id\030\001 \002(\005\022\014\n\004host\030\002 \002(\t\022\014\n\004po" +
       "rt\030\003 \002(\005*G\n\010TaskType\022\014\n\010READFILE\020\001\022\r\n\tWR" +
       "ITEFILE\020\002\022\016\n\nDELETEFILE\020\003\022\016\n\nUPDATEFILE\020" +
-      "\004B\017\n\013pipe.commonH\001"
+      "\004*\'\n\016ResponseStatus\022\013\n\007Success\020\001\022\010\n\004Fail" +
+      "\020\002B\017\n\013pipe.commonH\001"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -9314,7 +9314,7 @@ public final class Common {
     internal_static_Response_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_Response_descriptor,
-        new java.lang.String[] { "ResponseType", "Filename", "Status", "WriteResponse", "ReadResponse", "Payload", });
+        new java.lang.String[] { "ResponseType", "Filename", "Ack", "WriteResponse", "ReadResponse", "Payload", });
     internal_static_WriteResponse_descriptor =
       getDescriptor().getMessageTypes().get(7);
     internal_static_WriteResponse_fieldAccessorTable = new

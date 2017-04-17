@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c054b1c7-8499-48ab-b5c2-5751c17fab07" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/gash/router/client/CommHandler.java" afterPath="$PROJECT_DIR$/src/gash/router/client/CommHandler.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/common.proto" afterPath="$PROJECT_DIR$/resources/common.proto" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -381,7 +381,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="81" y="30" width="1839" height="1050" extended-state="6" />
+    <frame x="81" y="30" width="1839" height="1050" extended-state="7" />
     <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
