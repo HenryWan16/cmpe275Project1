@@ -97,7 +97,7 @@ public class ClientApp implements CommListener {
 	                  }
 	          case "delete" : 
 	                  if(commands.length >1)
-	                	  mc.deleteFile(commands[1]);
+	                	  mc.sendDeleteFile(commands[1]);
 	                  break;
 	          default:
 	                  break;

@@ -16,10 +16,14 @@
 package gash.router.client;
 
 import com.google.protobuf.ByteString;
+
+import gash.router.server.raft.MessageUtil;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pipe.common.Common;
 import pipe.common.Common.Header;
+import pipe.common.Common.TaskType;
 import routing.Pipe.CommandMessage;
 
 import java.io.File;
@@ -146,25 +150,21 @@ public class MessageClient {
 			readbody
 
 		 */
-		MergeWorker.getMergeWorkerInstance().getFileName(fname);
-		CommandMessage.Builder cmdb = CommandMessage.newBuilder();
-		Header.Builder hb = Header.newBuilder();
-		Common.Request.Builder rb = Common.Request.newBuilder();
-		Common.ReadBody.Builder rdb = Common.ReadBody.newBuilder();
 
-		hb.setNodeId(999);
-		rb.setRequestType(Common.TaskType.READFILE);
-		rdb.setFilename(fname);
+		if (fname.equals("log.txt")) {
+			CommandMessage cmdb = MessageUtil.buildCommandMessage(
+				MessageUtil.buildHeader(999, System.currentTimeMillis()),
+				null,
+				MessageUtil.buildRequest(TaskType.READFILE, null,
+						MessageUtil.buildReadBody(fname, -1, -1, -1)),
+				null);
+			try {
+				CommConnection.getInstance().enqueue(cmdb);
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 
-		rb.setRrb(rdb.build());
-		cmdb.setHeader(hb.build());
-		cmdb.setRequest(rb.build());
-
-		try {
-			CommConnection.getInstance().enqueue(cmdb.build());
-			
-		} catch (Exception e) {
-			e.printStackTrace();
 		}
 
 		//start the thread for waiting the chunks from server
@@ -200,8 +200,17 @@ public class MessageClient {
 		}
 	}
 
-	public void deleteFile(String fname) {
-		
+	public void sendDeleteFile(String fname) {
+		CommandMessage cmdb = MessageUtil.buildCommandMessage(
+				MessageUtil.buildHeader(999, System.currentTimeMillis()),
+				null,
+				MessageUtil.buildRequest(TaskType.DELETEFILE, null,
+						MessageUtil.buildReadBody(fname, -1, -1, -1)),
+				null);
+		try {
+			CommConnection.getInstance().enqueue(cmdb);
+		} 
+		catch (Exception e) { e.printStackTrace(); }
 	}
 	
 	public void release() {
