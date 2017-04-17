@@ -101,6 +101,7 @@ public class MessageClient {
 				//get hash key for store, to do
 				logger.info("bytechunk: "+byteChunk.toString());
 
+//				MessageUtil.buildCommandMessage(MessageUtil.buildHeader(999,System.currentTimeMillis()),null,MessageUtil.buildRequest())
 				CommandMessage.Builder cmdb = CommandMessage.newBuilder();
 				Common.Request.Builder r = Common.Request.newBuilder();
 				Common.WriteBody.Builder wb = Common.WriteBody.newBuilder();
@@ -151,6 +152,8 @@ public class MessageClient {
 
 		 */
 
+		MergeWorker.getMergeWorkerInstance().getFileName(fname);
+
 		if (fname.equals("log.txt")) {
 			CommandMessage cmdb = MessageUtil.buildCommandMessage(
 				MessageUtil.buildHeader(999, System.currentTimeMillis()),
@@ -170,9 +173,9 @@ public class MessageClient {
 		//start the thread for waiting the chunks from server
 	}
 
-	public void receiveAndMerge() {
-
-	}
+//	public void receiveAndMerge() {
+//
+//	}
 
 	/**
 	 * send a comm message through workPort to the Remote.
