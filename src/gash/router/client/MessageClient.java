@@ -52,9 +52,8 @@ public class MessageClient {
 	public void ping() {
 		// construct the message to send
 		Header.Builder hb = Header.newBuilder();
-		hb.setNodeId(999);
+		hb.setNodeId(-1);
 		hb.setTime(System.currentTimeMillis());
-		hb.setDestination(-1);
 
 		CommandMessage.Builder rb = CommandMessage.newBuilder();
 		rb.setHeader(hb);

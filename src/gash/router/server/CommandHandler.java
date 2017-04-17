@@ -69,9 +69,23 @@ public class CommandHandler extends SimpleChannelInboundHandler<CommandMessage> 
 		try {
 			// TODO How can you implement this without if-else statements?
 			if (msg.hasPing()) {
-				logger.info("Server CommandHandler received ping message!");
-				logger.info("ping from " + msg.getHeader().getNodeId());
-				
+				if(msg.getHeader().getDestination() == conf.getNodeId()){
+					logger.info("Server received returned ping from" + msg.getHeader().getNodeId());
+				}else {
+
+					logger.info("Server CommandHandler received ping message!");
+					logger.info("ping from " + msg.getHeader().getNodeId());
+
+					Header.Builder hb = Header.newBuilder();
+					hb.setNodeId(conf.getNodeId());
+					hb.setTime(System.currentTimeMillis());
+					hb.setDestination(msg.getHeader().getNodeId());
+					CommandMessage.Builder rb = CommandMessage.newBuilder();
+					rb.setHeader(hb);
+					rb.setPing(true);
+					channel.writeAndFlush(rb);
+				}
+
 			} else if (msg.hasRequest()) {
 				logger.info("server get request: "+msg.getRequest().toString());
 				System.out.println("IN HERE***1****");

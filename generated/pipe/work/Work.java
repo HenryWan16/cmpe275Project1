@@ -2483,67 +2483,70 @@ public final class Work {
 
   }
 
-  public interface LocationOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:Location)
+  public interface TaskStatusOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:TaskStatus)
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>required int32 node_id = 1;</code>
+     * <code>required string filename = 1;</code>
      */
-    boolean hasNodeId();
+    boolean hasFilename();
     /**
-     * <code>required int32 node_id = 1;</code>
+     * <code>required string filename = 1;</code>
      */
-    int getNodeId();
-
+    java.lang.String getFilename();
     /**
-     * <code>required string host = 2;</code>
-     */
-    boolean hasHost();
-    /**
-     * <code>required string host = 2;</code>
-     */
-    java.lang.String getHost();
-    /**
-     * <code>required string host = 2;</code>
+     * <code>required string filename = 1;</code>
      */
     com.google.protobuf.ByteString
-        getHostBytes();
+        getFilenameBytes();
 
     /**
-     * <code>required int32 port = 3;</code>
+     * <code>required int32 chunk_id = 2;</code>
      */
-    boolean hasPort();
+    boolean hasChunkId();
     /**
-     * <code>required int32 port = 3;</code>
+     * <code>required int32 chunk_id = 2;</code>
      */
-    int getPort();
+    int getChunkId();
 
     /**
-     * <code>required bool leaderOrNot = 4;</code>
+     * <code>required int32 chunk_size = 3;</code>
      */
-    boolean hasLeaderOrNot();
+    boolean hasChunkSize();
     /**
-     * <code>required bool leaderOrNot = 4;</code>
+     * <code>required int32 chunk_size = 3;</code>
      */
-    boolean getLeaderOrNot();
+    int getChunkSize();
+
+    /**
+     * <code>required .RegisterNode node = 4;</code>
+     */
+    boolean hasNode();
+    /**
+     * <code>required .RegisterNode node = 4;</code>
+     */
+    pipe.work.Work.RegisterNode getNode();
+    /**
+     * <code>required .RegisterNode node = 4;</code>
+     */
+    pipe.work.Work.RegisterNodeOrBuilder getNodeOrBuilder();
   }
   /**
-   * Protobuf type {@code Location}
+   * Protobuf type {@code TaskStatus}
    */
-  public  static final class Location extends
+  public  static final class TaskStatus extends
       com.google.protobuf.GeneratedMessageV3 implements
-      // @@protoc_insertion_point(message_implements:Location)
-      LocationOrBuilder {
-    // Use Location.newBuilder() to construct.
-    private Location(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      // @@protoc_insertion_point(message_implements:TaskStatus)
+      TaskStatusOrBuilder {
+    // Use TaskStatus.newBuilder() to construct.
+    private TaskStatus(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
       super(builder);
     }
-    private Location() {
-      nodeId_ = 0;
-      host_ = "";
-      port_ = 0;
-      leaderOrNot_ = false;
+    private TaskStatus() {
+      filename_ = "";
+      chunkId_ = 0;
+      chunkSize_ = 0;
     }
 
     @java.lang.Override
@@ -2551,7 +2554,7 @@ public final class Work {
     getUnknownFields() {
       return this.unknownFields;
     }
-    private Location(
+    private TaskStatus(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
@@ -2574,25 +2577,33 @@ public final class Work {
               }
               break;
             }
-            case 8: {
+            case 10: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000001;
-              nodeId_ = input.readInt32();
+              filename_ = bs;
               break;
             }
-            case 18: {
-              com.google.protobuf.ByteString bs = input.readBytes();
+            case 16: {
               bitField0_ |= 0x00000002;
-              host_ = bs;
+              chunkId_ = input.readInt32();
               break;
             }
             case 24: {
               bitField0_ |= 0x00000004;
-              port_ = input.readInt32();
+              chunkSize_ = input.readInt32();
               break;
             }
-            case 32: {
+            case 34: {
+              pipe.work.Work.RegisterNode.Builder subBuilder = null;
+              if (((bitField0_ & 0x00000008) == 0x00000008)) {
+                subBuilder = node_.toBuilder();
+              }
+              node_ = input.readMessage(pipe.work.Work.RegisterNode.PARSER, extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(node_);
+                node_ = subBuilder.buildPartial();
+              }
               bitField0_ |= 0x00000008;
-              leaderOrNot_ = input.readBool();
               break;
             }
           }
@@ -2609,45 +2620,30 @@ public final class Work {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return pipe.work.Work.internal_static_Location_descriptor;
+      return pipe.work.Work.internal_static_TaskStatus_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return pipe.work.Work.internal_static_Location_fieldAccessorTable
+      return pipe.work.Work.internal_static_TaskStatus_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              pipe.work.Work.Location.class, pipe.work.Work.Location.Builder.class);
+              pipe.work.Work.TaskStatus.class, pipe.work.Work.TaskStatus.Builder.class);
     }
 
     private int bitField0_;
-    public static final int NODE_ID_FIELD_NUMBER = 1;
-    private int nodeId_;
+    public static final int FILENAME_FIELD_NUMBER = 1;
+    private volatile java.lang.Object filename_;
     /**
-     * <code>required int32 node_id = 1;</code>
+     * <code>required string filename = 1;</code>
      */
-    public boolean hasNodeId() {
+    public boolean hasFilename() {
       return ((bitField0_ & 0x00000001) == 0x00000001);
     }
     /**
-     * <code>required int32 node_id = 1;</code>
+     * <code>required string filename = 1;</code>
      */
-    public int getNodeId() {
-      return nodeId_;
-    }
-
-    public static final int HOST_FIELD_NUMBER = 2;
-    private volatile java.lang.Object host_;
-    /**
-     * <code>required string host = 2;</code>
-     */
-    public boolean hasHost() {
-      return ((bitField0_ & 0x00000002) == 0x00000002);
-    }
-    /**
-     * <code>required string host = 2;</code>
-     */
-    public java.lang.String getHost() {
-      java.lang.Object ref = host_;
+    public java.lang.String getFilename() {
+      java.lang.Object ref = filename_;
       if (ref instanceof java.lang.String) {
         return (java.lang.String) ref;
       } else {
@@ -2655,56 +2651,77 @@ public final class Work {
             (com.google.protobuf.ByteString) ref;
         java.lang.String s = bs.toStringUtf8();
         if (bs.isValidUtf8()) {
-          host_ = s;
+          filename_ = s;
         }
         return s;
       }
     }
     /**
-     * <code>required string host = 2;</code>
+     * <code>required string filename = 1;</code>
      */
     public com.google.protobuf.ByteString
-        getHostBytes() {
-      java.lang.Object ref = host_;
+        getFilenameBytes() {
+      java.lang.Object ref = filename_;
       if (ref instanceof java.lang.String) {
         com.google.protobuf.ByteString b = 
             com.google.protobuf.ByteString.copyFromUtf8(
                 (java.lang.String) ref);
-        host_ = b;
+        filename_ = b;
         return b;
       } else {
         return (com.google.protobuf.ByteString) ref;
       }
     }
 
-    public static final int PORT_FIELD_NUMBER = 3;
-    private int port_;
+    public static final int CHUNK_ID_FIELD_NUMBER = 2;
+    private int chunkId_;
     /**
-     * <code>required int32 port = 3;</code>
+     * <code>required int32 chunk_id = 2;</code>
      */
-    public boolean hasPort() {
+    public boolean hasChunkId() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>required int32 chunk_id = 2;</code>
+     */
+    public int getChunkId() {
+      return chunkId_;
+    }
+
+    public static final int CHUNK_SIZE_FIELD_NUMBER = 3;
+    private int chunkSize_;
+    /**
+     * <code>required int32 chunk_size = 3;</code>
+     */
+    public boolean hasChunkSize() {
       return ((bitField0_ & 0x00000004) == 0x00000004);
     }
     /**
-     * <code>required int32 port = 3;</code>
+     * <code>required int32 chunk_size = 3;</code>
      */
-    public int getPort() {
-      return port_;
+    public int getChunkSize() {
+      return chunkSize_;
     }
 
-    public static final int LEADERORNOT_FIELD_NUMBER = 4;
-    private boolean leaderOrNot_;
+    public static final int NODE_FIELD_NUMBER = 4;
+    private pipe.work.Work.RegisterNode node_;
     /**
-     * <code>required bool leaderOrNot = 4;</code>
+     * <code>required .RegisterNode node = 4;</code>
      */
-    public boolean hasLeaderOrNot() {
+    public boolean hasNode() {
       return ((bitField0_ & 0x00000008) == 0x00000008);
     }
     /**
-     * <code>required bool leaderOrNot = 4;</code>
+     * <code>required .RegisterNode node = 4;</code>
      */
-    public boolean getLeaderOrNot() {
-      return leaderOrNot_;
+    public pipe.work.Work.RegisterNode getNode() {
+      return node_ == null ? pipe.work.Work.RegisterNode.getDefaultInstance() : node_;
+    }
+    /**
+     * <code>required .RegisterNode node = 4;</code>
+     */
+    public pipe.work.Work.RegisterNodeOrBuilder getNodeOrBuilder() {
+      return node_ == null ? pipe.work.Work.RegisterNode.getDefaultInstance() : node_;
     }
 
     private byte memoizedIsInitialized = -1;
@@ -2713,19 +2730,23 @@ public final class Work {
       if (isInitialized == 1) return true;
       if (isInitialized == 0) return false;
 
-      if (!hasNodeId()) {
+      if (!hasFilename()) {
         memoizedIsInitialized = 0;
         return false;
       }
-      if (!hasHost()) {
+      if (!hasChunkId()) {
         memoizedIsInitialized = 0;
         return false;
       }
-      if (!hasPort()) {
+      if (!hasChunkSize()) {
         memoizedIsInitialized = 0;
         return false;
       }
-      if (!hasLeaderOrNot()) {
+      if (!hasNode()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!getNode().isInitialized()) {
         memoizedIsInitialized = 0;
         return false;
       }
@@ -2736,16 +2757,16 @@ public final class Work {
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        output.writeInt32(1, nodeId_);
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 1, filename_);
       }
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 2, host_);
+        output.writeInt32(2, chunkId_);
       }
       if (((bitField0_ & 0x00000004) == 0x00000004)) {
-        output.writeInt32(3, port_);
+        output.writeInt32(3, chunkSize_);
       }
       if (((bitField0_ & 0x00000008) == 0x00000008)) {
-        output.writeBool(4, leaderOrNot_);
+        output.writeMessage(4, getNode());
       }
       unknownFields.writeTo(output);
     }
@@ -2756,19 +2777,19 @@ public final class Work {
 
       size = 0;
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(1, nodeId_);
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, filename_);
       }
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, host_);
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(2, chunkId_);
       }
       if (((bitField0_ & 0x00000004) == 0x00000004)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(3, port_);
+          .computeInt32Size(3, chunkSize_);
       }
       if (((bitField0_ & 0x00000008) == 0x00000008)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeBoolSize(4, leaderOrNot_);
+          .computeMessageSize(4, getNode());
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -2781,31 +2802,31 @@ public final class Work {
       if (obj == this) {
        return true;
       }
-      if (!(obj instanceof pipe.work.Work.Location)) {
+      if (!(obj instanceof pipe.work.Work.TaskStatus)) {
         return super.equals(obj);
       }
-      pipe.work.Work.Location other = (pipe.work.Work.Location) obj;
+      pipe.work.Work.TaskStatus other = (pipe.work.Work.TaskStatus) obj;
 
       boolean result = true;
-      result = result && (hasNodeId() == other.hasNodeId());
-      if (hasNodeId()) {
-        result = result && (getNodeId()
-            == other.getNodeId());
+      result = result && (hasFilename() == other.hasFilename());
+      if (hasFilename()) {
+        result = result && getFilename()
+            .equals(other.getFilename());
       }
-      result = result && (hasHost() == other.hasHost());
-      if (hasHost()) {
-        result = result && getHost()
-            .equals(other.getHost());
+      result = result && (hasChunkId() == other.hasChunkId());
+      if (hasChunkId()) {
+        result = result && (getChunkId()
+            == other.getChunkId());
       }
-      result = result && (hasPort() == other.hasPort());
-      if (hasPort()) {
-        result = result && (getPort()
-            == other.getPort());
+      result = result && (hasChunkSize() == other.hasChunkSize());
+      if (hasChunkSize()) {
+        result = result && (getChunkSize()
+            == other.getChunkSize());
       }
-      result = result && (hasLeaderOrNot() == other.hasLeaderOrNot());
-      if (hasLeaderOrNot()) {
-        result = result && (getLeaderOrNot()
-            == other.getLeaderOrNot());
+      result = result && (hasNode() == other.hasNode());
+      if (hasNode()) {
+        result = result && getNode()
+            .equals(other.getNode());
       }
       result = result && unknownFields.equals(other.unknownFields);
       return result;
@@ -2818,80 +2839,79 @@ public final class Work {
       }
       int hash = 41;
       hash = (19 * hash) + getDescriptor().hashCode();
-      if (hasNodeId()) {
-        hash = (37 * hash) + NODE_ID_FIELD_NUMBER;
-        hash = (53 * hash) + getNodeId();
+      if (hasFilename()) {
+        hash = (37 * hash) + FILENAME_FIELD_NUMBER;
+        hash = (53 * hash) + getFilename().hashCode();
       }
-      if (hasHost()) {
-        hash = (37 * hash) + HOST_FIELD_NUMBER;
-        hash = (53 * hash) + getHost().hashCode();
+      if (hasChunkId()) {
+        hash = (37 * hash) + CHUNK_ID_FIELD_NUMBER;
+        hash = (53 * hash) + getChunkId();
       }
-      if (hasPort()) {
-        hash = (37 * hash) + PORT_FIELD_NUMBER;
-        hash = (53 * hash) + getPort();
+      if (hasChunkSize()) {
+        hash = (37 * hash) + CHUNK_SIZE_FIELD_NUMBER;
+        hash = (53 * hash) + getChunkSize();
       }
-      if (hasLeaderOrNot()) {
-        hash = (37 * hash) + LEADERORNOT_FIELD_NUMBER;
-        hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
-            getLeaderOrNot());
+      if (hasNode()) {
+        hash = (37 * hash) + NODE_FIELD_NUMBER;
+        hash = (53 * hash) + getNode().hashCode();
       }
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
     }
 
-    public static pipe.work.Work.Location parseFrom(
+    public static pipe.work.Work.TaskStatus parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static pipe.work.Work.Location parseFrom(
+    public static pipe.work.Work.TaskStatus parseFrom(
         com.google.protobuf.ByteString data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static pipe.work.Work.Location parseFrom(byte[] data)
+    public static pipe.work.Work.TaskStatus parseFrom(byte[] data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static pipe.work.Work.Location parseFrom(
+    public static pipe.work.Work.TaskStatus parseFrom(
         byte[] data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static pipe.work.Work.Location parseFrom(java.io.InputStream input)
+    public static pipe.work.Work.TaskStatus parseFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input);
     }
-    public static pipe.work.Work.Location parseFrom(
+    public static pipe.work.Work.TaskStatus parseFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input, extensionRegistry);
     }
-    public static pipe.work.Work.Location parseDelimitedFrom(java.io.InputStream input)
+    public static pipe.work.Work.TaskStatus parseDelimitedFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseDelimitedWithIOException(PARSER, input);
     }
-    public static pipe.work.Work.Location parseDelimitedFrom(
+    public static pipe.work.Work.TaskStatus parseDelimitedFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
     }
-    public static pipe.work.Work.Location parseFrom(
+    public static pipe.work.Work.TaskStatus parseFrom(
         com.google.protobuf.CodedInputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input);
     }
-    public static pipe.work.Work.Location parseFrom(
+    public static pipe.work.Work.TaskStatus parseFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
@@ -2903,7 +2923,7 @@ public final class Work {
     public static Builder newBuilder() {
       return DEFAULT_INSTANCE.toBuilder();
     }
-    public static Builder newBuilder(pipe.work.Work.Location prototype) {
+    public static Builder newBuilder(pipe.work.Work.TaskStatus prototype) {
       return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
     }
     public Builder toBuilder() {
@@ -2918,25 +2938,25 @@ public final class Work {
       return builder;
     }
     /**
-     * Protobuf type {@code Location}
+     * Protobuf type {@code TaskStatus}
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:Location)
-        pipe.work.Work.LocationOrBuilder {
+        // @@protoc_insertion_point(builder_implements:TaskStatus)
+        pipe.work.Work.TaskStatusOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return pipe.work.Work.internal_static_Location_descriptor;
+        return pipe.work.Work.internal_static_TaskStatus_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return pipe.work.Work.internal_static_Location_fieldAccessorTable
+        return pipe.work.Work.internal_static_TaskStatus_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
-                pipe.work.Work.Location.class, pipe.work.Work.Location.Builder.class);
+                pipe.work.Work.TaskStatus.class, pipe.work.Work.TaskStatus.Builder.class);
       }
 
-      // Construct using pipe.work.Work.Location.newBuilder()
+      // Construct using pipe.work.Work.TaskStatus.newBuilder()
       private Builder() {
         maybeForceBuilderInitialization();
       }
@@ -2949,58 +2969,67 @@ public final class Work {
       private void maybeForceBuilderInitialization() {
         if (com.google.protobuf.GeneratedMessageV3
                 .alwaysUseFieldBuilders) {
+          getNodeFieldBuilder();
         }
       }
       public Builder clear() {
         super.clear();
-        nodeId_ = 0;
+        filename_ = "";
         bitField0_ = (bitField0_ & ~0x00000001);
-        host_ = "";
+        chunkId_ = 0;
         bitField0_ = (bitField0_ & ~0x00000002);
-        port_ = 0;
+        chunkSize_ = 0;
         bitField0_ = (bitField0_ & ~0x00000004);
-        leaderOrNot_ = false;
+        if (nodeBuilder_ == null) {
+          node_ = null;
+        } else {
+          nodeBuilder_.clear();
+        }
         bitField0_ = (bitField0_ & ~0x00000008);
         return this;
       }
 
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return pipe.work.Work.internal_static_Location_descriptor;
+        return pipe.work.Work.internal_static_TaskStatus_descriptor;
       }
 
-      public pipe.work.Work.Location getDefaultInstanceForType() {
-        return pipe.work.Work.Location.getDefaultInstance();
+      public pipe.work.Work.TaskStatus getDefaultInstanceForType() {
+        return pipe.work.Work.TaskStatus.getDefaultInstance();
       }
 
-      public pipe.work.Work.Location build() {
-        pipe.work.Work.Location result = buildPartial();
+      public pipe.work.Work.TaskStatus build() {
+        pipe.work.Work.TaskStatus result = buildPartial();
         if (!result.isInitialized()) {
           throw newUninitializedMessageException(result);
         }
         return result;
       }
 
-      public pipe.work.Work.Location buildPartial() {
-        pipe.work.Work.Location result = new pipe.work.Work.Location(this);
+      public pipe.work.Work.TaskStatus buildPartial() {
+        pipe.work.Work.TaskStatus result = new pipe.work.Work.TaskStatus(this);
         int from_bitField0_ = bitField0_;
         int to_bitField0_ = 0;
         if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
           to_bitField0_ |= 0x00000001;
         }
-        result.nodeId_ = nodeId_;
+        result.filename_ = filename_;
         if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
           to_bitField0_ |= 0x00000002;
         }
-        result.host_ = host_;
+        result.chunkId_ = chunkId_;
         if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
           to_bitField0_ |= 0x00000004;
         }
-        result.port_ = port_;
+        result.chunkSize_ = chunkSize_;
         if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
           to_bitField0_ |= 0x00000008;
         }
-        result.leaderOrNot_ = leaderOrNot_;
+        if (nodeBuilder_ == null) {
+          result.node_ = node_;
+        } else {
+          result.node_ = nodeBuilder_.build();
+        }
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -3033,29 +3062,29 @@ public final class Work {
         return (Builder) super.addRepeatedField(field, value);
       }
       public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof pipe.work.Work.Location) {
-          return mergeFrom((pipe.work.Work.Location)other);
+        if (other instanceof pipe.work.Work.TaskStatus) {
+          return mergeFrom((pipe.work.Work.TaskStatus)other);
         } else {
           super.mergeFrom(other);
           return this;
         }
       }
 
-      public Builder mergeFrom(pipe.work.Work.Location other) {
-        if (other == pipe.work.Work.Location.getDefaultInstance()) return this;
-        if (other.hasNodeId()) {
-          setNodeId(other.getNodeId());
-        }
-        if (other.hasHost()) {
-          bitField0_ |= 0x00000002;
-          host_ = other.host_;
+      public Builder mergeFrom(pipe.work.Work.TaskStatus other) {
+        if (other == pipe.work.Work.TaskStatus.getDefaultInstance()) return this;
+        if (other.hasFilename()) {
+          bitField0_ |= 0x00000001;
+          filename_ = other.filename_;
           onChanged();
         }
-        if (other.hasPort()) {
-          setPort(other.getPort());
+        if (other.hasChunkId()) {
+          setChunkId(other.getChunkId());
         }
-        if (other.hasLeaderOrNot()) {
-          setLeaderOrNot(other.getLeaderOrNot());
+        if (other.hasChunkSize()) {
+          setChunkSize(other.getChunkSize());
+        }
+        if (other.hasNode()) {
+          mergeNode(other.getNode());
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -3063,16 +3092,19 @@ public final class Work {
       }
 
       public final boolean isInitialized() {
-        if (!hasNodeId()) {
+        if (!hasFilename()) {
           return false;
         }
-        if (!hasHost()) {
+        if (!hasChunkId()) {
           return false;
         }
-        if (!hasPort()) {
+        if (!hasChunkSize()) {
           return false;
         }
-        if (!hasLeaderOrNot()) {
+        if (!hasNode()) {
+          return false;
+        }
+        if (!getNode().isInitialized()) {
           return false;
         }
         return true;
@@ -3082,11 +3114,11 @@ public final class Work {
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws java.io.IOException {
-        pipe.work.Work.Location parsedMessage = null;
+        pipe.work.Work.TaskStatus parsedMessage = null;
         try {
           parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
         } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (pipe.work.Work.Location) e.getUnfinishedMessage();
+          parsedMessage = (pipe.work.Work.TaskStatus) e.getUnfinishedMessage();
           throw e.unwrapIOException();
         } finally {
           if (parsedMessage != null) {
@@ -3097,56 +3129,24 @@ public final class Work {
       }
       private int bitField0_;
 
-      private int nodeId_ ;
+      private java.lang.Object filename_ = "";
       /**
-       * <code>required int32 node_id = 1;</code>
+       * <code>required string filename = 1;</code>
        */
-      public boolean hasNodeId() {
+      public boolean hasFilename() {
         return ((bitField0_ & 0x00000001) == 0x00000001);
       }
       /**
-       * <code>required int32 node_id = 1;</code>
+       * <code>required string filename = 1;</code>
        */
-      public int getNodeId() {
-        return nodeId_;
-      }
-      /**
-       * <code>required int32 node_id = 1;</code>
-       */
-      public Builder setNodeId(int value) {
-        bitField0_ |= 0x00000001;
-        nodeId_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>required int32 node_id = 1;</code>
-       */
-      public Builder clearNodeId() {
-        bitField0_ = (bitField0_ & ~0x00000001);
-        nodeId_ = 0;
-        onChanged();
-        return this;
-      }
-
-      private java.lang.Object host_ = "";
-      /**
-       * <code>required string host = 2;</code>
-       */
-      public boolean hasHost() {
-        return ((bitField0_ & 0x00000002) == 0x00000002);
-      }
-      /**
-       * <code>required string host = 2;</code>
-       */
-      public java.lang.String getHost() {
-        java.lang.Object ref = host_;
+      public java.lang.String getFilename() {
+        java.lang.Object ref = filename_;
         if (!(ref instanceof java.lang.String)) {
           com.google.protobuf.ByteString bs =
               (com.google.protobuf.ByteString) ref;
           java.lang.String s = bs.toStringUtf8();
           if (bs.isValidUtf8()) {
-            host_ = s;
+            filename_ = s;
           }
           return s;
         } else {
@@ -3154,2259 +3154,237 @@ public final class Work {
         }
       }
       /**
-       * <code>required string host = 2;</code>
+       * <code>required string filename = 1;</code>
        */
       public com.google.protobuf.ByteString
-          getHostBytes() {
-        java.lang.Object ref = host_;
+          getFilenameBytes() {
+        java.lang.Object ref = filename_;
         if (ref instanceof String) {
           com.google.protobuf.ByteString b = 
               com.google.protobuf.ByteString.copyFromUtf8(
                   (java.lang.String) ref);
-          host_ = b;
+          filename_ = b;
           return b;
         } else {
           return (com.google.protobuf.ByteString) ref;
         }
       }
       /**
-       * <code>required string host = 2;</code>
+       * <code>required string filename = 1;</code>
        */
-      public Builder setHost(
+      public Builder setFilename(
           java.lang.String value) {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000002;
-        host_ = value;
+  bitField0_ |= 0x00000001;
+        filename_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>required string host = 2;</code>
+       * <code>required string filename = 1;</code>
        */
-      public Builder clearHost() {
-        bitField0_ = (bitField0_ & ~0x00000002);
-        host_ = getDefaultInstance().getHost();
+      public Builder clearFilename() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        filename_ = getDefaultInstance().getFilename();
         onChanged();
         return this;
       }
       /**
-       * <code>required string host = 2;</code>
+       * <code>required string filename = 1;</code>
        */
-      public Builder setHostBytes(
+      public Builder setFilenameBytes(
           com.google.protobuf.ByteString value) {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000002;
-        host_ = value;
+  bitField0_ |= 0x00000001;
+        filename_ = value;
         onChanged();
         return this;
       }
 
-      private int port_ ;
+      private int chunkId_ ;
       /**
-       * <code>required int32 port = 3;</code>
+       * <code>required int32 chunk_id = 2;</code>
        */
-      public boolean hasPort() {
+      public boolean hasChunkId() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>required int32 chunk_id = 2;</code>
+       */
+      public int getChunkId() {
+        return chunkId_;
+      }
+      /**
+       * <code>required int32 chunk_id = 2;</code>
+       */
+      public Builder setChunkId(int value) {
+        bitField0_ |= 0x00000002;
+        chunkId_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required int32 chunk_id = 2;</code>
+       */
+      public Builder clearChunkId() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        chunkId_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int chunkSize_ ;
+      /**
+       * <code>required int32 chunk_size = 3;</code>
+       */
+      public boolean hasChunkSize() {
         return ((bitField0_ & 0x00000004) == 0x00000004);
       }
       /**
-       * <code>required int32 port = 3;</code>
+       * <code>required int32 chunk_size = 3;</code>
        */
-      public int getPort() {
-        return port_;
+      public int getChunkSize() {
+        return chunkSize_;
       }
       /**
-       * <code>required int32 port = 3;</code>
+       * <code>required int32 chunk_size = 3;</code>
        */
-      public Builder setPort(int value) {
+      public Builder setChunkSize(int value) {
         bitField0_ |= 0x00000004;
-        port_ = value;
+        chunkSize_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>required int32 port = 3;</code>
+       * <code>required int32 chunk_size = 3;</code>
        */
-      public Builder clearPort() {
+      public Builder clearChunkSize() {
         bitField0_ = (bitField0_ & ~0x00000004);
-        port_ = 0;
+        chunkSize_ = 0;
         onChanged();
         return this;
       }
 
-      private boolean leaderOrNot_ ;
+      private pipe.work.Work.RegisterNode node_ = null;
+      private com.google.protobuf.SingleFieldBuilderV3<
+          pipe.work.Work.RegisterNode, pipe.work.Work.RegisterNode.Builder, pipe.work.Work.RegisterNodeOrBuilder> nodeBuilder_;
       /**
-       * <code>required bool leaderOrNot = 4;</code>
+       * <code>required .RegisterNode node = 4;</code>
        */
-      public boolean hasLeaderOrNot() {
+      public boolean hasNode() {
         return ((bitField0_ & 0x00000008) == 0x00000008);
       }
       /**
-       * <code>required bool leaderOrNot = 4;</code>
+       * <code>required .RegisterNode node = 4;</code>
        */
-      public boolean getLeaderOrNot() {
-        return leaderOrNot_;
-      }
-      /**
-       * <code>required bool leaderOrNot = 4;</code>
-       */
-      public Builder setLeaderOrNot(boolean value) {
-        bitField0_ |= 0x00000008;
-        leaderOrNot_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>required bool leaderOrNot = 4;</code>
-       */
-      public Builder clearLeaderOrNot() {
-        bitField0_ = (bitField0_ & ~0x00000008);
-        leaderOrNot_ = false;
-        onChanged();
-        return this;
-      }
-      public final Builder setUnknownFields(
-          final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return super.setUnknownFields(unknownFields);
-      }
-
-      public final Builder mergeUnknownFields(
-          final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return super.mergeUnknownFields(unknownFields);
-      }
-
-
-      // @@protoc_insertion_point(builder_scope:Location)
-    }
-
-    // @@protoc_insertion_point(class_scope:Location)
-    private static final pipe.work.Work.Location DEFAULT_INSTANCE;
-    static {
-      DEFAULT_INSTANCE = new pipe.work.Work.Location();
-    }
-
-    public static pipe.work.Work.Location getDefaultInstance() {
-      return DEFAULT_INSTANCE;
-    }
-
-    @java.lang.Deprecated public static final com.google.protobuf.Parser<Location>
-        PARSER = new com.google.protobuf.AbstractParser<Location>() {
-      public Location parsePartialFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-          return new Location(input, extensionRegistry);
-      }
-    };
-
-    public static com.google.protobuf.Parser<Location> parser() {
-      return PARSER;
-    }
-
-    @java.lang.Override
-    public com.google.protobuf.Parser<Location> getParserForType() {
-      return PARSER;
-    }
-
-    public pipe.work.Work.Location getDefaultInstanceForType() {
-      return DEFAULT_INSTANCE;
-    }
-
-  }
-
-  public interface LogOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:Log)
-      com.google.protobuf.MessageOrBuilder {
-
-    /**
-     * <code>map&lt;string, .Log.Hash&gt; log = 1;</code>
-     */
-    int getLogCount();
-    /**
-     * <code>map&lt;string, .Log.Hash&gt; log = 1;</code>
-     */
-    boolean containsLog(
-        java.lang.String key);
-    /**
-     * Use {@link #getLogMap()} instead.
-     */
-    @java.lang.Deprecated
-    java.util.Map<java.lang.String, pipe.work.Work.Log.Hash>
-    getLog();
-    /**
-     * <code>map&lt;string, .Log.Hash&gt; log = 1;</code>
-     */
-    java.util.Map<java.lang.String, pipe.work.Work.Log.Hash>
-    getLogMap();
-    /**
-     * <code>map&lt;string, .Log.Hash&gt; log = 1;</code>
-     */
-
-    pipe.work.Work.Log.Hash getLogOrDefault(
-        java.lang.String key,
-        pipe.work.Work.Log.Hash defaultValue);
-    /**
-     * <code>map&lt;string, .Log.Hash&gt; log = 1;</code>
-     */
-
-    pipe.work.Work.Log.Hash getLogOrThrow(
-        java.lang.String key);
-  }
-  /**
-   * Protobuf type {@code Log}
-   */
-  public  static final class Log extends
-      com.google.protobuf.GeneratedMessageV3 implements
-      // @@protoc_insertion_point(message_implements:Log)
-      LogOrBuilder {
-    // Use Log.newBuilder() to construct.
-    private Log(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
-      super(builder);
-    }
-    private Log() {
-    }
-
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
-    private Log(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      this();
-      int mutable_bitField0_ = 0;
-      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-          com.google.protobuf.UnknownFieldSet.newBuilder();
-      try {
-        boolean done = false;
-        while (!done) {
-          int tag = input.readTag();
-          switch (tag) {
-            case 0:
-              done = true;
-              break;
-            default: {
-              if (!parseUnknownField(input, unknownFields,
-                                     extensionRegistry, tag)) {
-                done = true;
-              }
-              break;
-            }
-            case 10: {
-              if (!((mutable_bitField0_ & 0x00000001) == 0x00000001)) {
-                log_ = com.google.protobuf.MapField.newMapField(
-                    LogDefaultEntryHolder.defaultEntry);
-                mutable_bitField0_ |= 0x00000001;
-              }
-              com.google.protobuf.MapEntry<java.lang.String, pipe.work.Work.Log.Hash>
-              log__ = input.readMessage(
-                  LogDefaultEntryHolder.defaultEntry.getParserForType(), extensionRegistry);
-              log_.getMutableMap().put(
-                  log__.getKey(), log__.getValue());
-              break;
-            }
-          }
-        }
-      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        throw e.setUnfinishedMessage(this);
-      } catch (java.io.IOException e) {
-        throw new com.google.protobuf.InvalidProtocolBufferException(
-            e).setUnfinishedMessage(this);
-      } finally {
-        this.unknownFields = unknownFields.build();
-        makeExtensionsImmutable();
-      }
-    }
-    public static final com.google.protobuf.Descriptors.Descriptor
-        getDescriptor() {
-      return pipe.work.Work.internal_static_Log_descriptor;
-    }
-
-    @SuppressWarnings({"rawtypes"})
-    protected com.google.protobuf.MapField internalGetMapField(
-        int number) {
-      switch (number) {
-        case 1:
-          return internalGetLog();
-        default:
-          throw new RuntimeException(
-              "Invalid map field number: " + number);
-      }
-    }
-    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-        internalGetFieldAccessorTable() {
-      return pipe.work.Work.internal_static_Log_fieldAccessorTable
-          .ensureFieldAccessorsInitialized(
-              pipe.work.Work.Log.class, pipe.work.Work.Log.Builder.class);
-    }
-
-    public interface HashOrBuilder extends
-        // @@protoc_insertion_point(interface_extends:Log.Hash)
-        com.google.protobuf.MessageOrBuilder {
-
-      /**
-       * <code>map&lt;int32, .Log.Hash.LocationList&gt; chunkLocationMap = 1;</code>
-       */
-      int getChunkLocationMapCount();
-      /**
-       * <code>map&lt;int32, .Log.Hash.LocationList&gt; chunkLocationMap = 1;</code>
-       */
-      boolean containsChunkLocationMap(
-          int key);
-      /**
-       * Use {@link #getChunkLocationMapMap()} instead.
-       */
-      @java.lang.Deprecated
-      java.util.Map<java.lang.Integer, pipe.work.Work.Log.Hash.LocationList>
-      getChunkLocationMap();
-      /**
-       * <code>map&lt;int32, .Log.Hash.LocationList&gt; chunkLocationMap = 1;</code>
-       */
-      java.util.Map<java.lang.Integer, pipe.work.Work.Log.Hash.LocationList>
-      getChunkLocationMapMap();
-      /**
-       * <code>map&lt;int32, .Log.Hash.LocationList&gt; chunkLocationMap = 1;</code>
-       */
-
-      pipe.work.Work.Log.Hash.LocationList getChunkLocationMapOrDefault(
-          int key,
-          pipe.work.Work.Log.Hash.LocationList defaultValue);
-      /**
-       * <code>map&lt;int32, .Log.Hash.LocationList&gt; chunkLocationMap = 1;</code>
-       */
-
-      pipe.work.Work.Log.Hash.LocationList getChunkLocationMapOrThrow(
-          int key);
-    }
-    /**
-     * Protobuf type {@code Log.Hash}
-     */
-    public  static final class Hash extends
-        com.google.protobuf.GeneratedMessageV3 implements
-        // @@protoc_insertion_point(message_implements:Log.Hash)
-        HashOrBuilder {
-      // Use Hash.newBuilder() to construct.
-      private Hash(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
-        super(builder);
-      }
-      private Hash() {
-      }
-
-      @java.lang.Override
-      public final com.google.protobuf.UnknownFieldSet
-      getUnknownFields() {
-        return this.unknownFields;
-      }
-      private Hash(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        this();
-        int mutable_bitField0_ = 0;
-        com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-            com.google.protobuf.UnknownFieldSet.newBuilder();
-        try {
-          boolean done = false;
-          while (!done) {
-            int tag = input.readTag();
-            switch (tag) {
-              case 0:
-                done = true;
-                break;
-              default: {
-                if (!parseUnknownField(input, unknownFields,
-                                       extensionRegistry, tag)) {
-                  done = true;
-                }
-                break;
-              }
-              case 10: {
-                if (!((mutable_bitField0_ & 0x00000001) == 0x00000001)) {
-                  chunkLocationMap_ = com.google.protobuf.MapField.newMapField(
-                      ChunkLocationMapDefaultEntryHolder.defaultEntry);
-                  mutable_bitField0_ |= 0x00000001;
-                }
-                com.google.protobuf.MapEntry<java.lang.Integer, pipe.work.Work.Log.Hash.LocationList>
-                chunkLocationMap__ = input.readMessage(
-                    ChunkLocationMapDefaultEntryHolder.defaultEntry.getParserForType(), extensionRegistry);
-                chunkLocationMap_.getMutableMap().put(
-                    chunkLocationMap__.getKey(), chunkLocationMap__.getValue());
-                break;
-              }
-            }
-          }
-        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          throw e.setUnfinishedMessage(this);
-        } catch (java.io.IOException e) {
-          throw new com.google.protobuf.InvalidProtocolBufferException(
-              e).setUnfinishedMessage(this);
-        } finally {
-          this.unknownFields = unknownFields.build();
-          makeExtensionsImmutable();
-        }
-      }
-      public static final com.google.protobuf.Descriptors.Descriptor
-          getDescriptor() {
-        return pipe.work.Work.internal_static_Log_Hash_descriptor;
-      }
-
-      @SuppressWarnings({"rawtypes"})
-      protected com.google.protobuf.MapField internalGetMapField(
-          int number) {
-        switch (number) {
-          case 1:
-            return internalGetChunkLocationMap();
-          default:
-            throw new RuntimeException(
-                "Invalid map field number: " + number);
-        }
-      }
-      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-          internalGetFieldAccessorTable() {
-        return pipe.work.Work.internal_static_Log_Hash_fieldAccessorTable
-            .ensureFieldAccessorsInitialized(
-                pipe.work.Work.Log.Hash.class, pipe.work.Work.Log.Hash.Builder.class);
-      }
-
-      public interface LocationListOrBuilder extends
-          // @@protoc_insertion_point(interface_extends:Log.Hash.LocationList)
-          com.google.protobuf.MessageOrBuilder {
-
-        /**
-         * <code>repeated .Location location = 1;</code>
-         */
-        java.util.List<pipe.work.Work.Location> 
-            getLocationList();
-        /**
-         * <code>repeated .Location location = 1;</code>
-         */
-        pipe.work.Work.Location getLocation(int index);
-        /**
-         * <code>repeated .Location location = 1;</code>
-         */
-        int getLocationCount();
-        /**
-         * <code>repeated .Location location = 1;</code>
-         */
-        java.util.List<? extends pipe.work.Work.LocationOrBuilder> 
-            getLocationOrBuilderList();
-        /**
-         * <code>repeated .Location location = 1;</code>
-         */
-        pipe.work.Work.LocationOrBuilder getLocationOrBuilder(
-            int index);
-      }
-      /**
-       * Protobuf type {@code Log.Hash.LocationList}
-       */
-      public  static final class LocationList extends
-          com.google.protobuf.GeneratedMessageV3 implements
-          // @@protoc_insertion_point(message_implements:Log.Hash.LocationList)
-          LocationListOrBuilder {
-        // Use LocationList.newBuilder() to construct.
-        private LocationList(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
-          super(builder);
-        }
-        private LocationList() {
-          location_ = java.util.Collections.emptyList();
-        }
-
-        @java.lang.Override
-        public final com.google.protobuf.UnknownFieldSet
-        getUnknownFields() {
-          return this.unknownFields;
-        }
-        private LocationList(
-            com.google.protobuf.CodedInputStream input,
-            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-            throws com.google.protobuf.InvalidProtocolBufferException {
-          this();
-          int mutable_bitField0_ = 0;
-          com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-              com.google.protobuf.UnknownFieldSet.newBuilder();
-          try {
-            boolean done = false;
-            while (!done) {
-              int tag = input.readTag();
-              switch (tag) {
-                case 0:
-                  done = true;
-                  break;
-                default: {
-                  if (!parseUnknownField(input, unknownFields,
-                                         extensionRegistry, tag)) {
-                    done = true;
-                  }
-                  break;
-                }
-                case 10: {
-                  if (!((mutable_bitField0_ & 0x00000001) == 0x00000001)) {
-                    location_ = new java.util.ArrayList<pipe.work.Work.Location>();
-                    mutable_bitField0_ |= 0x00000001;
-                  }
-                  location_.add(
-                      input.readMessage(pipe.work.Work.Location.PARSER, extensionRegistry));
-                  break;
-                }
-              }
-            }
-          } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-            throw e.setUnfinishedMessage(this);
-          } catch (java.io.IOException e) {
-            throw new com.google.protobuf.InvalidProtocolBufferException(
-                e).setUnfinishedMessage(this);
-          } finally {
-            if (((mutable_bitField0_ & 0x00000001) == 0x00000001)) {
-              location_ = java.util.Collections.unmodifiableList(location_);
-            }
-            this.unknownFields = unknownFields.build();
-            makeExtensionsImmutable();
-          }
-        }
-        public static final com.google.protobuf.Descriptors.Descriptor
-            getDescriptor() {
-          return pipe.work.Work.internal_static_Log_Hash_LocationList_descriptor;
-        }
-
-        protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-            internalGetFieldAccessorTable() {
-          return pipe.work.Work.internal_static_Log_Hash_LocationList_fieldAccessorTable
-              .ensureFieldAccessorsInitialized(
-                  pipe.work.Work.Log.Hash.LocationList.class, pipe.work.Work.Log.Hash.LocationList.Builder.class);
-        }
-
-        public static final int LOCATION_FIELD_NUMBER = 1;
-        private java.util.List<pipe.work.Work.Location> location_;
-        /**
-         * <code>repeated .Location location = 1;</code>
-         */
-        public java.util.List<pipe.work.Work.Location> getLocationList() {
-          return location_;
-        }
-        /**
-         * <code>repeated .Location location = 1;</code>
-         */
-        public java.util.List<? extends pipe.work.Work.LocationOrBuilder> 
-            getLocationOrBuilderList() {
-          return location_;
-        }
-        /**
-         * <code>repeated .Location location = 1;</code>
-         */
-        public int getLocationCount() {
-          return location_.size();
-        }
-        /**
-         * <code>repeated .Location location = 1;</code>
-         */
-        public pipe.work.Work.Location getLocation(int index) {
-          return location_.get(index);
-        }
-        /**
-         * <code>repeated .Location location = 1;</code>
-         */
-        public pipe.work.Work.LocationOrBuilder getLocationOrBuilder(
-            int index) {
-          return location_.get(index);
-        }
-
-        private byte memoizedIsInitialized = -1;
-        public final boolean isInitialized() {
-          byte isInitialized = memoizedIsInitialized;
-          if (isInitialized == 1) return true;
-          if (isInitialized == 0) return false;
-
-          for (int i = 0; i < getLocationCount(); i++) {
-            if (!getLocation(i).isInitialized()) {
-              memoizedIsInitialized = 0;
-              return false;
-            }
-          }
-          memoizedIsInitialized = 1;
-          return true;
-        }
-
-        public void writeTo(com.google.protobuf.CodedOutputStream output)
-                            throws java.io.IOException {
-          for (int i = 0; i < location_.size(); i++) {
-            output.writeMessage(1, location_.get(i));
-          }
-          unknownFields.writeTo(output);
-        }
-
-        public int getSerializedSize() {
-          int size = memoizedSize;
-          if (size != -1) return size;
-
-          size = 0;
-          for (int i = 0; i < location_.size(); i++) {
-            size += com.google.protobuf.CodedOutputStream
-              .computeMessageSize(1, location_.get(i));
-          }
-          size += unknownFields.getSerializedSize();
-          memoizedSize = size;
-          return size;
-        }
-
-        private static final long serialVersionUID = 0L;
-        @java.lang.Override
-        public boolean equals(final java.lang.Object obj) {
-          if (obj == this) {
-           return true;
-          }
-          if (!(obj instanceof pipe.work.Work.Log.Hash.LocationList)) {
-            return super.equals(obj);
-          }
-          pipe.work.Work.Log.Hash.LocationList other = (pipe.work.Work.Log.Hash.LocationList) obj;
-
-          boolean result = true;
-          result = result && getLocationList()
-              .equals(other.getLocationList());
-          result = result && unknownFields.equals(other.unknownFields);
-          return result;
-        }
-
-        @java.lang.Override
-        public int hashCode() {
-          if (memoizedHashCode != 0) {
-            return memoizedHashCode;
-          }
-          int hash = 41;
-          hash = (19 * hash) + getDescriptor().hashCode();
-          if (getLocationCount() > 0) {
-            hash = (37 * hash) + LOCATION_FIELD_NUMBER;
-            hash = (53 * hash) + getLocationList().hashCode();
-          }
-          hash = (29 * hash) + unknownFields.hashCode();
-          memoizedHashCode = hash;
-          return hash;
-        }
-
-        public static pipe.work.Work.Log.Hash.LocationList parseFrom(
-            com.google.protobuf.ByteString data)
-            throws com.google.protobuf.InvalidProtocolBufferException {
-          return PARSER.parseFrom(data);
-        }
-        public static pipe.work.Work.Log.Hash.LocationList parseFrom(
-            com.google.protobuf.ByteString data,
-            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-            throws com.google.protobuf.InvalidProtocolBufferException {
-          return PARSER.parseFrom(data, extensionRegistry);
-        }
-        public static pipe.work.Work.Log.Hash.LocationList parseFrom(byte[] data)
-            throws com.google.protobuf.InvalidProtocolBufferException {
-          return PARSER.parseFrom(data);
-        }
-        public static pipe.work.Work.Log.Hash.LocationList parseFrom(
-            byte[] data,
-            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-            throws com.google.protobuf.InvalidProtocolBufferException {
-          return PARSER.parseFrom(data, extensionRegistry);
-        }
-        public static pipe.work.Work.Log.Hash.LocationList parseFrom(java.io.InputStream input)
-            throws java.io.IOException {
-          return com.google.protobuf.GeneratedMessageV3
-              .parseWithIOException(PARSER, input);
-        }
-        public static pipe.work.Work.Log.Hash.LocationList parseFrom(
-            java.io.InputStream input,
-            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-            throws java.io.IOException {
-          return com.google.protobuf.GeneratedMessageV3
-              .parseWithIOException(PARSER, input, extensionRegistry);
-        }
-        public static pipe.work.Work.Log.Hash.LocationList parseDelimitedFrom(java.io.InputStream input)
-            throws java.io.IOException {
-          return com.google.protobuf.GeneratedMessageV3
-              .parseDelimitedWithIOException(PARSER, input);
-        }
-        public static pipe.work.Work.Log.Hash.LocationList parseDelimitedFrom(
-            java.io.InputStream input,
-            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-            throws java.io.IOException {
-          return com.google.protobuf.GeneratedMessageV3
-              .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
-        }
-        public static pipe.work.Work.Log.Hash.LocationList parseFrom(
-            com.google.protobuf.CodedInputStream input)
-            throws java.io.IOException {
-          return com.google.protobuf.GeneratedMessageV3
-              .parseWithIOException(PARSER, input);
-        }
-        public static pipe.work.Work.Log.Hash.LocationList parseFrom(
-            com.google.protobuf.CodedInputStream input,
-            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-            throws java.io.IOException {
-          return com.google.protobuf.GeneratedMessageV3
-              .parseWithIOException(PARSER, input, extensionRegistry);
-        }
-
-        public Builder newBuilderForType() { return newBuilder(); }
-        public static Builder newBuilder() {
-          return DEFAULT_INSTANCE.toBuilder();
-        }
-        public static Builder newBuilder(pipe.work.Work.Log.Hash.LocationList prototype) {
-          return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
-        }
-        public Builder toBuilder() {
-          return this == DEFAULT_INSTANCE
-              ? new Builder() : new Builder().mergeFrom(this);
-        }
-
-        @java.lang.Override
-        protected Builder newBuilderForType(
-            com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-          Builder builder = new Builder(parent);
-          return builder;
-        }
-        /**
-         * Protobuf type {@code Log.Hash.LocationList}
-         */
-        public static final class Builder extends
-            com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-            // @@protoc_insertion_point(builder_implements:Log.Hash.LocationList)
-            pipe.work.Work.Log.Hash.LocationListOrBuilder {
-          public static final com.google.protobuf.Descriptors.Descriptor
-              getDescriptor() {
-            return pipe.work.Work.internal_static_Log_Hash_LocationList_descriptor;
-          }
-
-          protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-              internalGetFieldAccessorTable() {
-            return pipe.work.Work.internal_static_Log_Hash_LocationList_fieldAccessorTable
-                .ensureFieldAccessorsInitialized(
-                    pipe.work.Work.Log.Hash.LocationList.class, pipe.work.Work.Log.Hash.LocationList.Builder.class);
-          }
-
-          // Construct using pipe.work.Work.Log.Hash.LocationList.newBuilder()
-          private Builder() {
-            maybeForceBuilderInitialization();
-          }
-
-          private Builder(
-              com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-            super(parent);
-            maybeForceBuilderInitialization();
-          }
-          private void maybeForceBuilderInitialization() {
-            if (com.google.protobuf.GeneratedMessageV3
-                    .alwaysUseFieldBuilders) {
-              getLocationFieldBuilder();
-            }
-          }
-          public Builder clear() {
-            super.clear();
-            if (locationBuilder_ == null) {
-              location_ = java.util.Collections.emptyList();
-              bitField0_ = (bitField0_ & ~0x00000001);
-            } else {
-              locationBuilder_.clear();
-            }
-            return this;
-          }
-
-          public com.google.protobuf.Descriptors.Descriptor
-              getDescriptorForType() {
-            return pipe.work.Work.internal_static_Log_Hash_LocationList_descriptor;
-          }
-
-          public pipe.work.Work.Log.Hash.LocationList getDefaultInstanceForType() {
-            return pipe.work.Work.Log.Hash.LocationList.getDefaultInstance();
-          }
-
-          public pipe.work.Work.Log.Hash.LocationList build() {
-            pipe.work.Work.Log.Hash.LocationList result = buildPartial();
-            if (!result.isInitialized()) {
-              throw newUninitializedMessageException(result);
-            }
-            return result;
-          }
-
-          public pipe.work.Work.Log.Hash.LocationList buildPartial() {
-            pipe.work.Work.Log.Hash.LocationList result = new pipe.work.Work.Log.Hash.LocationList(this);
-            int from_bitField0_ = bitField0_;
-            if (locationBuilder_ == null) {
-              if (((bitField0_ & 0x00000001) == 0x00000001)) {
-                location_ = java.util.Collections.unmodifiableList(location_);
-                bitField0_ = (bitField0_ & ~0x00000001);
-              }
-              result.location_ = location_;
-            } else {
-              result.location_ = locationBuilder_.build();
-            }
-            onBuilt();
-            return result;
-          }
-
-          public Builder clone() {
-            return (Builder) super.clone();
-          }
-          public Builder setField(
-              com.google.protobuf.Descriptors.FieldDescriptor field,
-              Object value) {
-            return (Builder) super.setField(field, value);
-          }
-          public Builder clearField(
-              com.google.protobuf.Descriptors.FieldDescriptor field) {
-            return (Builder) super.clearField(field);
-          }
-          public Builder clearOneof(
-              com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-            return (Builder) super.clearOneof(oneof);
-          }
-          public Builder setRepeatedField(
-              com.google.protobuf.Descriptors.FieldDescriptor field,
-              int index, Object value) {
-            return (Builder) super.setRepeatedField(field, index, value);
-          }
-          public Builder addRepeatedField(
-              com.google.protobuf.Descriptors.FieldDescriptor field,
-              Object value) {
-            return (Builder) super.addRepeatedField(field, value);
-          }
-          public Builder mergeFrom(com.google.protobuf.Message other) {
-            if (other instanceof pipe.work.Work.Log.Hash.LocationList) {
-              return mergeFrom((pipe.work.Work.Log.Hash.LocationList)other);
-            } else {
-              super.mergeFrom(other);
-              return this;
-            }
-          }
-
-          public Builder mergeFrom(pipe.work.Work.Log.Hash.LocationList other) {
-            if (other == pipe.work.Work.Log.Hash.LocationList.getDefaultInstance()) return this;
-            if (locationBuilder_ == null) {
-              if (!other.location_.isEmpty()) {
-                if (location_.isEmpty()) {
-                  location_ = other.location_;
-                  bitField0_ = (bitField0_ & ~0x00000001);
-                } else {
-                  ensureLocationIsMutable();
-                  location_.addAll(other.location_);
-                }
-                onChanged();
-              }
-            } else {
-              if (!other.location_.isEmpty()) {
-                if (locationBuilder_.isEmpty()) {
-                  locationBuilder_.dispose();
-                  locationBuilder_ = null;
-                  location_ = other.location_;
-                  bitField0_ = (bitField0_ & ~0x00000001);
-                  locationBuilder_ = 
-                    com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
-                       getLocationFieldBuilder() : null;
-                } else {
-                  locationBuilder_.addAllMessages(other.location_);
-                }
-              }
-            }
-            this.mergeUnknownFields(other.unknownFields);
-            onChanged();
-            return this;
-          }
-
-          public final boolean isInitialized() {
-            for (int i = 0; i < getLocationCount(); i++) {
-              if (!getLocation(i).isInitialized()) {
-                return false;
-              }
-            }
-            return true;
-          }
-
-          public Builder mergeFrom(
-              com.google.protobuf.CodedInputStream input,
-              com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-              throws java.io.IOException {
-            pipe.work.Work.Log.Hash.LocationList parsedMessage = null;
-            try {
-              parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
-            } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-              parsedMessage = (pipe.work.Work.Log.Hash.LocationList) e.getUnfinishedMessage();
-              throw e.unwrapIOException();
-            } finally {
-              if (parsedMessage != null) {
-                mergeFrom(parsedMessage);
-              }
-            }
-            return this;
-          }
-          private int bitField0_;
-
-          private java.util.List<pipe.work.Work.Location> location_ =
-            java.util.Collections.emptyList();
-          private void ensureLocationIsMutable() {
-            if (!((bitField0_ & 0x00000001) == 0x00000001)) {
-              location_ = new java.util.ArrayList<pipe.work.Work.Location>(location_);
-              bitField0_ |= 0x00000001;
-             }
-          }
-
-          private com.google.protobuf.RepeatedFieldBuilderV3<
-              pipe.work.Work.Location, pipe.work.Work.Location.Builder, pipe.work.Work.LocationOrBuilder> locationBuilder_;
-
-          /**
-           * <code>repeated .Location location = 1;</code>
-           */
-          public java.util.List<pipe.work.Work.Location> getLocationList() {
-            if (locationBuilder_ == null) {
-              return java.util.Collections.unmodifiableList(location_);
-            } else {
-              return locationBuilder_.getMessageList();
-            }
-          }
-          /**
-           * <code>repeated .Location location = 1;</code>
-           */
-          public int getLocationCount() {
-            if (locationBuilder_ == null) {
-              return location_.size();
-            } else {
-              return locationBuilder_.getCount();
-            }
-          }
-          /**
-           * <code>repeated .Location location = 1;</code>
-           */
-          public pipe.work.Work.Location getLocation(int index) {
-            if (locationBuilder_ == null) {
-              return location_.get(index);
-            } else {
-              return locationBuilder_.getMessage(index);
-            }
-          }
-          /**
-           * <code>repeated .Location location = 1;</code>
-           */
-          public Builder setLocation(
-              int index, pipe.work.Work.Location value) {
-            if (locationBuilder_ == null) {
-              if (value == null) {
-                throw new NullPointerException();
-              }
-              ensureLocationIsMutable();
-              location_.set(index, value);
-              onChanged();
-            } else {
-              locationBuilder_.setMessage(index, value);
-            }
-            return this;
-          }
-          /**
-           * <code>repeated .Location location = 1;</code>
-           */
-          public Builder setLocation(
-              int index, pipe.work.Work.Location.Builder builderForValue) {
-            if (locationBuilder_ == null) {
-              ensureLocationIsMutable();
-              location_.set(index, builderForValue.build());
-              onChanged();
-            } else {
-              locationBuilder_.setMessage(index, builderForValue.build());
-            }
-            return this;
-          }
-          /**
-           * <code>repeated .Location location = 1;</code>
-           */
-          public Builder addLocation(pipe.work.Work.Location value) {
-            if (locationBuilder_ == null) {
-              if (value == null) {
-                throw new NullPointerException();
-              }
-              ensureLocationIsMutable();
-              location_.add(value);
-              onChanged();
-            } else {
-              locationBuilder_.addMessage(value);
-            }
-            return this;
-          }
-          /**
-           * <code>repeated .Location location = 1;</code>
-           */
-          public Builder addLocation(
-              int index, pipe.work.Work.Location value) {
-            if (locationBuilder_ == null) {
-              if (value == null) {
-                throw new NullPointerException();
-              }
-              ensureLocationIsMutable();
-              location_.add(index, value);
-              onChanged();
-            } else {
-              locationBuilder_.addMessage(index, value);
-            }
-            return this;
-          }
-          /**
-           * <code>repeated .Location location = 1;</code>
-           */
-          public Builder addLocation(
-              pipe.work.Work.Location.Builder builderForValue) {
-            if (locationBuilder_ == null) {
-              ensureLocationIsMutable();
-              location_.add(builderForValue.build());
-              onChanged();
-            } else {
-              locationBuilder_.addMessage(builderForValue.build());
-            }
-            return this;
-          }
-          /**
-           * <code>repeated .Location location = 1;</code>
-           */
-          public Builder addLocation(
-              int index, pipe.work.Work.Location.Builder builderForValue) {
-            if (locationBuilder_ == null) {
-              ensureLocationIsMutable();
-              location_.add(index, builderForValue.build());
-              onChanged();
-            } else {
-              locationBuilder_.addMessage(index, builderForValue.build());
-            }
-            return this;
-          }
-          /**
-           * <code>repeated .Location location = 1;</code>
-           */
-          public Builder addAllLocation(
-              java.lang.Iterable<? extends pipe.work.Work.Location> values) {
-            if (locationBuilder_ == null) {
-              ensureLocationIsMutable();
-              com.google.protobuf.AbstractMessageLite.Builder.addAll(
-                  values, location_);
-              onChanged();
-            } else {
-              locationBuilder_.addAllMessages(values);
-            }
-            return this;
-          }
-          /**
-           * <code>repeated .Location location = 1;</code>
-           */
-          public Builder clearLocation() {
-            if (locationBuilder_ == null) {
-              location_ = java.util.Collections.emptyList();
-              bitField0_ = (bitField0_ & ~0x00000001);
-              onChanged();
-            } else {
-              locationBuilder_.clear();
-            }
-            return this;
-          }
-          /**
-           * <code>repeated .Location location = 1;</code>
-           */
-          public Builder removeLocation(int index) {
-            if (locationBuilder_ == null) {
-              ensureLocationIsMutable();
-              location_.remove(index);
-              onChanged();
-            } else {
-              locationBuilder_.remove(index);
-            }
-            return this;
-          }
-          /**
-           * <code>repeated .Location location = 1;</code>
-           */
-          public pipe.work.Work.Location.Builder getLocationBuilder(
-              int index) {
-            return getLocationFieldBuilder().getBuilder(index);
-          }
-          /**
-           * <code>repeated .Location location = 1;</code>
-           */
-          public pipe.work.Work.LocationOrBuilder getLocationOrBuilder(
-              int index) {
-            if (locationBuilder_ == null) {
-              return location_.get(index);  } else {
-              return locationBuilder_.getMessageOrBuilder(index);
-            }
-          }
-          /**
-           * <code>repeated .Location location = 1;</code>
-           */
-          public java.util.List<? extends pipe.work.Work.LocationOrBuilder> 
-               getLocationOrBuilderList() {
-            if (locationBuilder_ != null) {
-              return locationBuilder_.getMessageOrBuilderList();
-            } else {
-              return java.util.Collections.unmodifiableList(location_);
-            }
-          }
-          /**
-           * <code>repeated .Location location = 1;</code>
-           */
-          public pipe.work.Work.Location.Builder addLocationBuilder() {
-            return getLocationFieldBuilder().addBuilder(
-                pipe.work.Work.Location.getDefaultInstance());
-          }
-          /**
-           * <code>repeated .Location location = 1;</code>
-           */
-          public pipe.work.Work.Location.Builder addLocationBuilder(
-              int index) {
-            return getLocationFieldBuilder().addBuilder(
-                index, pipe.work.Work.Location.getDefaultInstance());
-          }
-          /**
-           * <code>repeated .Location location = 1;</code>
-           */
-          public java.util.List<pipe.work.Work.Location.Builder> 
-               getLocationBuilderList() {
-            return getLocationFieldBuilder().getBuilderList();
-          }
-          private com.google.protobuf.RepeatedFieldBuilderV3<
-              pipe.work.Work.Location, pipe.work.Work.Location.Builder, pipe.work.Work.LocationOrBuilder> 
-              getLocationFieldBuilder() {
-            if (locationBuilder_ == null) {
-              locationBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
-                  pipe.work.Work.Location, pipe.work.Work.Location.Builder, pipe.work.Work.LocationOrBuilder>(
-                      location_,
-                      ((bitField0_ & 0x00000001) == 0x00000001),
-                      getParentForChildren(),
-                      isClean());
-              location_ = null;
-            }
-            return locationBuilder_;
-          }
-          public final Builder setUnknownFields(
-              final com.google.protobuf.UnknownFieldSet unknownFields) {
-            return super.setUnknownFields(unknownFields);
-          }
-
-          public final Builder mergeUnknownFields(
-              final com.google.protobuf.UnknownFieldSet unknownFields) {
-            return super.mergeUnknownFields(unknownFields);
-          }
-
-
-          // @@protoc_insertion_point(builder_scope:Log.Hash.LocationList)
-        }
-
-        // @@protoc_insertion_point(class_scope:Log.Hash.LocationList)
-        private static final pipe.work.Work.Log.Hash.LocationList DEFAULT_INSTANCE;
-        static {
-          DEFAULT_INSTANCE = new pipe.work.Work.Log.Hash.LocationList();
-        }
-
-        public static pipe.work.Work.Log.Hash.LocationList getDefaultInstance() {
-          return DEFAULT_INSTANCE;
-        }
-
-        @java.lang.Deprecated public static final com.google.protobuf.Parser<LocationList>
-            PARSER = new com.google.protobuf.AbstractParser<LocationList>() {
-          public LocationList parsePartialFrom(
-              com.google.protobuf.CodedInputStream input,
-              com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-              throws com.google.protobuf.InvalidProtocolBufferException {
-              return new LocationList(input, extensionRegistry);
-          }
-        };
-
-        public static com.google.protobuf.Parser<LocationList> parser() {
-          return PARSER;
-        }
-
-        @java.lang.Override
-        public com.google.protobuf.Parser<LocationList> getParserForType() {
-          return PARSER;
-        }
-
-        public pipe.work.Work.Log.Hash.LocationList getDefaultInstanceForType() {
-          return DEFAULT_INSTANCE;
-        }
-
-      }
-
-      public static final int CHUNKLOCATIONMAP_FIELD_NUMBER = 1;
-      private static final class ChunkLocationMapDefaultEntryHolder {
-        static final com.google.protobuf.MapEntry<
-            java.lang.Integer, pipe.work.Work.Log.Hash.LocationList> defaultEntry =
-                com.google.protobuf.MapEntry
-                .<java.lang.Integer, pipe.work.Work.Log.Hash.LocationList>newDefaultInstance(
-                    pipe.work.Work.internal_static_Log_Hash_ChunkLocationMapEntry_descriptor, 
-                    com.google.protobuf.WireFormat.FieldType.INT32,
-                    0,
-                    com.google.protobuf.WireFormat.FieldType.MESSAGE,
-                    pipe.work.Work.Log.Hash.LocationList.getDefaultInstance());
-      }
-      private com.google.protobuf.MapField<
-          java.lang.Integer, pipe.work.Work.Log.Hash.LocationList> chunkLocationMap_;
-      private com.google.protobuf.MapField<java.lang.Integer, pipe.work.Work.Log.Hash.LocationList>
-      internalGetChunkLocationMap() {
-        if (chunkLocationMap_ == null) {
-          return com.google.protobuf.MapField.emptyMapField(
-              ChunkLocationMapDefaultEntryHolder.defaultEntry);
-        }
-        return chunkLocationMap_;
-      }
-
-      public int getChunkLocationMapCount() {
-        return internalGetChunkLocationMap().getMap().size();
-      }
-      /**
-       * <code>map&lt;int32, .Log.Hash.LocationList&gt; chunkLocationMap = 1;</code>
-       */
-
-      public boolean containsChunkLocationMap(
-          int key) {
-        
-        return internalGetChunkLocationMap().getMap().containsKey(key);
-      }
-      /**
-       * Use {@link #getChunkLocationMapMap()} instead.
-       */
-      @java.lang.Deprecated
-      public java.util.Map<java.lang.Integer, pipe.work.Work.Log.Hash.LocationList> getChunkLocationMap() {
-        return getChunkLocationMapMap();
-      }
-      /**
-       * <code>map&lt;int32, .Log.Hash.LocationList&gt; chunkLocationMap = 1;</code>
-       */
-
-      public java.util.Map<java.lang.Integer, pipe.work.Work.Log.Hash.LocationList> getChunkLocationMapMap() {
-        return internalGetChunkLocationMap().getMap();
-      }
-      /**
-       * <code>map&lt;int32, .Log.Hash.LocationList&gt; chunkLocationMap = 1;</code>
-       */
-
-      public pipe.work.Work.Log.Hash.LocationList getChunkLocationMapOrDefault(
-          int key,
-          pipe.work.Work.Log.Hash.LocationList defaultValue) {
-        
-        java.util.Map<java.lang.Integer, pipe.work.Work.Log.Hash.LocationList> map =
-            internalGetChunkLocationMap().getMap();
-        return map.containsKey(key) ? map.get(key) : defaultValue;
-      }
-      /**
-       * <code>map&lt;int32, .Log.Hash.LocationList&gt; chunkLocationMap = 1;</code>
-       */
-
-      public pipe.work.Work.Log.Hash.LocationList getChunkLocationMapOrThrow(
-          int key) {
-        
-        java.util.Map<java.lang.Integer, pipe.work.Work.Log.Hash.LocationList> map =
-            internalGetChunkLocationMap().getMap();
-        if (!map.containsKey(key)) {
-          throw new java.lang.IllegalArgumentException();
-        }
-        return map.get(key);
-      }
-
-      private byte memoizedIsInitialized = -1;
-      public final boolean isInitialized() {
-        byte isInitialized = memoizedIsInitialized;
-        if (isInitialized == 1) return true;
-        if (isInitialized == 0) return false;
-
-        for (pipe.work.Work.Log.Hash.LocationList item : getChunkLocationMapMap().values()) {
-          if (!item.isInitialized()) {
-            memoizedIsInitialized = 0;
-            return false;
-          }
-        }
-        memoizedIsInitialized = 1;
-        return true;
-      }
-
-      public void writeTo(com.google.protobuf.CodedOutputStream output)
-                          throws java.io.IOException {
-        com.google.protobuf.GeneratedMessageV3
-          .serializeIntegerMapTo(
-            output,
-            internalGetChunkLocationMap(),
-            ChunkLocationMapDefaultEntryHolder.defaultEntry,
-            1);
-        unknownFields.writeTo(output);
-      }
-
-      public int getSerializedSize() {
-        int size = memoizedSize;
-        if (size != -1) return size;
-
-        size = 0;
-        for (java.util.Map.Entry<java.lang.Integer, pipe.work.Work.Log.Hash.LocationList> entry
-             : internalGetChunkLocationMap().getMap().entrySet()) {
-          com.google.protobuf.MapEntry<java.lang.Integer, pipe.work.Work.Log.Hash.LocationList>
-          chunkLocationMap__ = ChunkLocationMapDefaultEntryHolder.defaultEntry.newBuilderForType()
-              .setKey(entry.getKey())
-              .setValue(entry.getValue())
-              .build();
-          size += com.google.protobuf.CodedOutputStream
-              .computeMessageSize(1, chunkLocationMap__);
-        }
-        size += unknownFields.getSerializedSize();
-        memoizedSize = size;
-        return size;
-      }
-
-      private static final long serialVersionUID = 0L;
-      @java.lang.Override
-      public boolean equals(final java.lang.Object obj) {
-        if (obj == this) {
-         return true;
-        }
-        if (!(obj instanceof pipe.work.Work.Log.Hash)) {
-          return super.equals(obj);
-        }
-        pipe.work.Work.Log.Hash other = (pipe.work.Work.Log.Hash) obj;
-
-        boolean result = true;
-        result = result && internalGetChunkLocationMap().equals(
-            other.internalGetChunkLocationMap());
-        result = result && unknownFields.equals(other.unknownFields);
-        return result;
-      }
-
-      @java.lang.Override
-      public int hashCode() {
-        if (memoizedHashCode != 0) {
-          return memoizedHashCode;
-        }
-        int hash = 41;
-        hash = (19 * hash) + getDescriptor().hashCode();
-        if (!internalGetChunkLocationMap().getMap().isEmpty()) {
-          hash = (37 * hash) + CHUNKLOCATIONMAP_FIELD_NUMBER;
-          hash = (53 * hash) + internalGetChunkLocationMap().hashCode();
-        }
-        hash = (29 * hash) + unknownFields.hashCode();
-        memoizedHashCode = hash;
-        return hash;
-      }
-
-      public static pipe.work.Work.Log.Hash parseFrom(
-          com.google.protobuf.ByteString data)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data);
-      }
-      public static pipe.work.Work.Log.Hash parseFrom(
-          com.google.protobuf.ByteString data,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data, extensionRegistry);
-      }
-      public static pipe.work.Work.Log.Hash parseFrom(byte[] data)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data);
-      }
-      public static pipe.work.Work.Log.Hash parseFrom(
-          byte[] data,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data, extensionRegistry);
-      }
-      public static pipe.work.Work.Log.Hash parseFrom(java.io.InputStream input)
-          throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3
-            .parseWithIOException(PARSER, input);
-      }
-      public static pipe.work.Work.Log.Hash parseFrom(
-          java.io.InputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3
-            .parseWithIOException(PARSER, input, extensionRegistry);
-      }
-      public static pipe.work.Work.Log.Hash parseDelimitedFrom(java.io.InputStream input)
-          throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3
-            .parseDelimitedWithIOException(PARSER, input);
-      }
-      public static pipe.work.Work.Log.Hash parseDelimitedFrom(
-          java.io.InputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3
-            .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
-      }
-      public static pipe.work.Work.Log.Hash parseFrom(
-          com.google.protobuf.CodedInputStream input)
-          throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3
-            .parseWithIOException(PARSER, input);
-      }
-      public static pipe.work.Work.Log.Hash parseFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws java.io.IOException {
-        return com.google.protobuf.GeneratedMessageV3
-            .parseWithIOException(PARSER, input, extensionRegistry);
-      }
-
-      public Builder newBuilderForType() { return newBuilder(); }
-      public static Builder newBuilder() {
-        return DEFAULT_INSTANCE.toBuilder();
-      }
-      public static Builder newBuilder(pipe.work.Work.Log.Hash prototype) {
-        return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
-      }
-      public Builder toBuilder() {
-        return this == DEFAULT_INSTANCE
-            ? new Builder() : new Builder().mergeFrom(this);
-      }
-
-      @java.lang.Override
-      protected Builder newBuilderForType(
-          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-        Builder builder = new Builder(parent);
-        return builder;
-      }
-      /**
-       * Protobuf type {@code Log.Hash}
-       */
-      public static final class Builder extends
-          com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-          // @@protoc_insertion_point(builder_implements:Log.Hash)
-          pipe.work.Work.Log.HashOrBuilder {
-        public static final com.google.protobuf.Descriptors.Descriptor
-            getDescriptor() {
-          return pipe.work.Work.internal_static_Log_Hash_descriptor;
-        }
-
-        @SuppressWarnings({"rawtypes"})
-        protected com.google.protobuf.MapField internalGetMapField(
-            int number) {
-          switch (number) {
-            case 1:
-              return internalGetChunkLocationMap();
-            default:
-              throw new RuntimeException(
-                  "Invalid map field number: " + number);
-          }
-        }
-        @SuppressWarnings({"rawtypes"})
-        protected com.google.protobuf.MapField internalGetMutableMapField(
-            int number) {
-          switch (number) {
-            case 1:
-              return internalGetMutableChunkLocationMap();
-            default:
-              throw new RuntimeException(
-                  "Invalid map field number: " + number);
-          }
-        }
-        protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-            internalGetFieldAccessorTable() {
-          return pipe.work.Work.internal_static_Log_Hash_fieldAccessorTable
-              .ensureFieldAccessorsInitialized(
-                  pipe.work.Work.Log.Hash.class, pipe.work.Work.Log.Hash.Builder.class);
-        }
-
-        // Construct using pipe.work.Work.Log.Hash.newBuilder()
-        private Builder() {
-          maybeForceBuilderInitialization();
-        }
-
-        private Builder(
-            com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-          super(parent);
-          maybeForceBuilderInitialization();
-        }
-        private void maybeForceBuilderInitialization() {
-          if (com.google.protobuf.GeneratedMessageV3
-                  .alwaysUseFieldBuilders) {
-          }
-        }
-        public Builder clear() {
-          super.clear();
-          internalGetMutableChunkLocationMap().clear();
-          return this;
-        }
-
-        public com.google.protobuf.Descriptors.Descriptor
-            getDescriptorForType() {
-          return pipe.work.Work.internal_static_Log_Hash_descriptor;
-        }
-
-        public pipe.work.Work.Log.Hash getDefaultInstanceForType() {
-          return pipe.work.Work.Log.Hash.getDefaultInstance();
-        }
-
-        public pipe.work.Work.Log.Hash build() {
-          pipe.work.Work.Log.Hash result = buildPartial();
-          if (!result.isInitialized()) {
-            throw newUninitializedMessageException(result);
-          }
-          return result;
-        }
-
-        public pipe.work.Work.Log.Hash buildPartial() {
-          pipe.work.Work.Log.Hash result = new pipe.work.Work.Log.Hash(this);
-          int from_bitField0_ = bitField0_;
-          result.chunkLocationMap_ = internalGetChunkLocationMap();
-          result.chunkLocationMap_.makeImmutable();
-          onBuilt();
-          return result;
-        }
-
-        public Builder clone() {
-          return (Builder) super.clone();
-        }
-        public Builder setField(
-            com.google.protobuf.Descriptors.FieldDescriptor field,
-            Object value) {
-          return (Builder) super.setField(field, value);
-        }
-        public Builder clearField(
-            com.google.protobuf.Descriptors.FieldDescriptor field) {
-          return (Builder) super.clearField(field);
-        }
-        public Builder clearOneof(
-            com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-          return (Builder) super.clearOneof(oneof);
-        }
-        public Builder setRepeatedField(
-            com.google.protobuf.Descriptors.FieldDescriptor field,
-            int index, Object value) {
-          return (Builder) super.setRepeatedField(field, index, value);
-        }
-        public Builder addRepeatedField(
-            com.google.protobuf.Descriptors.FieldDescriptor field,
-            Object value) {
-          return (Builder) super.addRepeatedField(field, value);
-        }
-        public Builder mergeFrom(com.google.protobuf.Message other) {
-          if (other instanceof pipe.work.Work.Log.Hash) {
-            return mergeFrom((pipe.work.Work.Log.Hash)other);
-          } else {
-            super.mergeFrom(other);
-            return this;
-          }
-        }
-
-        public Builder mergeFrom(pipe.work.Work.Log.Hash other) {
-          if (other == pipe.work.Work.Log.Hash.getDefaultInstance()) return this;
-          internalGetMutableChunkLocationMap().mergeFrom(
-              other.internalGetChunkLocationMap());
-          this.mergeUnknownFields(other.unknownFields);
-          onChanged();
-          return this;
-        }
-
-        public final boolean isInitialized() {
-          for (pipe.work.Work.Log.Hash.LocationList item : getChunkLocationMapMap().values()) {
-            if (!item.isInitialized()) {
-              return false;
-            }
-          }
-          return true;
-        }
-
-        public Builder mergeFrom(
-            com.google.protobuf.CodedInputStream input,
-            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-            throws java.io.IOException {
-          pipe.work.Work.Log.Hash parsedMessage = null;
-          try {
-            parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
-          } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-            parsedMessage = (pipe.work.Work.Log.Hash) e.getUnfinishedMessage();
-            throw e.unwrapIOException();
-          } finally {
-            if (parsedMessage != null) {
-              mergeFrom(parsedMessage);
-            }
-          }
-          return this;
-        }
-        private int bitField0_;
-
-        private com.google.protobuf.MapField<
-            java.lang.Integer, pipe.work.Work.Log.Hash.LocationList> chunkLocationMap_;
-        private com.google.protobuf.MapField<java.lang.Integer, pipe.work.Work.Log.Hash.LocationList>
-        internalGetChunkLocationMap() {
-          if (chunkLocationMap_ == null) {
-            return com.google.protobuf.MapField.emptyMapField(
-                ChunkLocationMapDefaultEntryHolder.defaultEntry);
-          }
-          return chunkLocationMap_;
-        }
-        private com.google.protobuf.MapField<java.lang.Integer, pipe.work.Work.Log.Hash.LocationList>
-        internalGetMutableChunkLocationMap() {
-          onChanged();;
-          if (chunkLocationMap_ == null) {
-            chunkLocationMap_ = com.google.protobuf.MapField.newMapField(
-                ChunkLocationMapDefaultEntryHolder.defaultEntry);
-          }
-          if (!chunkLocationMap_.isMutable()) {
-            chunkLocationMap_ = chunkLocationMap_.copy();
-          }
-          return chunkLocationMap_;
-        }
-
-        public int getChunkLocationMapCount() {
-          return internalGetChunkLocationMap().getMap().size();
-        }
-        /**
-         * <code>map&lt;int32, .Log.Hash.LocationList&gt; chunkLocationMap = 1;</code>
-         */
-
-        public boolean containsChunkLocationMap(
-            int key) {
-          
-          return internalGetChunkLocationMap().getMap().containsKey(key);
-        }
-        /**
-         * Use {@link #getChunkLocationMapMap()} instead.
-         */
-        @java.lang.Deprecated
-        public java.util.Map<java.lang.Integer, pipe.work.Work.Log.Hash.LocationList> getChunkLocationMap() {
-          return getChunkLocationMapMap();
-        }
-        /**
-         * <code>map&lt;int32, .Log.Hash.LocationList&gt; chunkLocationMap = 1;</code>
-         */
-
-        public java.util.Map<java.lang.Integer, pipe.work.Work.Log.Hash.LocationList> getChunkLocationMapMap() {
-          return internalGetChunkLocationMap().getMap();
-        }
-        /**
-         * <code>map&lt;int32, .Log.Hash.LocationList&gt; chunkLocationMap = 1;</code>
-         */
-
-        public pipe.work.Work.Log.Hash.LocationList getChunkLocationMapOrDefault(
-            int key,
-            pipe.work.Work.Log.Hash.LocationList defaultValue) {
-          
-          java.util.Map<java.lang.Integer, pipe.work.Work.Log.Hash.LocationList> map =
-              internalGetChunkLocationMap().getMap();
-          return map.containsKey(key) ? map.get(key) : defaultValue;
-        }
-        /**
-         * <code>map&lt;int32, .Log.Hash.LocationList&gt; chunkLocationMap = 1;</code>
-         */
-
-        public pipe.work.Work.Log.Hash.LocationList getChunkLocationMapOrThrow(
-            int key) {
-          
-          java.util.Map<java.lang.Integer, pipe.work.Work.Log.Hash.LocationList> map =
-              internalGetChunkLocationMap().getMap();
-          if (!map.containsKey(key)) {
-            throw new java.lang.IllegalArgumentException();
-          }
-          return map.get(key);
-        }
-
-        public Builder clearChunkLocationMap() {
-          internalGetMutableChunkLocationMap().getMutableMap()
-              .clear();
-          return this;
-        }
-        /**
-         * <code>map&lt;int32, .Log.Hash.LocationList&gt; chunkLocationMap = 1;</code>
-         */
-
-        public Builder removeChunkLocationMap(
-            int key) {
-          
-          internalGetMutableChunkLocationMap().getMutableMap()
-              .remove(key);
-          return this;
-        }
-        /**
-         * Use alternate mutation accessors instead.
-         */
-        @java.lang.Deprecated
-        public java.util.Map<java.lang.Integer, pipe.work.Work.Log.Hash.LocationList>
-        getMutableChunkLocationMap() {
-          return internalGetMutableChunkLocationMap().getMutableMap();
-        }
-        /**
-         * <code>map&lt;int32, .Log.Hash.LocationList&gt; chunkLocationMap = 1;</code>
-         */
-        public Builder putChunkLocationMap(
-            int key,
-            pipe.work.Work.Log.Hash.LocationList value) {
-          
-          if (value == null) { throw new java.lang.NullPointerException(); }
-          internalGetMutableChunkLocationMap().getMutableMap()
-              .put(key, value);
-          return this;
-        }
-        /**
-         * <code>map&lt;int32, .Log.Hash.LocationList&gt; chunkLocationMap = 1;</code>
-         */
-
-        public Builder putAllChunkLocationMap(
-            java.util.Map<java.lang.Integer, pipe.work.Work.Log.Hash.LocationList> values) {
-          internalGetMutableChunkLocationMap().getMutableMap()
-              .putAll(values);
-          return this;
-        }
-        public final Builder setUnknownFields(
-            final com.google.protobuf.UnknownFieldSet unknownFields) {
-          return super.setUnknownFields(unknownFields);
-        }
-
-        public final Builder mergeUnknownFields(
-            final com.google.protobuf.UnknownFieldSet unknownFields) {
-          return super.mergeUnknownFields(unknownFields);
-        }
-
-
-        // @@protoc_insertion_point(builder_scope:Log.Hash)
-      }
-
-      // @@protoc_insertion_point(class_scope:Log.Hash)
-      private static final pipe.work.Work.Log.Hash DEFAULT_INSTANCE;
-      static {
-        DEFAULT_INSTANCE = new pipe.work.Work.Log.Hash();
-      }
-
-      public static pipe.work.Work.Log.Hash getDefaultInstance() {
-        return DEFAULT_INSTANCE;
-      }
-
-      @java.lang.Deprecated public static final com.google.protobuf.Parser<Hash>
-          PARSER = new com.google.protobuf.AbstractParser<Hash>() {
-        public Hash parsePartialFrom(
-            com.google.protobuf.CodedInputStream input,
-            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-            throws com.google.protobuf.InvalidProtocolBufferException {
-            return new Hash(input, extensionRegistry);
-        }
-      };
-
-      public static com.google.protobuf.Parser<Hash> parser() {
-        return PARSER;
-      }
-
-      @java.lang.Override
-      public com.google.protobuf.Parser<Hash> getParserForType() {
-        return PARSER;
-      }
-
-      public pipe.work.Work.Log.Hash getDefaultInstanceForType() {
-        return DEFAULT_INSTANCE;
-      }
-
-    }
-
-    public static final int LOG_FIELD_NUMBER = 1;
-    private static final class LogDefaultEntryHolder {
-      static final com.google.protobuf.MapEntry<
-          java.lang.String, pipe.work.Work.Log.Hash> defaultEntry =
-              com.google.protobuf.MapEntry
-              .<java.lang.String, pipe.work.Work.Log.Hash>newDefaultInstance(
-                  pipe.work.Work.internal_static_Log_LogEntry_descriptor, 
-                  com.google.protobuf.WireFormat.FieldType.STRING,
-                  "",
-                  com.google.protobuf.WireFormat.FieldType.MESSAGE,
-                  pipe.work.Work.Log.Hash.getDefaultInstance());
-    }
-    private com.google.protobuf.MapField<
-        java.lang.String, pipe.work.Work.Log.Hash> log_;
-    private com.google.protobuf.MapField<java.lang.String, pipe.work.Work.Log.Hash>
-    internalGetLog() {
-      if (log_ == null) {
-        return com.google.protobuf.MapField.emptyMapField(
-            LogDefaultEntryHolder.defaultEntry);
-      }
-      return log_;
-    }
-
-    public int getLogCount() {
-      return internalGetLog().getMap().size();
-    }
-    /**
-     * <code>map&lt;string, .Log.Hash&gt; log = 1;</code>
-     */
-
-    public boolean containsLog(
-        java.lang.String key) {
-      if (key == null) { throw new java.lang.NullPointerException(); }
-      return internalGetLog().getMap().containsKey(key);
-    }
-    /**
-     * Use {@link #getLogMap()} instead.
-     */
-    @java.lang.Deprecated
-    public java.util.Map<java.lang.String, pipe.work.Work.Log.Hash> getLog() {
-      return getLogMap();
-    }
-    /**
-     * <code>map&lt;string, .Log.Hash&gt; log = 1;</code>
-     */
-
-    public java.util.Map<java.lang.String, pipe.work.Work.Log.Hash> getLogMap() {
-      return internalGetLog().getMap();
-    }
-    /**
-     * <code>map&lt;string, .Log.Hash&gt; log = 1;</code>
-     */
-
-    public pipe.work.Work.Log.Hash getLogOrDefault(
-        java.lang.String key,
-        pipe.work.Work.Log.Hash defaultValue) {
-      if (key == null) { throw new java.lang.NullPointerException(); }
-      java.util.Map<java.lang.String, pipe.work.Work.Log.Hash> map =
-          internalGetLog().getMap();
-      return map.containsKey(key) ? map.get(key) : defaultValue;
-    }
-    /**
-     * <code>map&lt;string, .Log.Hash&gt; log = 1;</code>
-     */
-
-    public pipe.work.Work.Log.Hash getLogOrThrow(
-        java.lang.String key) {
-      if (key == null) { throw new java.lang.NullPointerException(); }
-      java.util.Map<java.lang.String, pipe.work.Work.Log.Hash> map =
-          internalGetLog().getMap();
-      if (!map.containsKey(key)) {
-        throw new java.lang.IllegalArgumentException();
-      }
-      return map.get(key);
-    }
-
-    private byte memoizedIsInitialized = -1;
-    public final boolean isInitialized() {
-      byte isInitialized = memoizedIsInitialized;
-      if (isInitialized == 1) return true;
-      if (isInitialized == 0) return false;
-
-      for (pipe.work.Work.Log.Hash item : getLogMap().values()) {
-        if (!item.isInitialized()) {
-          memoizedIsInitialized = 0;
-          return false;
-        }
-      }
-      memoizedIsInitialized = 1;
-      return true;
-    }
-
-    public void writeTo(com.google.protobuf.CodedOutputStream output)
-                        throws java.io.IOException {
-      com.google.protobuf.GeneratedMessageV3
-        .serializeStringMapTo(
-          output,
-          internalGetLog(),
-          LogDefaultEntryHolder.defaultEntry,
-          1);
-      unknownFields.writeTo(output);
-    }
-
-    public int getSerializedSize() {
-      int size = memoizedSize;
-      if (size != -1) return size;
-
-      size = 0;
-      for (java.util.Map.Entry<java.lang.String, pipe.work.Work.Log.Hash> entry
-           : internalGetLog().getMap().entrySet()) {
-        com.google.protobuf.MapEntry<java.lang.String, pipe.work.Work.Log.Hash>
-        log__ = LogDefaultEntryHolder.defaultEntry.newBuilderForType()
-            .setKey(entry.getKey())
-            .setValue(entry.getValue())
-            .build();
-        size += com.google.protobuf.CodedOutputStream
-            .computeMessageSize(1, log__);
-      }
-      size += unknownFields.getSerializedSize();
-      memoizedSize = size;
-      return size;
-    }
-
-    private static final long serialVersionUID = 0L;
-    @java.lang.Override
-    public boolean equals(final java.lang.Object obj) {
-      if (obj == this) {
-       return true;
-      }
-      if (!(obj instanceof pipe.work.Work.Log)) {
-        return super.equals(obj);
-      }
-      pipe.work.Work.Log other = (pipe.work.Work.Log) obj;
-
-      boolean result = true;
-      result = result && internalGetLog().equals(
-          other.internalGetLog());
-      result = result && unknownFields.equals(other.unknownFields);
-      return result;
-    }
-
-    @java.lang.Override
-    public int hashCode() {
-      if (memoizedHashCode != 0) {
-        return memoizedHashCode;
-      }
-      int hash = 41;
-      hash = (19 * hash) + getDescriptor().hashCode();
-      if (!internalGetLog().getMap().isEmpty()) {
-        hash = (37 * hash) + LOG_FIELD_NUMBER;
-        hash = (53 * hash) + internalGetLog().hashCode();
-      }
-      hash = (29 * hash) + unknownFields.hashCode();
-      memoizedHashCode = hash;
-      return hash;
-    }
-
-    public static pipe.work.Work.Log parseFrom(
-        com.google.protobuf.ByteString data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static pipe.work.Work.Log parseFrom(
-        com.google.protobuf.ByteString data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static pipe.work.Work.Log parseFrom(byte[] data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static pipe.work.Work.Log parseFrom(
-        byte[] data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static pipe.work.Work.Log parseFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input);
-    }
-    public static pipe.work.Work.Log parseFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input, extensionRegistry);
-    }
-    public static pipe.work.Work.Log parseDelimitedFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseDelimitedWithIOException(PARSER, input);
-    }
-    public static pipe.work.Work.Log parseDelimitedFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
-    }
-    public static pipe.work.Work.Log parseFrom(
-        com.google.protobuf.CodedInputStream input)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input);
-    }
-    public static pipe.work.Work.Log parseFrom(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input, extensionRegistry);
-    }
-
-    public Builder newBuilderForType() { return newBuilder(); }
-    public static Builder newBuilder() {
-      return DEFAULT_INSTANCE.toBuilder();
-    }
-    public static Builder newBuilder(pipe.work.Work.Log prototype) {
-      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
-    }
-    public Builder toBuilder() {
-      return this == DEFAULT_INSTANCE
-          ? new Builder() : new Builder().mergeFrom(this);
-    }
-
-    @java.lang.Override
-    protected Builder newBuilderForType(
-        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-      Builder builder = new Builder(parent);
-      return builder;
-    }
-    /**
-     * Protobuf type {@code Log}
-     */
-    public static final class Builder extends
-        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:Log)
-        pipe.work.Work.LogOrBuilder {
-      public static final com.google.protobuf.Descriptors.Descriptor
-          getDescriptor() {
-        return pipe.work.Work.internal_static_Log_descriptor;
-      }
-
-      @SuppressWarnings({"rawtypes"})
-      protected com.google.protobuf.MapField internalGetMapField(
-          int number) {
-        switch (number) {
-          case 1:
-            return internalGetLog();
-          default:
-            throw new RuntimeException(
-                "Invalid map field number: " + number);
-        }
-      }
-      @SuppressWarnings({"rawtypes"})
-      protected com.google.protobuf.MapField internalGetMutableMapField(
-          int number) {
-        switch (number) {
-          case 1:
-            return internalGetMutableLog();
-          default:
-            throw new RuntimeException(
-                "Invalid map field number: " + number);
-        }
-      }
-      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-          internalGetFieldAccessorTable() {
-        return pipe.work.Work.internal_static_Log_fieldAccessorTable
-            .ensureFieldAccessorsInitialized(
-                pipe.work.Work.Log.class, pipe.work.Work.Log.Builder.class);
-      }
-
-      // Construct using pipe.work.Work.Log.newBuilder()
-      private Builder() {
-        maybeForceBuilderInitialization();
-      }
-
-      private Builder(
-          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-        super(parent);
-        maybeForceBuilderInitialization();
-      }
-      private void maybeForceBuilderInitialization() {
-        if (com.google.protobuf.GeneratedMessageV3
-                .alwaysUseFieldBuilders) {
-        }
-      }
-      public Builder clear() {
-        super.clear();
-        internalGetMutableLog().clear();
-        return this;
-      }
-
-      public com.google.protobuf.Descriptors.Descriptor
-          getDescriptorForType() {
-        return pipe.work.Work.internal_static_Log_descriptor;
-      }
-
-      public pipe.work.Work.Log getDefaultInstanceForType() {
-        return pipe.work.Work.Log.getDefaultInstance();
-      }
-
-      public pipe.work.Work.Log build() {
-        pipe.work.Work.Log result = buildPartial();
-        if (!result.isInitialized()) {
-          throw newUninitializedMessageException(result);
-        }
-        return result;
-      }
-
-      public pipe.work.Work.Log buildPartial() {
-        pipe.work.Work.Log result = new pipe.work.Work.Log(this);
-        int from_bitField0_ = bitField0_;
-        result.log_ = internalGetLog();
-        result.log_.makeImmutable();
-        onBuilt();
-        return result;
-      }
-
-      public Builder clone() {
-        return (Builder) super.clone();
-      }
-      public Builder setField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
-        return (Builder) super.setField(field, value);
-      }
-      public Builder clearField(
-          com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return (Builder) super.clearField(field);
-      }
-      public Builder clearOneof(
-          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return (Builder) super.clearOneof(oneof);
-      }
-      public Builder setRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, Object value) {
-        return (Builder) super.setRepeatedField(field, index, value);
-      }
-      public Builder addRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
-        return (Builder) super.addRepeatedField(field, value);
-      }
-      public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof pipe.work.Work.Log) {
-          return mergeFrom((pipe.work.Work.Log)other);
+      public pipe.work.Work.RegisterNode getNode() {
+        if (nodeBuilder_ == null) {
+          return node_ == null ? pipe.work.Work.RegisterNode.getDefaultInstance() : node_;
         } else {
-          super.mergeFrom(other);
-          return this;
+          return nodeBuilder_.getMessage();
         }
       }
-
-      public Builder mergeFrom(pipe.work.Work.Log other) {
-        if (other == pipe.work.Work.Log.getDefaultInstance()) return this;
-        internalGetMutableLog().mergeFrom(
-            other.internalGetLog());
-        this.mergeUnknownFields(other.unknownFields);
+      /**
+       * <code>required .RegisterNode node = 4;</code>
+       */
+      public Builder setNode(pipe.work.Work.RegisterNode value) {
+        if (nodeBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          node_ = value;
+          onChanged();
+        } else {
+          nodeBuilder_.setMessage(value);
+        }
+        bitField0_ |= 0x00000008;
+        return this;
+      }
+      /**
+       * <code>required .RegisterNode node = 4;</code>
+       */
+      public Builder setNode(
+          pipe.work.Work.RegisterNode.Builder builderForValue) {
+        if (nodeBuilder_ == null) {
+          node_ = builderForValue.build();
+          onChanged();
+        } else {
+          nodeBuilder_.setMessage(builderForValue.build());
+        }
+        bitField0_ |= 0x00000008;
+        return this;
+      }
+      /**
+       * <code>required .RegisterNode node = 4;</code>
+       */
+      public Builder mergeNode(pipe.work.Work.RegisterNode value) {
+        if (nodeBuilder_ == null) {
+          if (((bitField0_ & 0x00000008) == 0x00000008) &&
+              node_ != null &&
+              node_ != pipe.work.Work.RegisterNode.getDefaultInstance()) {
+            node_ =
+              pipe.work.Work.RegisterNode.newBuilder(node_).mergeFrom(value).buildPartial();
+          } else {
+            node_ = value;
+          }
+          onChanged();
+        } else {
+          nodeBuilder_.mergeFrom(value);
+        }
+        bitField0_ |= 0x00000008;
+        return this;
+      }
+      /**
+       * <code>required .RegisterNode node = 4;</code>
+       */
+      public Builder clearNode() {
+        if (nodeBuilder_ == null) {
+          node_ = null;
+          onChanged();
+        } else {
+          nodeBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000008);
+        return this;
+      }
+      /**
+       * <code>required .RegisterNode node = 4;</code>
+       */
+      public pipe.work.Work.RegisterNode.Builder getNodeBuilder() {
+        bitField0_ |= 0x00000008;
         onChanged();
-        return this;
+        return getNodeFieldBuilder().getBuilder();
       }
-
-      public final boolean isInitialized() {
-        for (pipe.work.Work.Log.Hash item : getLogMap().values()) {
-          if (!item.isInitialized()) {
-            return false;
-          }
+      /**
+       * <code>required .RegisterNode node = 4;</code>
+       */
+      public pipe.work.Work.RegisterNodeOrBuilder getNodeOrBuilder() {
+        if (nodeBuilder_ != null) {
+          return nodeBuilder_.getMessageOrBuilder();
+        } else {
+          return node_ == null ?
+              pipe.work.Work.RegisterNode.getDefaultInstance() : node_;
         }
-        return true;
       }
-
-      public Builder mergeFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws java.io.IOException {
-        pipe.work.Work.Log parsedMessage = null;
-        try {
-          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
-        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (pipe.work.Work.Log) e.getUnfinishedMessage();
-          throw e.unwrapIOException();
-        } finally {
-          if (parsedMessage != null) {
-            mergeFrom(parsedMessage);
-          }
+      /**
+       * <code>required .RegisterNode node = 4;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilderV3<
+          pipe.work.Work.RegisterNode, pipe.work.Work.RegisterNode.Builder, pipe.work.Work.RegisterNodeOrBuilder> 
+          getNodeFieldBuilder() {
+        if (nodeBuilder_ == null) {
+          nodeBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              pipe.work.Work.RegisterNode, pipe.work.Work.RegisterNode.Builder, pipe.work.Work.RegisterNodeOrBuilder>(
+                  getNode(),
+                  getParentForChildren(),
+                  isClean());
+          node_ = null;
         }
-        return this;
-      }
-      private int bitField0_;
-
-      private com.google.protobuf.MapField<
-          java.lang.String, pipe.work.Work.Log.Hash> log_;
-      private com.google.protobuf.MapField<java.lang.String, pipe.work.Work.Log.Hash>
-      internalGetLog() {
-        if (log_ == null) {
-          return com.google.protobuf.MapField.emptyMapField(
-              LogDefaultEntryHolder.defaultEntry);
-        }
-        return log_;
-      }
-      private com.google.protobuf.MapField<java.lang.String, pipe.work.Work.Log.Hash>
-      internalGetMutableLog() {
-        onChanged();;
-        if (log_ == null) {
-          log_ = com.google.protobuf.MapField.newMapField(
-              LogDefaultEntryHolder.defaultEntry);
-        }
-        if (!log_.isMutable()) {
-          log_ = log_.copy();
-        }
-        return log_;
-      }
-
-      public int getLogCount() {
-        return internalGetLog().getMap().size();
-      }
-      /**
-       * <code>map&lt;string, .Log.Hash&gt; log = 1;</code>
-       */
-
-      public boolean containsLog(
-          java.lang.String key) {
-        if (key == null) { throw new java.lang.NullPointerException(); }
-        return internalGetLog().getMap().containsKey(key);
-      }
-      /**
-       * Use {@link #getLogMap()} instead.
-       */
-      @java.lang.Deprecated
-      public java.util.Map<java.lang.String, pipe.work.Work.Log.Hash> getLog() {
-        return getLogMap();
-      }
-      /**
-       * <code>map&lt;string, .Log.Hash&gt; log = 1;</code>
-       */
-
-      public java.util.Map<java.lang.String, pipe.work.Work.Log.Hash> getLogMap() {
-        return internalGetLog().getMap();
-      }
-      /**
-       * <code>map&lt;string, .Log.Hash&gt; log = 1;</code>
-       */
-
-      public pipe.work.Work.Log.Hash getLogOrDefault(
-          java.lang.String key,
-          pipe.work.Work.Log.Hash defaultValue) {
-        if (key == null) { throw new java.lang.NullPointerException(); }
-        java.util.Map<java.lang.String, pipe.work.Work.Log.Hash> map =
-            internalGetLog().getMap();
-        return map.containsKey(key) ? map.get(key) : defaultValue;
-      }
-      /**
-       * <code>map&lt;string, .Log.Hash&gt; log = 1;</code>
-       */
-
-      public pipe.work.Work.Log.Hash getLogOrThrow(
-          java.lang.String key) {
-        if (key == null) { throw new java.lang.NullPointerException(); }
-        java.util.Map<java.lang.String, pipe.work.Work.Log.Hash> map =
-            internalGetLog().getMap();
-        if (!map.containsKey(key)) {
-          throw new java.lang.IllegalArgumentException();
-        }
-        return map.get(key);
-      }
-
-      public Builder clearLog() {
-        internalGetMutableLog().getMutableMap()
-            .clear();
-        return this;
-      }
-      /**
-       * <code>map&lt;string, .Log.Hash&gt; log = 1;</code>
-       */
-
-      public Builder removeLog(
-          java.lang.String key) {
-        if (key == null) { throw new java.lang.NullPointerException(); }
-        internalGetMutableLog().getMutableMap()
-            .remove(key);
-        return this;
-      }
-      /**
-       * Use alternate mutation accessors instead.
-       */
-      @java.lang.Deprecated
-      public java.util.Map<java.lang.String, pipe.work.Work.Log.Hash>
-      getMutableLog() {
-        return internalGetMutableLog().getMutableMap();
-      }
-      /**
-       * <code>map&lt;string, .Log.Hash&gt; log = 1;</code>
-       */
-      public Builder putLog(
-          java.lang.String key,
-          pipe.work.Work.Log.Hash value) {
-        if (key == null) { throw new java.lang.NullPointerException(); }
-        if (value == null) { throw new java.lang.NullPointerException(); }
-        internalGetMutableLog().getMutableMap()
-            .put(key, value);
-        return this;
-      }
-      /**
-       * <code>map&lt;string, .Log.Hash&gt; log = 1;</code>
-       */
-
-      public Builder putAllLog(
-          java.util.Map<java.lang.String, pipe.work.Work.Log.Hash> values) {
-        internalGetMutableLog().getMutableMap()
-            .putAll(values);
-        return this;
+        return nodeBuilder_;
       }
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
@@ -5419,39 +3397,39 @@ public final class Work {
       }
 
 
-      // @@protoc_insertion_point(builder_scope:Log)
+      // @@protoc_insertion_point(builder_scope:TaskStatus)
     }
 
-    // @@protoc_insertion_point(class_scope:Log)
-    private static final pipe.work.Work.Log DEFAULT_INSTANCE;
+    // @@protoc_insertion_point(class_scope:TaskStatus)
+    private static final pipe.work.Work.TaskStatus DEFAULT_INSTANCE;
     static {
-      DEFAULT_INSTANCE = new pipe.work.Work.Log();
+      DEFAULT_INSTANCE = new pipe.work.Work.TaskStatus();
     }
 
-    public static pipe.work.Work.Log getDefaultInstance() {
+    public static pipe.work.Work.TaskStatus getDefaultInstance() {
       return DEFAULT_INSTANCE;
     }
 
-    @java.lang.Deprecated public static final com.google.protobuf.Parser<Log>
-        PARSER = new com.google.protobuf.AbstractParser<Log>() {
-      public Log parsePartialFrom(
+    @java.lang.Deprecated public static final com.google.protobuf.Parser<TaskStatus>
+        PARSER = new com.google.protobuf.AbstractParser<TaskStatus>() {
+      public TaskStatus parsePartialFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-          return new Log(input, extensionRegistry);
+          return new TaskStatus(input, extensionRegistry);
       }
     };
 
-    public static com.google.protobuf.Parser<Log> parser() {
+    public static com.google.protobuf.Parser<TaskStatus> parser() {
       return PARSER;
     }
 
     @java.lang.Override
-    public com.google.protobuf.Parser<Log> getParserForType() {
+    public com.google.protobuf.Parser<TaskStatus> getParserForType() {
       return PARSER;
     }
 
-    public pipe.work.Work.Log getDefaultInstanceForType() {
+    public pipe.work.Work.TaskStatus getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
 
@@ -5482,6 +3460,40 @@ public final class Work {
      * <code>required int64 secret = 2;</code>
      */
     long getSecret();
+
+    /**
+     * <code>map&lt;string, string&gt; log = 16;</code>
+     */
+    int getLogCount();
+    /**
+     * <code>map&lt;string, string&gt; log = 16;</code>
+     */
+    boolean containsLog(
+        java.lang.String key);
+    /**
+     * Use {@link #getLogMap()} instead.
+     */
+    @java.lang.Deprecated
+    java.util.Map<java.lang.String, java.lang.String>
+    getLog();
+    /**
+     * <code>map&lt;string, string&gt; log = 16;</code>
+     */
+    java.util.Map<java.lang.String, java.lang.String>
+    getLogMap();
+    /**
+     * <code>map&lt;string, string&gt; log = 16;</code>
+     */
+
+    java.lang.String getLogOrDefault(
+        java.lang.String key,
+        java.lang.String defaultValue);
+    /**
+     * <code>map&lt;string, string&gt; log = 16;</code>
+     */
+
+    java.lang.String getLogOrThrow(
+        java.lang.String key);
 
     /**
      * <code>optional .Failure err = 3;</code>
@@ -5654,6 +3666,47 @@ public final class Work {
      * <code>optional .CommandMessage cmd_message = 15;</code>
      */
     routing.Pipe.CommandMessageOrBuilder getCmdMessageOrBuilder();
+
+    /**
+     * <code>optional .TaskStatus task_status = 17;</code>
+     */
+    boolean hasTaskStatus();
+    /**
+     * <code>optional .TaskStatus task_status = 17;</code>
+     */
+    pipe.work.Work.TaskStatus getTaskStatus();
+    /**
+     * <code>optional .TaskStatus task_status = 17;</code>
+     */
+    pipe.work.Work.TaskStatusOrBuilder getTaskStatusOrBuilder();
+
+    /**
+     * <code>optional string delete_file = 18;</code>
+     */
+    boolean hasDeleteFile();
+    /**
+     * <code>optional string delete_file = 18;</code>
+     */
+    java.lang.String getDeleteFile();
+    /**
+     * <code>optional string delete_file = 18;</code>
+     */
+    com.google.protobuf.ByteString
+        getDeleteFileBytes();
+
+    /**
+     * <code>optional string delete_log = 19;</code>
+     */
+    boolean hasDeleteLog();
+    /**
+     * <code>optional string delete_log = 19;</code>
+     */
+    java.lang.String getDeleteLog();
+    /**
+     * <code>optional string delete_log = 19;</code>
+     */
+    com.google.protobuf.ByteString
+        getDeleteLogBytes();
 
     public pipe.work.Work.WorkMessage.PayloadCase getPayloadCase();
   }
@@ -5881,6 +3934,45 @@ public final class Work {
               payloadCase_ = 15;
               break;
             }
+            case 130: {
+              if (!((mutable_bitField0_ & 0x00000004) == 0x00000004)) {
+                log_ = com.google.protobuf.MapField.newMapField(
+                    LogDefaultEntryHolder.defaultEntry);
+                mutable_bitField0_ |= 0x00000004;
+              }
+              com.google.protobuf.MapEntry<java.lang.String, java.lang.String>
+              log__ = input.readMessage(
+                  LogDefaultEntryHolder.defaultEntry.getParserForType(), extensionRegistry);
+              log_.getMutableMap().put(
+                  log__.getKey(), log__.getValue());
+              break;
+            }
+            case 138: {
+              pipe.work.Work.TaskStatus.Builder subBuilder = null;
+              if (payloadCase_ == 17) {
+                subBuilder = ((pipe.work.Work.TaskStatus) payload_).toBuilder();
+              }
+              payload_ =
+                  input.readMessage(pipe.work.Work.TaskStatus.PARSER, extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom((pipe.work.Work.TaskStatus) payload_);
+                payload_ = subBuilder.buildPartial();
+              }
+              payloadCase_ = 17;
+              break;
+            }
+            case 146: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              payloadCase_ = 18;
+              payload_ = bs;
+              break;
+            }
+            case 154: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              payloadCase_ = 19;
+              payload_ = bs;
+              break;
+            }
           }
         }
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
@@ -5898,6 +3990,17 @@ public final class Work {
       return pipe.work.Work.internal_static_WorkMessage_descriptor;
     }
 
+    @SuppressWarnings({"rawtypes"})
+    protected com.google.protobuf.MapField internalGetMapField(
+        int number) {
+      switch (number) {
+        case 16:
+          return internalGetLog();
+        default:
+          throw new RuntimeException(
+              "Invalid map field number: " + number);
+      }
+    }
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
       return pipe.work.Work.internal_static_WorkMessage_fieldAccessorTable
@@ -5922,6 +4025,9 @@ public final class Work {
       REQUEST(13),
       RESPONSE(14),
       CMD_MESSAGE(15),
+      TASK_STATUS(17),
+      DELETE_FILE(18),
+      DELETE_LOG(19),
       PAYLOAD_NOT_SET(0);
       private final int value;
       private PayloadCase(int value) {
@@ -5949,6 +4055,9 @@ public final class Work {
           case 13: return REQUEST;
           case 14: return RESPONSE;
           case 15: return CMD_MESSAGE;
+          case 17: return TASK_STATUS;
+          case 18: return DELETE_FILE;
+          case 19: return DELETE_LOG;
           case 0: return PAYLOAD_NOT_SET;
           default: return null;
         }
@@ -5998,6 +4107,82 @@ public final class Work {
      */
     public long getSecret() {
       return secret_;
+    }
+
+    public static final int LOG_FIELD_NUMBER = 16;
+    private static final class LogDefaultEntryHolder {
+      static final com.google.protobuf.MapEntry<
+          java.lang.String, java.lang.String> defaultEntry =
+              com.google.protobuf.MapEntry
+              .<java.lang.String, java.lang.String>newDefaultInstance(
+                  pipe.work.Work.internal_static_WorkMessage_LogEntry_descriptor, 
+                  com.google.protobuf.WireFormat.FieldType.STRING,
+                  "",
+                  com.google.protobuf.WireFormat.FieldType.STRING,
+                  "");
+    }
+    private com.google.protobuf.MapField<
+        java.lang.String, java.lang.String> log_;
+    private com.google.protobuf.MapField<java.lang.String, java.lang.String>
+    internalGetLog() {
+      if (log_ == null) {
+        return com.google.protobuf.MapField.emptyMapField(
+            LogDefaultEntryHolder.defaultEntry);
+      }
+      return log_;
+    }
+
+    public int getLogCount() {
+      return internalGetLog().getMap().size();
+    }
+    /**
+     * <code>map&lt;string, string&gt; log = 16;</code>
+     */
+
+    public boolean containsLog(
+        java.lang.String key) {
+      if (key == null) { throw new java.lang.NullPointerException(); }
+      return internalGetLog().getMap().containsKey(key);
+    }
+    /**
+     * Use {@link #getLogMap()} instead.
+     */
+    @java.lang.Deprecated
+    public java.util.Map<java.lang.String, java.lang.String> getLog() {
+      return getLogMap();
+    }
+    /**
+     * <code>map&lt;string, string&gt; log = 16;</code>
+     */
+
+    public java.util.Map<java.lang.String, java.lang.String> getLogMap() {
+      return internalGetLog().getMap();
+    }
+    /**
+     * <code>map&lt;string, string&gt; log = 16;</code>
+     */
+
+    public java.lang.String getLogOrDefault(
+        java.lang.String key,
+        java.lang.String defaultValue) {
+      if (key == null) { throw new java.lang.NullPointerException(); }
+      java.util.Map<java.lang.String, java.lang.String> map =
+          internalGetLog().getMap();
+      return map.containsKey(key) ? map.get(key) : defaultValue;
+    }
+    /**
+     * <code>map&lt;string, string&gt; log = 16;</code>
+     */
+
+    public java.lang.String getLogOrThrow(
+        java.lang.String key) {
+      if (key == null) { throw new java.lang.NullPointerException(); }
+      java.util.Map<java.lang.String, java.lang.String> map =
+          internalGetLog().getMap();
+      if (!map.containsKey(key)) {
+        throw new java.lang.IllegalArgumentException();
+      }
+      return map.get(key);
     }
 
     public static final int ERR_FIELD_NUMBER = 3;
@@ -6323,6 +4508,130 @@ public final class Work {
       return routing.Pipe.CommandMessage.getDefaultInstance();
     }
 
+    public static final int TASK_STATUS_FIELD_NUMBER = 17;
+    /**
+     * <code>optional .TaskStatus task_status = 17;</code>
+     */
+    public boolean hasTaskStatus() {
+      return payloadCase_ == 17;
+    }
+    /**
+     * <code>optional .TaskStatus task_status = 17;</code>
+     */
+    public pipe.work.Work.TaskStatus getTaskStatus() {
+      if (payloadCase_ == 17) {
+         return (pipe.work.Work.TaskStatus) payload_;
+      }
+      return pipe.work.Work.TaskStatus.getDefaultInstance();
+    }
+    /**
+     * <code>optional .TaskStatus task_status = 17;</code>
+     */
+    public pipe.work.Work.TaskStatusOrBuilder getTaskStatusOrBuilder() {
+      if (payloadCase_ == 17) {
+         return (pipe.work.Work.TaskStatus) payload_;
+      }
+      return pipe.work.Work.TaskStatus.getDefaultInstance();
+    }
+
+    public static final int DELETE_FILE_FIELD_NUMBER = 18;
+    /**
+     * <code>optional string delete_file = 18;</code>
+     */
+    public boolean hasDeleteFile() {
+      return payloadCase_ == 18;
+    }
+    /**
+     * <code>optional string delete_file = 18;</code>
+     */
+    public java.lang.String getDeleteFile() {
+      java.lang.Object ref = "";
+      if (payloadCase_ == 18) {
+        ref = payload_;
+      }
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8() && (payloadCase_ == 18)) {
+          payload_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string delete_file = 18;</code>
+     */
+    public com.google.protobuf.ByteString
+        getDeleteFileBytes() {
+      java.lang.Object ref = "";
+      if (payloadCase_ == 18) {
+        ref = payload_;
+      }
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        if (payloadCase_ == 18) {
+          payload_ = b;
+        }
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int DELETE_LOG_FIELD_NUMBER = 19;
+    /**
+     * <code>optional string delete_log = 19;</code>
+     */
+    public boolean hasDeleteLog() {
+      return payloadCase_ == 19;
+    }
+    /**
+     * <code>optional string delete_log = 19;</code>
+     */
+    public java.lang.String getDeleteLog() {
+      java.lang.Object ref = "";
+      if (payloadCase_ == 19) {
+        ref = payload_;
+      }
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8() && (payloadCase_ == 19)) {
+          payload_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string delete_log = 19;</code>
+     */
+    public com.google.protobuf.ByteString
+        getDeleteLogBytes() {
+      java.lang.Object ref = "";
+      if (payloadCase_ == 19) {
+        ref = payload_;
+      }
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        if (payloadCase_ == 19) {
+          payload_ = b;
+        }
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
@@ -6399,6 +4708,12 @@ public final class Work {
           return false;
         }
       }
+      if (hasTaskStatus()) {
+        if (!getTaskStatus().isInitialized()) {
+          memoizedIsInitialized = 0;
+          return false;
+        }
+      }
       memoizedIsInitialized = 1;
       return true;
     }
@@ -6447,6 +4762,21 @@ public final class Work {
       }
       if (payloadCase_ == 15) {
         output.writeMessage(15, (routing.Pipe.CommandMessage) payload_);
+      }
+      com.google.protobuf.GeneratedMessageV3
+        .serializeStringMapTo(
+          output,
+          internalGetLog(),
+          LogDefaultEntryHolder.defaultEntry,
+          16);
+      if (payloadCase_ == 17) {
+        output.writeMessage(17, (pipe.work.Work.TaskStatus) payload_);
+      }
+      if (payloadCase_ == 18) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 18, payload_);
+      }
+      if (payloadCase_ == 19) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 19, payload_);
       }
       unknownFields.writeTo(output);
     }
@@ -6513,6 +4843,26 @@ public final class Work {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(15, (routing.Pipe.CommandMessage) payload_);
       }
+      for (java.util.Map.Entry<java.lang.String, java.lang.String> entry
+           : internalGetLog().getMap().entrySet()) {
+        com.google.protobuf.MapEntry<java.lang.String, java.lang.String>
+        log__ = LogDefaultEntryHolder.defaultEntry.newBuilderForType()
+            .setKey(entry.getKey())
+            .setValue(entry.getValue())
+            .build();
+        size += com.google.protobuf.CodedOutputStream
+            .computeMessageSize(16, log__);
+      }
+      if (payloadCase_ == 17) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(17, (pipe.work.Work.TaskStatus) payload_);
+      }
+      if (payloadCase_ == 18) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(18, payload_);
+      }
+      if (payloadCase_ == 19) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(19, payload_);
+      }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
       return size;
@@ -6540,6 +4890,8 @@ public final class Work {
         result = result && (getSecret()
             == other.getSecret());
       }
+      result = result && internalGetLog().equals(
+          other.internalGetLog());
       result = result && getPayloadCase().equals(
           other.getPayloadCase());
       if (!result) return false;
@@ -6592,6 +4944,18 @@ public final class Work {
           result = result && getCmdMessage()
               .equals(other.getCmdMessage());
           break;
+        case 17:
+          result = result && getTaskStatus()
+              .equals(other.getTaskStatus());
+          break;
+        case 18:
+          result = result && getDeleteFile()
+              .equals(other.getDeleteFile());
+          break;
+        case 19:
+          result = result && getDeleteLog()
+              .equals(other.getDeleteLog());
+          break;
         case 0:
         default:
       }
@@ -6614,6 +4978,10 @@ public final class Work {
         hash = (37 * hash) + SECRET_FIELD_NUMBER;
         hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
             getSecret());
+      }
+      if (!internalGetLog().getMap().isEmpty()) {
+        hash = (37 * hash) + LOG_FIELD_NUMBER;
+        hash = (53 * hash) + internalGetLog().hashCode();
       }
       switch (payloadCase_) {
         case 3:
@@ -6664,6 +5032,18 @@ public final class Work {
         case 15:
           hash = (37 * hash) + CMD_MESSAGE_FIELD_NUMBER;
           hash = (53 * hash) + getCmdMessage().hashCode();
+          break;
+        case 17:
+          hash = (37 * hash) + TASK_STATUS_FIELD_NUMBER;
+          hash = (53 * hash) + getTaskStatus().hashCode();
+          break;
+        case 18:
+          hash = (37 * hash) + DELETE_FILE_FIELD_NUMBER;
+          hash = (53 * hash) + getDeleteFile().hashCode();
+          break;
+        case 19:
+          hash = (37 * hash) + DELETE_LOG_FIELD_NUMBER;
+          hash = (53 * hash) + getDeleteLog().hashCode();
           break;
         case 0:
         default:
@@ -6766,6 +5146,28 @@ public final class Work {
         return pipe.work.Work.internal_static_WorkMessage_descriptor;
       }
 
+      @SuppressWarnings({"rawtypes"})
+      protected com.google.protobuf.MapField internalGetMapField(
+          int number) {
+        switch (number) {
+          case 16:
+            return internalGetLog();
+          default:
+            throw new RuntimeException(
+                "Invalid map field number: " + number);
+        }
+      }
+      @SuppressWarnings({"rawtypes"})
+      protected com.google.protobuf.MapField internalGetMutableMapField(
+          int number) {
+        switch (number) {
+          case 16:
+            return internalGetMutableLog();
+          default:
+            throw new RuntimeException(
+                "Invalid map field number: " + number);
+        }
+      }
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
         return pipe.work.Work.internal_static_WorkMessage_fieldAccessorTable
@@ -6799,6 +5201,7 @@ public final class Work {
         bitField0_ = (bitField0_ & ~0x00000001);
         secret_ = 0L;
         bitField0_ = (bitField0_ & ~0x00000002);
+        internalGetMutableLog().clear();
         payloadCase_ = 0;
         payload_ = null;
         return this;
@@ -6837,6 +5240,8 @@ public final class Work {
           to_bitField0_ |= 0x00000002;
         }
         result.secret_ = secret_;
+        result.log_ = internalGetLog();
+        result.log_.makeImmutable();
         if (payloadCase_ == 3) {
           if (errBuilder_ == null) {
             result.payload_ = payload_;
@@ -6917,6 +5322,19 @@ public final class Work {
             result.payload_ = cmdMessageBuilder_.build();
           }
         }
+        if (payloadCase_ == 17) {
+          if (taskStatusBuilder_ == null) {
+            result.payload_ = payload_;
+          } else {
+            result.payload_ = taskStatusBuilder_.build();
+          }
+        }
+        if (payloadCase_ == 18) {
+          result.payload_ = payload_;
+        }
+        if (payloadCase_ == 19) {
+          result.payload_ = payload_;
+        }
         result.bitField0_ = to_bitField0_;
         result.payloadCase_ = payloadCase_;
         onBuilt();
@@ -6966,6 +5384,8 @@ public final class Work {
         if (other.hasSecret()) {
           setSecret(other.getSecret());
         }
+        internalGetMutableLog().mergeFrom(
+            other.internalGetLog());
         switch (other.getPayloadCase()) {
           case ERR: {
             mergeErr(other.getErr());
@@ -7013,6 +5433,22 @@ public final class Work {
           }
           case CMD_MESSAGE: {
             mergeCmdMessage(other.getCmdMessage());
+            break;
+          }
+          case TASK_STATUS: {
+            mergeTaskStatus(other.getTaskStatus());
+            break;
+          }
+          case DELETE_FILE: {
+            payloadCase_ = 18;
+            payload_ = other.payload_;
+            onChanged();
+            break;
+          }
+          case DELETE_LOG: {
+            payloadCase_ = 19;
+            payload_ = other.payload_;
+            onChanged();
             break;
           }
           case PAYLOAD_NOT_SET: {
@@ -7080,6 +5516,11 @@ public final class Work {
         }
         if (hasCmdMessage()) {
           if (!getCmdMessage().isInitialized()) {
+            return false;
+          }
+        }
+        if (hasTaskStatus()) {
+          if (!getTaskStatus().isInitialized()) {
             return false;
           }
         }
@@ -7267,6 +5708,129 @@ public final class Work {
         bitField0_ = (bitField0_ & ~0x00000002);
         secret_ = 0L;
         onChanged();
+        return this;
+      }
+
+      private com.google.protobuf.MapField<
+          java.lang.String, java.lang.String> log_;
+      private com.google.protobuf.MapField<java.lang.String, java.lang.String>
+      internalGetLog() {
+        if (log_ == null) {
+          return com.google.protobuf.MapField.emptyMapField(
+              LogDefaultEntryHolder.defaultEntry);
+        }
+        return log_;
+      }
+      private com.google.protobuf.MapField<java.lang.String, java.lang.String>
+      internalGetMutableLog() {
+        onChanged();;
+        if (log_ == null) {
+          log_ = com.google.protobuf.MapField.newMapField(
+              LogDefaultEntryHolder.defaultEntry);
+        }
+        if (!log_.isMutable()) {
+          log_ = log_.copy();
+        }
+        return log_;
+      }
+
+      public int getLogCount() {
+        return internalGetLog().getMap().size();
+      }
+      /**
+       * <code>map&lt;string, string&gt; log = 16;</code>
+       */
+
+      public boolean containsLog(
+          java.lang.String key) {
+        if (key == null) { throw new java.lang.NullPointerException(); }
+        return internalGetLog().getMap().containsKey(key);
+      }
+      /**
+       * Use {@link #getLogMap()} instead.
+       */
+      @java.lang.Deprecated
+      public java.util.Map<java.lang.String, java.lang.String> getLog() {
+        return getLogMap();
+      }
+      /**
+       * <code>map&lt;string, string&gt; log = 16;</code>
+       */
+
+      public java.util.Map<java.lang.String, java.lang.String> getLogMap() {
+        return internalGetLog().getMap();
+      }
+      /**
+       * <code>map&lt;string, string&gt; log = 16;</code>
+       */
+
+      public java.lang.String getLogOrDefault(
+          java.lang.String key,
+          java.lang.String defaultValue) {
+        if (key == null) { throw new java.lang.NullPointerException(); }
+        java.util.Map<java.lang.String, java.lang.String> map =
+            internalGetLog().getMap();
+        return map.containsKey(key) ? map.get(key) : defaultValue;
+      }
+      /**
+       * <code>map&lt;string, string&gt; log = 16;</code>
+       */
+
+      public java.lang.String getLogOrThrow(
+          java.lang.String key) {
+        if (key == null) { throw new java.lang.NullPointerException(); }
+        java.util.Map<java.lang.String, java.lang.String> map =
+            internalGetLog().getMap();
+        if (!map.containsKey(key)) {
+          throw new java.lang.IllegalArgumentException();
+        }
+        return map.get(key);
+      }
+
+      public Builder clearLog() {
+        internalGetMutableLog().getMutableMap()
+            .clear();
+        return this;
+      }
+      /**
+       * <code>map&lt;string, string&gt; log = 16;</code>
+       */
+
+      public Builder removeLog(
+          java.lang.String key) {
+        if (key == null) { throw new java.lang.NullPointerException(); }
+        internalGetMutableLog().getMutableMap()
+            .remove(key);
+        return this;
+      }
+      /**
+       * Use alternate mutation accessors instead.
+       */
+      @java.lang.Deprecated
+      public java.util.Map<java.lang.String, java.lang.String>
+      getMutableLog() {
+        return internalGetMutableLog().getMutableMap();
+      }
+      /**
+       * <code>map&lt;string, string&gt; log = 16;</code>
+       */
+      public Builder putLog(
+          java.lang.String key,
+          java.lang.String value) {
+        if (key == null) { throw new java.lang.NullPointerException(); }
+        if (value == null) { throw new java.lang.NullPointerException(); }
+        internalGetMutableLog().getMutableMap()
+            .put(key, value);
+        return this;
+      }
+      /**
+       * <code>map&lt;string, string&gt; log = 16;</code>
+       */
+
+      public Builder putAllLog(
+          java.util.Map<java.lang.String, java.lang.String> values) {
+        internalGetMutableLog().getMutableMap()
+            .putAll(values);
         return this;
       }
 
@@ -8853,6 +7417,316 @@ public final class Work {
         onChanged();;
         return cmdMessageBuilder_;
       }
+
+      private com.google.protobuf.SingleFieldBuilderV3<
+          pipe.work.Work.TaskStatus, pipe.work.Work.TaskStatus.Builder, pipe.work.Work.TaskStatusOrBuilder> taskStatusBuilder_;
+      /**
+       * <code>optional .TaskStatus task_status = 17;</code>
+       */
+      public boolean hasTaskStatus() {
+        return payloadCase_ == 17;
+      }
+      /**
+       * <code>optional .TaskStatus task_status = 17;</code>
+       */
+      public pipe.work.Work.TaskStatus getTaskStatus() {
+        if (taskStatusBuilder_ == null) {
+          if (payloadCase_ == 17) {
+            return (pipe.work.Work.TaskStatus) payload_;
+          }
+          return pipe.work.Work.TaskStatus.getDefaultInstance();
+        } else {
+          if (payloadCase_ == 17) {
+            return taskStatusBuilder_.getMessage();
+          }
+          return pipe.work.Work.TaskStatus.getDefaultInstance();
+        }
+      }
+      /**
+       * <code>optional .TaskStatus task_status = 17;</code>
+       */
+      public Builder setTaskStatus(pipe.work.Work.TaskStatus value) {
+        if (taskStatusBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          payload_ = value;
+          onChanged();
+        } else {
+          taskStatusBuilder_.setMessage(value);
+        }
+        payloadCase_ = 17;
+        return this;
+      }
+      /**
+       * <code>optional .TaskStatus task_status = 17;</code>
+       */
+      public Builder setTaskStatus(
+          pipe.work.Work.TaskStatus.Builder builderForValue) {
+        if (taskStatusBuilder_ == null) {
+          payload_ = builderForValue.build();
+          onChanged();
+        } else {
+          taskStatusBuilder_.setMessage(builderForValue.build());
+        }
+        payloadCase_ = 17;
+        return this;
+      }
+      /**
+       * <code>optional .TaskStatus task_status = 17;</code>
+       */
+      public Builder mergeTaskStatus(pipe.work.Work.TaskStatus value) {
+        if (taskStatusBuilder_ == null) {
+          if (payloadCase_ == 17 &&
+              payload_ != pipe.work.Work.TaskStatus.getDefaultInstance()) {
+            payload_ = pipe.work.Work.TaskStatus.newBuilder((pipe.work.Work.TaskStatus) payload_)
+                .mergeFrom(value).buildPartial();
+          } else {
+            payload_ = value;
+          }
+          onChanged();
+        } else {
+          if (payloadCase_ == 17) {
+            taskStatusBuilder_.mergeFrom(value);
+          }
+          taskStatusBuilder_.setMessage(value);
+        }
+        payloadCase_ = 17;
+        return this;
+      }
+      /**
+       * <code>optional .TaskStatus task_status = 17;</code>
+       */
+      public Builder clearTaskStatus() {
+        if (taskStatusBuilder_ == null) {
+          if (payloadCase_ == 17) {
+            payloadCase_ = 0;
+            payload_ = null;
+            onChanged();
+          }
+        } else {
+          if (payloadCase_ == 17) {
+            payloadCase_ = 0;
+            payload_ = null;
+          }
+          taskStatusBuilder_.clear();
+        }
+        return this;
+      }
+      /**
+       * <code>optional .TaskStatus task_status = 17;</code>
+       */
+      public pipe.work.Work.TaskStatus.Builder getTaskStatusBuilder() {
+        return getTaskStatusFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>optional .TaskStatus task_status = 17;</code>
+       */
+      public pipe.work.Work.TaskStatusOrBuilder getTaskStatusOrBuilder() {
+        if ((payloadCase_ == 17) && (taskStatusBuilder_ != null)) {
+          return taskStatusBuilder_.getMessageOrBuilder();
+        } else {
+          if (payloadCase_ == 17) {
+            return (pipe.work.Work.TaskStatus) payload_;
+          }
+          return pipe.work.Work.TaskStatus.getDefaultInstance();
+        }
+      }
+      /**
+       * <code>optional .TaskStatus task_status = 17;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilderV3<
+          pipe.work.Work.TaskStatus, pipe.work.Work.TaskStatus.Builder, pipe.work.Work.TaskStatusOrBuilder> 
+          getTaskStatusFieldBuilder() {
+        if (taskStatusBuilder_ == null) {
+          if (!(payloadCase_ == 17)) {
+            payload_ = pipe.work.Work.TaskStatus.getDefaultInstance();
+          }
+          taskStatusBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              pipe.work.Work.TaskStatus, pipe.work.Work.TaskStatus.Builder, pipe.work.Work.TaskStatusOrBuilder>(
+                  (pipe.work.Work.TaskStatus) payload_,
+                  getParentForChildren(),
+                  isClean());
+          payload_ = null;
+        }
+        payloadCase_ = 17;
+        onChanged();;
+        return taskStatusBuilder_;
+      }
+
+      /**
+       * <code>optional string delete_file = 18;</code>
+       */
+      public boolean hasDeleteFile() {
+        return payloadCase_ == 18;
+      }
+      /**
+       * <code>optional string delete_file = 18;</code>
+       */
+      public java.lang.String getDeleteFile() {
+        java.lang.Object ref = "";
+        if (payloadCase_ == 18) {
+          ref = payload_;
+        }
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (payloadCase_ == 18) {
+            if (bs.isValidUtf8()) {
+              payload_ = s;
+            }
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string delete_file = 18;</code>
+       */
+      public com.google.protobuf.ByteString
+          getDeleteFileBytes() {
+        java.lang.Object ref = "";
+        if (payloadCase_ == 18) {
+          ref = payload_;
+        }
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          if (payloadCase_ == 18) {
+            payload_ = b;
+          }
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string delete_file = 18;</code>
+       */
+      public Builder setDeleteFile(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  payloadCase_ = 18;
+        payload_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string delete_file = 18;</code>
+       */
+      public Builder clearDeleteFile() {
+        if (payloadCase_ == 18) {
+          payloadCase_ = 0;
+          payload_ = null;
+          onChanged();
+        }
+        return this;
+      }
+      /**
+       * <code>optional string delete_file = 18;</code>
+       */
+      public Builder setDeleteFileBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  payloadCase_ = 18;
+        payload_ = value;
+        onChanged();
+        return this;
+      }
+
+      /**
+       * <code>optional string delete_log = 19;</code>
+       */
+      public boolean hasDeleteLog() {
+        return payloadCase_ == 19;
+      }
+      /**
+       * <code>optional string delete_log = 19;</code>
+       */
+      public java.lang.String getDeleteLog() {
+        java.lang.Object ref = "";
+        if (payloadCase_ == 19) {
+          ref = payload_;
+        }
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (payloadCase_ == 19) {
+            if (bs.isValidUtf8()) {
+              payload_ = s;
+            }
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string delete_log = 19;</code>
+       */
+      public com.google.protobuf.ByteString
+          getDeleteLogBytes() {
+        java.lang.Object ref = "";
+        if (payloadCase_ == 19) {
+          ref = payload_;
+        }
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          if (payloadCase_ == 19) {
+            payload_ = b;
+          }
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string delete_log = 19;</code>
+       */
+      public Builder setDeleteLog(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  payloadCase_ = 19;
+        payload_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string delete_log = 19;</code>
+       */
+      public Builder clearDeleteLog() {
+        if (payloadCase_ == 19) {
+          payloadCase_ = 0;
+          payload_ = null;
+          onChanged();
+        }
+        return this;
+      }
+      /**
+       * <code>optional string delete_log = 19;</code>
+       */
+      public Builder setDeleteLogBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  payloadCase_ = 19;
+        payload_ = value;
+        onChanged();
+        return this;
+      }
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
         return super.setUnknownFields(unknownFields);
@@ -8923,40 +7797,20 @@ public final class Work {
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_RegisterNode_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_Location_descriptor;
+    internal_static_TaskStatus_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_Location_fieldAccessorTable;
-  private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_Log_descriptor;
-  private static final 
-    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_Log_fieldAccessorTable;
-  private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_Log_Hash_descriptor;
-  private static final 
-    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_Log_Hash_fieldAccessorTable;
-  private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_Log_Hash_LocationList_descriptor;
-  private static final 
-    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_Log_Hash_LocationList_fieldAccessorTable;
-  private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_Log_Hash_ChunkLocationMapEntry_descriptor;
-  private static final 
-    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_Log_Hash_ChunkLocationMapEntry_fieldAccessorTable;
-  private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_Log_LogEntry_descriptor;
-  private static final 
-    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_Log_LogEntry_fieldAccessorTable;
+      internal_static_TaskStatus_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_WorkMessage_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_WorkMessage_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_WorkMessage_LogEntry_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_WorkMessage_LogEntry_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -8972,27 +7826,24 @@ public final class Work {
       " \001(\005\"&\n\tHeartbeat\022\031\n\005state\030\001 \002(\0132\n.WorkS" +
       "tate\")\n\004Task\022\021\n\tseries_id\030\001 \002(\003\022\016\n\006seq_i" +
       "d\030\002 \002(\005\"*\n\014RegisterNode\022\014\n\004host\030\001 \002(\t\022\014\n" +
-      "\004port\030\002 \002(\005\"L\n\010Location\022\017\n\007node_id\030\001 \002(\005" +
-      "\022\014\n\004host\030\002 \002(\t\022\014\n\004port\030\003 \002(\005\022\023\n\013leaderOr" +
-      "Not\030\004 \002(\010\"\232\002\n\003Log\022\032\n\003log\030\001 \003(\0132\r.Log.Log" +
-      "Entry\032\277\001\n\004Hash\0229\n\020chunkLocationMap\030\001 \003(\013",
-      "2\037.Log.Hash.ChunkLocationMapEntry\032+\n\014Loc" +
-      "ationList\022\033\n\010location\030\001 \003(\0132\t.Location\032O" +
-      "\n\025ChunkLocationMapEntry\022\013\n\003key\030\001 \001(\005\022%\n\005" +
-      "value\030\002 \001(\0132\026.Log.Hash.LocationList:\0028\001\032" +
-      "5\n\010LogEntry\022\013\n\003key\030\001 \001(\t\022\030\n\005value\030\002 \001(\0132" +
-      "\t.Log.Hash:\0028\001\"\235\003\n\013WorkMessage\022\027\n\006header" +
-      "\030\001 \001(\0132\007.Header\022\016\n\006secret\030\002 \002(\003\022\027\n\003err\030\003" +
-      " \001(\0132\010.FailureH\000\022\016\n\004ping\030\004 \001(\010H\000\022\032\n\004beat" +
-      "\030\005 \001(\0132\n.HeartbeatH\000\022\025\n\004task\030\006 \001(\0132\005.Tas" +
-      "kH\000\022\033\n\005state\030\007 \001(\0132\n.WorkStateH\000\022\037\n\006lead",
-      "er\030\010 \001(\0132\r.LeaderStatusH\000\022\027\n\006a_vote\030\n \001(" +
-      "\0132\005.VoteH\000\022\"\n\nreq_a_vote\030\013 \001(\0132\014.Request" +
-      "VoteH\000\022\037\n\006a_node\030\014 \001(\0132\r.RegisterNodeH\000\022" +
-      "\033\n\007request\030\r \001(\0132\010.RequestH\000\022\035\n\010response" +
-      "\030\016 \001(\0132\t.ResponseH\000\022&\n\013cmd_message\030\017 \001(\013" +
-      "2\017.CommandMessageH\000B\t\n\007payloadB\r\n\tpipe.w" +
-      "orkH\001"
+      "\004port\030\002 \002(\005\"a\n\nTaskStatus\022\020\n\010filename\030\001 " +
+      "\002(\t\022\020\n\010chunk_id\030\002 \002(\005\022\022\n\nchunk_size\030\003 \002(" +
+      "\005\022\033\n\004node\030\004 \002(\0132\r.RegisterNode\"\276\004\n\013WorkM" +
+      "essage\022\027\n\006header\030\001 \001(\0132\007.Header\022\016\n\006secre",
+      "t\030\002 \002(\003\022\"\n\003log\030\020 \003(\0132\025.WorkMessage.LogEn" +
+      "try\022\027\n\003err\030\003 \001(\0132\010.FailureH\000\022\016\n\004ping\030\004 \001" +
+      "(\010H\000\022\032\n\004beat\030\005 \001(\0132\n.HeartbeatH\000\022\025\n\004task" +
+      "\030\006 \001(\0132\005.TaskH\000\022\033\n\005state\030\007 \001(\0132\n.WorkSta" +
+      "teH\000\022\037\n\006leader\030\010 \001(\0132\r.LeaderStatusH\000\022\027\n" +
+      "\006a_vote\030\n \001(\0132\005.VoteH\000\022\"\n\nreq_a_vote\030\013 \001" +
+      "(\0132\014.RequestVoteH\000\022\037\n\006a_node\030\014 \001(\0132\r.Reg" +
+      "isterNodeH\000\022\033\n\007request\030\r \001(\0132\010.RequestH\000" +
+      "\022\035\n\010response\030\016 \001(\0132\t.ResponseH\000\022&\n\013cmd_m" +
+      "essage\030\017 \001(\0132\017.CommandMessageH\000\022\"\n\013task_",
+      "status\030\021 \001(\0132\013.TaskStatusH\000\022\025\n\013delete_fi" +
+      "le\030\022 \001(\tH\000\022\024\n\ndelete_log\030\023 \001(\tH\000\032*\n\010LogE" +
+      "ntry\022\013\n\003key\030\001 \001(\t\022\r\n\005value\030\002 \001(\t:\0028\001B\t\n\007" +
+      "payloadB\r\n\tpipe.workH\001"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -9033,48 +7884,24 @@ public final class Work {
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_RegisterNode_descriptor,
         new java.lang.String[] { "Host", "Port", });
-    internal_static_Location_descriptor =
+    internal_static_TaskStatus_descriptor =
       getDescriptor().getMessageTypes().get(4);
-    internal_static_Location_fieldAccessorTable = new
+    internal_static_TaskStatus_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_Location_descriptor,
-        new java.lang.String[] { "NodeId", "Host", "Port", "LeaderOrNot", });
-    internal_static_Log_descriptor =
-      getDescriptor().getMessageTypes().get(5);
-    internal_static_Log_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_Log_descriptor,
-        new java.lang.String[] { "Log", });
-    internal_static_Log_Hash_descriptor =
-      internal_static_Log_descriptor.getNestedTypes().get(0);
-    internal_static_Log_Hash_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_Log_Hash_descriptor,
-        new java.lang.String[] { "ChunkLocationMap", });
-    internal_static_Log_Hash_LocationList_descriptor =
-      internal_static_Log_Hash_descriptor.getNestedTypes().get(0);
-    internal_static_Log_Hash_LocationList_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_Log_Hash_LocationList_descriptor,
-        new java.lang.String[] { "Location", });
-    internal_static_Log_Hash_ChunkLocationMapEntry_descriptor =
-      internal_static_Log_Hash_descriptor.getNestedTypes().get(1);
-    internal_static_Log_Hash_ChunkLocationMapEntry_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_Log_Hash_ChunkLocationMapEntry_descriptor,
-        new java.lang.String[] { "Key", "Value", });
-    internal_static_Log_LogEntry_descriptor =
-      internal_static_Log_descriptor.getNestedTypes().get(1);
-    internal_static_Log_LogEntry_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_Log_LogEntry_descriptor,
-        new java.lang.String[] { "Key", "Value", });
+        internal_static_TaskStatus_descriptor,
+        new java.lang.String[] { "Filename", "ChunkId", "ChunkSize", "Node", });
     internal_static_WorkMessage_descriptor =
-      getDescriptor().getMessageTypes().get(6);
+      getDescriptor().getMessageTypes().get(5);
     internal_static_WorkMessage_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_WorkMessage_descriptor,
-        new java.lang.String[] { "Header", "Secret", "Err", "Ping", "Beat", "Task", "State", "Leader", "AVote", "ReqAVote", "ANode", "Request", "Response", "CmdMessage", "Payload", });
+        new java.lang.String[] { "Header", "Secret", "Log", "Err", "Ping", "Beat", "Task", "State", "Leader", "AVote", "ReqAVote", "ANode", "Request", "Response", "CmdMessage", "TaskStatus", "DeleteFile", "DeleteLog", "Payload", });
+    internal_static_WorkMessage_LogEntry_descriptor =
+      internal_static_WorkMessage_descriptor.getNestedTypes().get(0);
+    internal_static_WorkMessage_LogEntry_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_WorkMessage_LogEntry_descriptor,
+        new java.lang.String[] { "Key", "Value", });
     pipe.common.Common.getDescriptor();
     pipe.election.Election.getDescriptor();
     routing.Pipe.getDescriptor();

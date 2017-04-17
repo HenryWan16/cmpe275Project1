@@ -90,6 +90,23 @@ public class CommHandler extends SimpleChannelInboundHandler<CommandMessage> {
 			// TODO add logging
 			System.out.println("ERROR: Unexpected content - " + msg);
 			return;
+
+		}else if(msg.hasPing()){
+			//if the destination is this node's id then it is a returned ping
+			if(msg.getHeader().getDestination() == -1) {
+				//logger.info("Received returned ping from " + msg.getHeader().getNodeId());
+				logger.info("Ping success");
+			}else{
+				Common.Header.Builder hb = Common.Header.newBuilder();
+				//node id -1 is client
+				hb.setNodeId(-1);
+				hb.setDestination(msg.getHeader().getNodeId());
+				hb.setTime(System.currentTimeMillis());
+				CommandMessage.Builder rb = CommandMessage.newBuilder();
+				rb.setHeader(hb);
+				rb.setPing(true);
+				channel.writeAndFlush(rb);
+			}
 		}else if(msg.hasResponse()){
 			TaskType type = msg.getResponse().getResponseType();
 			

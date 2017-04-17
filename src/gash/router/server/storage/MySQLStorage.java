@@ -221,7 +221,7 @@ public class MySQLStorage {
         return true;
     }
 
-    public boolean deleteRecordFileChunk(String fileName, int chunkID) {
+    public boolean deleteRecordFileChunk(String fileName) {
         init();
         try {
             if (fileName == null || fileName.length() == 0) {
@@ -233,7 +233,7 @@ public class MySQLStorage {
                 System.out.println("Connection successful!");
                 Statement stmt = conn.createStatement();
                 String deleteRecord = "DELETE FROM FileChunk\n" +
-                        "WHERE fileName='" + fileName + "' and chunkID=" + chunkID + ";";
+                        "WHERE fileName='" + fileName + "';";
                 logger.info(deleteRecord);
                 boolean deleteResult = stmt.execute(deleteRecord);
                 if (deleteResult == false) {
@@ -242,15 +242,9 @@ public class MySQLStorage {
                 else {
                     logger.info("Delete table FileChunk in the FileDB successfully. ");
                 }
-//                ResultSet rs = stmt.executeQuery("SELECT 1 FROM INFORMATION_SCHEMA.SYSTEM_USERS"); // do something with the connection.
-//                while(rs.next()){
-//                    System.out.println(rs.getString(1)); // should print out "1"'
-//                }
             }
-            // release(); // shutdown connection pool.
         } catch (Exception ex) {
             ex.printStackTrace();
-            logger.error("failed/exception on deleting a record: chunkId " + chunkID + " of the file " + fileName, ex);
             try {
                 conn.rollback();
             } catch (SQLException e) {
@@ -297,12 +291,7 @@ public class MySQLStorage {
                 else {
                     logger.info("Update table FileChunk in the FileDB successfully. ");
                 }
-//                ResultSet rs = stmt.executeQuery("SELECT 1 FROM INFORMATION_SCHEMA.SYSTEM_USERS"); // do something with the connection.
-//                while(rs.next()){
-//                    System.out.println(rs.getString(1)); // should print out "1"'
-//                }
             }
-            // release(); // shutdown connection pool.
         } catch (Exception ex) {
             ex.printStackTrace();
             logger.error("failed/exception on updating a record: chunkId " + chunkID + " of the file " + fileName, ex);
@@ -356,12 +345,7 @@ public class MySQLStorage {
                     logger.info("Select table FileChunk in the FileDB successfully. ");
                 }
                 return rs;
-//                ResultSet rs = stmt.executeQuery("SELECT 1 FROM INFORMATION_SCHEMA.SYSTEM_USERS"); // do something with the connection.
-//                while(rs.next()){
-//                    System.out.println(rs.getString(1)); // should print out "1"'
-//                }
             }
-            // release(); // shutdown connection pool.
         } catch (Exception ex) {
             ex.printStackTrace();
             logger.error("failed/exception on selecting a record: chunkId " + chunkID + " of the file " + fileName, ex);
@@ -422,7 +406,6 @@ public class MySQLStorage {
                 }
                 return arrayList;
             }
-            // release(); // shutdown connection pool.
         } catch (Exception ex) {
             ex.printStackTrace();
             logger.error("failed/exception on selecting a record: chunkId " + chunkID + " of the file " + fileName, ex);

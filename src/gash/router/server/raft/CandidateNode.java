@@ -1,5 +1,7 @@
 package gash.router.server.raft;
 
+import java.util.Hashtable;
+
 import gash.router.server.edges.EdgeInfo;
 import pipe.work.Work.WorkMessage;
 
@@ -123,6 +125,30 @@ public class CandidateNode implements NodeState {
 			this.handler.setNodeState(this.handler.follower, 1);
 //			this.handler.flushAllChannels();
 			isAskedForVote = false;
+		}
+	}
+
+	@Override
+	public void processSendUpdateLogs(WorkMessage wm) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	@Override
+	public synchronized void processAddLogs(WorkMessage wm) {
+		Hashtable<String, String> newTable = new Hashtable<String, String>();
+		for(String sKey: newTable.keySet()) {
+			handler.logs.put(sKey, newTable.get(sKey));
+		}
+	}
+	
+	@Override
+	public synchronized void processSendRemoveLogs(WorkMessage wm) {
+		String fname = wm.getTaskStatus().getFilename();
+		for(String sKey: handler.logs.keySet()) {
+			if (sKey.contains(fname)) {
+				handler.logs.remove(sKey);
+			}
 		}
 	}
 
