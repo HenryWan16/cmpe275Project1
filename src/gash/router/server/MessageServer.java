@@ -63,6 +63,7 @@ public class MessageServer {
 
 	public MySQLStorage mySQLStorage = null;
 	public static int threadLimit = 0;
+	public static EdgeMonitor emon = null;
 	/**
 	 * initialize the server with a configuration of it's resources
 	 * 
@@ -241,7 +242,7 @@ public class MessageServer {
 			TaskList tasks = new TaskList(new NoOpBalancer());
 			state.setTasks(tasks);
 
-			EdgeMonitor emon = new EdgeMonitor(state);
+			emon = new EdgeMonitor(state);
 			Thread t = new Thread(emon);
 			t.start();
 			

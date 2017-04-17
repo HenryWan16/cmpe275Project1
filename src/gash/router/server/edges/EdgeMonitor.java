@@ -15,11 +15,6 @@
  */
 package gash.router.server.edges;
 
-import java.net.UnknownHostException;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import gash.router.container.RoutingConf.RoutingEntry;
 import gash.router.server.ServerState;
 import gash.router.server.WorkInit;
@@ -30,8 +25,12 @@ import io.netty.channel.Channel;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import pipe.common.Common;
 import pipe.work.Work;
+
+import java.net.UnknownHostException;
 
 
 public class EdgeMonitor implements EdgeListener, Runnable {
@@ -95,6 +94,7 @@ public class EdgeMonitor implements EdgeListener, Runnable {
 							String host = ei.getHost();
 							int port = ei.getPort();
 
+							// find new node;
 							ei.getChannel().writeAndFlush(MessageUtil.registerANewNode(nodeId, host, port));
 						}				
 					 }

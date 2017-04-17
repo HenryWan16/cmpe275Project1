@@ -25,8 +25,31 @@ message Task {
 }
 
 message RegisterNode{
-   required string host = 1;
-   required int32 port = 2;
+    required string host = 1;
+    required int32 port = 2;
+}
+
+message Location {
+    required int32 node_id = 1;
+    required string host = 2;
+    required int32 port = 3;
+    required bool leaderOrNot = 4;
+}
+
+/ chunk_id -- locationlist
+message Hash {
+    message LocationList {
+        repeated Location location = 1;
+    }
+    map<int32, LocationList> chunklocmap = 1;
+}
+
+//file_name -- Hash list
+message Log {
+    message HashList {
+        repeated Hash hash =1;
+    }
+    map<string, HashList> filehashmap =1;
 }
 
 // These are messages to keep the network running (not to perform work)
