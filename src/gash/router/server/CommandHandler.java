@@ -89,10 +89,10 @@ public class CommandHandler extends SimpleChannelInboundHandler<CommandMessage> 
 			} else if (msg.hasRequest()) {
 				logger.info("server get request: "+msg.getRequest().toString());
 				
-				qos = QOSWorker.getInstance();
-				logger.info("QOSWorker Thread Working : ");
-				Session session = new CommandSession(conf, msg, channel);
-				qos.getQueue().enqueue(session);
+//				qos = QOSWorker.getInstance();
+//				logger.info("QOSWorker Thread Working : ");
+//				Session session = new CommandSession(conf, msg, channel);
+//				qos.getQueue().enqueue(session);
 
 			} else {
 			}
