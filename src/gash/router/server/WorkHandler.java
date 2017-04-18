@@ -67,10 +67,10 @@ public class WorkHandler extends SimpleChannelInboundHandler<WorkMessage> {
 	 */
 	public void handleMessage(WorkMessage msg, Channel channel) {
 		
-		QOSWorker qos = QOSWorker.getInstance();
-		logger.info("QOSWorker Thread Working : ");
-		Session session = new WorkSession(this.state, msg);
-		qos.getQueue().enqueue(session);
+//		QOSWorker qos = QOSWorker.getInstance();
+//		logger.info("QOSWorker Thread Working : ");
+//		Session session = new WorkSession(this.state, msg);
+//		qos.getQueue().enqueue(session);
 
 		
 		

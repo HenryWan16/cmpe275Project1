@@ -33,6 +33,7 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import pipe.common.Common;
 import pipe.common.Common.Response;
+import pipe.common.Common.ResponseStatus;
 import pipe.common.Common.TaskType;
 import routing.Pipe.CommandMessage;
 
@@ -107,7 +108,7 @@ public class CommHandler extends SimpleChannelInboundHandler<CommandMessage> {
 				rb.setPing(true);
 				channel.writeAndFlush(rb);
 			}
-		}else if(msg.hasResponse()){
+		}else if(msg.hasResponse()){ 
 			TaskType type = msg.getResponse().getResponseType();
 			
 			if (type == TaskType.READFILE) {
@@ -156,26 +157,26 @@ public class CommHandler extends SimpleChannelInboundHandler<CommandMessage> {
 					}
 				}
 			} else if (type == TaskType.WRITEFILE) {
-				Response a;
-				//if (msg.getResponse().success)
-				System.out.println("File " );
+				ResponseStatus status = msg.getResponse().getAck();
+				if (status == ResponseStatus.Success) {
+					System.out.println("The file " + msg.getResponse().getFilename() + " has been successfully uploaded");	
+				} else
+					System.out.println("Failed to upload file " + msg.getResponse().getFilename() + " to the server.");
 				
 			} else if (type == TaskType.DELETEFILE) {
+				ResponseStatus status = msg.getResponse().getAck();
+				if (status == ResponseStatus.Success) {
+					System.out.println("The file " + msg.getResponse().getFilename() + " has been successfully deleted from all server nodes");	
+				} else
+					System.out.println("Failed to delete file " + msg.getResponse().getFilename() + " in the server.");
 				
 			} else { //UPDATEFILE
 				
 			}
-
-
 		}
 
 		if (debug)
 			PrintUtil.printCommand(msg);
-
-//		QOSWorker qos = QOSWorker.getInstance();
-//		logger.info("QOSWorker Thread Working on CommandSession: ");
-//		Session session = new CommandSession(this.state, msg);
-//		qos.getQueue().enqueue(session);
 	}
 
 	/**

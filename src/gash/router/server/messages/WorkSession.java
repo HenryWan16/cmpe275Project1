@@ -1,6 +1,5 @@
 package gash.router.server.messages;
 
-import gash.router.server.MessageServer;
 import gash.router.server.PrintUtil;
 import gash.router.server.ServerState;
 import io.netty.channel.Channel;
@@ -56,9 +55,9 @@ public class WorkSession implements Session, Runnable{
             } else if (msg.hasState()) {
                 Work.WorkState s = msg.getState();
             }
-            logger.info("MessageServer.threadLimit = " + MessageServer.threadLimit);
-            MessageServer.minThreadLimit();
-            logger.info("MessageServer.threadLimit = " + MessageServer.threadLimit);
+//            logger.info("MessageServer.threadLimit = " + MessageServer.threadLimit);
+//            MessageServer.minThreadLimit();
+//            logger.info("MessageServer.threadLimit = " + MessageServer.threadLimit);
         }
         catch (Exception e) {
             // TODO add logging

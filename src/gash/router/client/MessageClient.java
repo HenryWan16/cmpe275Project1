@@ -80,7 +80,7 @@ public class MessageClient {
 		FileInputStream fis;
 
 		int file_size = (int)file.length();
-		final int CHUNK_SIZE = 64 * 1024;
+		final int CHUNK_SIZE = 2 * 1024;
 		int numberOfChunks = 0;
 		int readLength = CHUNK_SIZE;
 		byte[] byteChunk;
@@ -89,7 +89,6 @@ public class MessageClient {
 		int chunkSize = file_size / readLength + (file_size % readLength == 0 ? 0 : 1);
 		
 		try {
-			numberOfChunks = file_size/CHUNK_SIZE;
 			fis = new FileInputStream(file);
 			while(file_size > 0) {
 				if(file_size <= CHUNK_SIZE)
@@ -104,30 +103,8 @@ public class MessageClient {
 
 				CommandMessage cm = MessageUtil.buildCommandMessage(MessageUtil.buildHeader(999,System.currentTimeMillis()),null,
 						MessageUtil.buildRequest(TaskType.WRITEFILE, MessageUtil.buildWriteBody(-1,fname,"txt",
-								MessageUtil.buildChunk(numberOfChunks,byteChunk,chunkSize),numberOfChunks),null),null);
-//				CommandMessage.Builder cmdb = CommandMessage.newBuilder();
-//				Common.Request.Builder r = Common.Request.newBuilder();
-//				Common.WriteBody.Builder wb = Common.WriteBody.newBuilder();
-//				Common.Chunk.Builder cb = Common.Chunk.newBuilder();
-//				Header.Builder hb = Header.newBuilder();
-//
-//				hb.setNodeId(999);
-//				hb.setTime(System.currentTimeMillis());
-//				hb.setDestination(-1);
-//
-//				cb.setChunkId(numberOfChunks);
-//				cb.setChunkSize(chunkSize);
-//				cb.setChunkData(ByteString.copyFrom(byteChunk));
-//
-//				wb.setFilename(fname);
-//				wb.setChunk(cb);
-//				wb.setNumOfChunks(chunkSize);
-//
-//				r.setRequestType(Common.TaskType.WRITEFILE);
-//				r.setRwb(wb);
-//
-//				cmdb.setHeader(hb);
-//				cmdb.setRequest(r);
+								MessageUtil.buildChunk(numberOfChunks,byteChunk,chunkSize),
+								chunkSize),null),null);
 
 				logger.info("build success, start to enque");
 				logger.info("msg enque is: "+cm.getRequest().getRwb().getChunk().toString());
@@ -176,18 +153,6 @@ public class MessageClient {
 			CommandMessage cmdb = MessageUtil.buildCommandMessage(MessageUtil.buildHeader(999,System.currentTimeMillis()),null,
 					MessageUtil.buildRequest(TaskType.READFILE,null,
 							MessageUtil.buildReadBody(fname,-1,-1,-1)),null);
-//			CommandMessage.Builder cmdb = CommandMessage.newBuilder();
-//			Header.Builder hb = Header.newBuilder();
-//			Common.Request.Builder rb = Common.Request.newBuilder();
-//			Common.ReadBody.Builder rdb = Common.ReadBody.newBuilder();
-//
-//			hb.setNodeId(999);
-//			rb.setRequestType(Common.TaskType.READFILE);
-//			rdb.setFilename(fname);
-//
-//			rb.setRrb(rdb.build());
-//			cmdb.setHeader(hb.build());
-//			cmdb.setRequest(rb.build());
 
 			try {
 				CommConnection.getInstance().enqueue(cmdb);

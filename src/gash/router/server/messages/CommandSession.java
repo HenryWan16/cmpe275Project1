@@ -53,8 +53,6 @@ public class CommandSession implements Session, Runnable{
             // Or we will transfer the message to new node.
 
             if (msg.hasPing()) {
-                logger.info("QoSWorker: Server CommandHandler received ping message");
-                logger.info("QoSWorker: ping from " + msg.getHeader().getNodeId());
                 //return ping ack
                 Header.Builder hb = Header.newBuilder();
                 hb.setNodeId(conf.getNodeId());
@@ -143,23 +141,18 @@ public class CommandSession implements Session, Runnable{
             			//send logs to leader
 
             			String host = Inet4Address.getLocalHost().getHostAddress();
-                		System.out.println("*******1result:" + result);
             			WorkMessage wm = MessageUtil.buildWMTaskStatus(
             					MessageUtil.buildHeader(conf.getNodeId(), System.currentTimeMillis()),
             					MessageUtil.buildTaskStatus(fname, chunkId, numOfChunk,
             							MessageUtil.buildRegisterNode(host, conf.getWorkPort())));
-                		System.out.println("*******2result:" + result);
+
             			EdgeInfo leaderEdgeInfo = RaftHandler.getInstance().getEdgeMonitor().getOutboundEdges().getMap().get(RaftHandler.getInstance().getLeaderNodeId());
-                		System.out.println("*******3result:" + result);
-            			System.out.println("*******EDGE LEADER: " + RaftHandler.getInstance().getLeaderNodeId());
             			
             			//check if it is a leader of not
             			if (conf.getNodeId() == RaftHandler.getInstance().getLeaderNodeId()) {
             				RaftHandler.getInstance().getNodeState().processSendUpdateLogs(wm);
             			} else if (leaderEdgeInfo.getChannel() != null && leaderEdgeInfo.getChannel().isActive())
             				leaderEdgeInfo.getChannel().writeAndFlush(wm);
-            			else
-            				System.out.println("***NOT ACTIVE****EDGE LEADER: " + RaftHandler.getInstance().getLeaderNodeId());
             			
             			//send success message back to client
                         CommandMessage cm = MessageUtil.buildCommandMessage(
@@ -171,13 +164,11 @@ public class CommandSession implements Session, Runnable{
             		}
             	} else if (type == TaskType.DELETEFILE) {
             		
-            		System.out.println("****DELETEFILE****");
             		ReadBody rb = msg.getRequest().getRrb();
             		String fname = rb.getFilename();
             		Hashtable<Integer, String> location = LogUtil.getListNodesToReadFile(fname);
 
             		//send to all nodes to delete the file
-            		System.out.println("*******location size:" + location.size());
             		boolean result = false;
             		if (location != null) {
             			for(Integer sKey: location.keySet()) {
