@@ -41,9 +41,11 @@ public class QOSWorker implements Runnable{
 
     @Override
     public void run() {
+    	logger.info("QOSWorker Thread Working : ");
         while (forever) {
         	if (!queue.isEmpty()) {
         		//do work in queue
+        		logger.info("Task dequeue.");
         		Session task = queue.dequeue();
         		task.handleMessage();
         		

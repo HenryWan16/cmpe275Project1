@@ -60,7 +60,8 @@ public class MessageUtil {
 	public static WorkMessage candidateAskToVote(RaftHandler handler) {
 		Header.Builder hb = Header.newBuilder();
 		hb.setNodeId(handler.getNodeId());
-		hb.setDestination(-1);	
+		hb.setDestination(-1);
+		hb.setTime(System.currentTimeMillis());
 		
 		RequestVote.Builder rvb= RequestVote.newBuilder();
 		rvb.setCandidateID(handler.getNodeId());	

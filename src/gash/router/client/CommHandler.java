@@ -20,6 +20,7 @@ import gash.router.server.ServerState;
 import gash.router.server.messages.CommandSession;
 import gash.router.server.messages.QOSWorker;
 import gash.router.server.messages.Session;
+import gash.router.server.raft.MessageUtil;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,6 +47,7 @@ import routing.Pipe.CommandMessage;
  * @author gash
  * 
  */
+// after the client received a response from the server, CommHandler will solve the response.
 public class CommHandler extends SimpleChannelInboundHandler<CommandMessage> {
 	protected static Logger logger = LoggerFactory.getLogger("connect");
 	protected boolean debug = false;
@@ -122,35 +124,33 @@ public class CommHandler extends SimpleChannelInboundHandler<CommandMessage> {
 					return;
 				}
 				
-				if(msg.getResponse().getReadResponse().getChunkLocationList() == null){
+				if(msg.getResponse().getReadResponse().hasChunk()){
 					//second response from server
+					logger.info("++++++++++++++++++ Begin to merge chunks +++++++++++++++++++++++++++++++++++++++");
 					Common.Chunk chunk = msg.getResponse().getReadResponse().getChunk();
-					mergeWorker = MergeWorker.getMergeWorkerInstance();
-					mergeWorker.upDateTable(chunk);
-					
+					MergeWorker.upDateTable(chunk);	
 				} else {
 					//first response from server
 					int numChunks = msg.getResponse().getReadResponse().getNumOfChunks();
 					mergeWorker = MergeWorker.getMergeWorkerInstance();
-					Thread mergeThread = new Thread(mergeWorker);
-					mergeThread.start();
 					mergeWorker.setTotalNoOfChunks(numChunks);
-					//ask directly from server nodes for file chunks
+					// get the HashMap<chunkID, Location> from the readResponse.
 					List<Common.ChunkLocation> list = msg.getResponse().getReadResponse().getChunkLocationList();
 					String fname = msg.getResponse().getReadResponse().getFilename();
-					for(int i=0;i<list.size();i++){
-						CommandMessage.Builder cmb = CommandMessage.newBuilder();
-						Common.Request.Builder rb = Common.Request.newBuilder();
-						Common.ReadBody.Builder rdb = Common.ReadBody.newBuilder();
-						rdb.setFilename(fname);
-						rdb.setChunkId(list.get(i).getChunkid());
-						rb.setRrb(rdb);
-						cmb.setRequest(rb);
-						String host = list.get(i).getNode(0).getHost();
-						int port = list.get(i).getNode(0).getPort();
-						CommConnection.initConnection(host, port);
+					// TODO if chunkID = n; we need to send n requests to the location
+					int chunkSize = list.size();
+					for(int i=0;i<chunkSize;i++){
+						
+						int chunkId = list.get(i).getChunkid();
+						
+						CommandMessage cm = MessageUtil.buildCommandMessage(
+            					MessageUtil.buildHeader(999, System.currentTimeMillis()),
+            					null,
+            					MessageUtil.buildRequest(TaskType.READFILE, null, MessageUtil.buildReadBody(fname, -1, chunkId, chunkSize)),
+            					null);
+
 						try {
-							CommConnection.getInstance().enqueue(cmb.build());
+							CommConnection.getInstance().enqueue(cm);
 						} catch (Exception e) {
 							e.printStackTrace();
 						}

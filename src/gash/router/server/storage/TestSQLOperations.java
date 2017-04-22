@@ -20,15 +20,12 @@ public class TestSQLOperations {
         String fileName = "test.txt";
         int chunkID = 2;
         byte[] data = temp.getBytes();
-        int totalNoOfChunks = 10;
+        int totalNoOfChunks = 3;
         String file_id = "Just for testing.";
         mySQLStorage.createTable();
         mySQLStorage.insertRecordFileChunk(fileName, chunkID, data, totalNoOfChunks, file_id);
-        ArrayList<ClassFileChunkRecord> result = mySQLStorage.selectRecordFileChunk(fileName, chunkID);
-        System.out.println("Selecting results:");
-        for (ClassFileChunkRecord record : result) {
-            System.out.println(record);
-        }
+        ClassFileChunkRecord result = mySQLStorage.selectRecordFileChunk(fileName, chunkID);
+        System.out.println("Selecting results: " + result);
         //mySQLStorage.deleteRecordFileChunk(fileName, chunkID);
     }
 
@@ -55,15 +52,15 @@ public class TestSQLOperations {
                 "How are you?\n" +
                 "\n" +
                 "Test drop table.";
-        String fileName = "test.txt";
-        int chunkID = 0;
+        String fileName = "files/input.txt";
+        int chunkID = 1;
         byte[] data = temp.getBytes();
-        int totalNoOfChunks = 10;
+        int totalNoOfChunks = 3;
         String file_id = "Just for testing.";
         mySQLStorage.insertRecordFileChunk(fileName, chunkID, data, totalNoOfChunks, file_id);
 
         temp = "Hello World";
-        chunkID = 1;
+        chunkID = 2;
         data = temp.getBytes();
         file_id = "Hello World.";
         mySQLStorage.insertRecordFileChunk(fileName, chunkID, data, totalNoOfChunks, file_id);
@@ -73,6 +70,31 @@ public class TestSQLOperations {
         data = temp.getBytes();
         file_id = "Age.";
         mySQLStorage.insertRecordFileChunk(fileName, chunkID, data, totalNoOfChunks, file_id);
+    }
+    
+    public void insertRecordFileChunk(int chunkId) throws Exception {
+        String temp = "Hello every.\n" +
+                "How are you?\n" +
+                "\n" +
+                "Test drop table.";
+        String fileName = "files/input.txt";
+        int chunkID = chunkId;
+        byte[] data = temp.getBytes();
+        int totalNoOfChunks = 10;
+        String file_id = "Just for testing.";
+        mySQLStorage.insertRecordFileChunk(fileName, chunkID, data, totalNoOfChunks, file_id);
+
+//        temp = "Hello World";
+//        chunkID = 1;
+//        data = temp.getBytes();
+//        file_id = "Hello World.";
+//        mySQLStorage.insertRecordFileChunk(fileName, chunkID, data, totalNoOfChunks, file_id);
+//
+//        temp = "How old are you?";
+//        chunkID = 3;
+//        data = temp.getBytes();
+//        file_id = "Age.";
+//        mySQLStorage.insertRecordFileChunk(fileName, chunkID, data, totalNoOfChunks, file_id);
     }
 
     public void deleteRecordFileChunk() throws Exception {
@@ -97,11 +119,8 @@ public class TestSQLOperations {
     public void selectRecordFileChunk() throws Exception {
         String fileName = "test.txt";
         int chunkID = 0;
-        ArrayList<ClassFileChunkRecord> result = mySQLStorage.selectRecordFileChunk(fileName, chunkID);
-        System.out.println("Selecting results:");
-        for (ClassFileChunkRecord record : result) {
-            System.out.println(record);
-        }
+        ClassFileChunkRecord result = mySQLStorage.selectRecordFileChunk(fileName, chunkID);
+        System.out.println("Selecting results: " + result);
     }
 
     public void tearDown() throws Exception {

@@ -368,7 +368,111 @@ public class MySQLStorage {
         return null;
     }
 
-    public ArrayList<ClassFileChunkRecord> selectRecordFileChunk(String fileName, int chunkID) {
+    public boolean checkFileExist(String fileName) {
+    	init();
+        if (fileName == null || fileName.length() == 0) {
+            logger.info("No record to select.");
+            return false;
+        }
+        ArrayList<ClassFileChunkRecord> arrayList = new ArrayList<ClassFileChunkRecord>();
+        try {
+            // TODO complete code to use JDBC
+            if (conn != null){
+                System.out.println("Connection successful!");
+                Statement stmt = conn.createStatement();
+                String selectRecord = "SELECT * FROM FileChunk\n" +
+                        "WHERE fileName='" + fileName + "';";
+                ResultSet rs = stmt.executeQuery(selectRecord);
+                if (rs == null) {
+                    logger.info("No record in Table FileChunk in the FileDB. Selecting...");
+                    return false;
+                }
+                else {
+                    return true;
+                }
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            logger.error("failed/exception on selecting a record: filename "  + fileName, ex);
+            try {
+                conn.rollback();
+            } catch (SQLException e) {
+            } finally {
+                if (conn != null) {
+                    try {
+                        conn.close();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+            // indicate failure
+        }
+        return false;
+    }
+    
+    // Only return all the chunkID of the file;
+    public ArrayList<Integer> selectRecordFilenameChunkID(String fileName) {
+    	init();
+        if (fileName == null || fileName.length() == 0) {
+            logger.info("No record to select.");
+            return null;
+        }
+        ArrayList<Integer> arrayList = new ArrayList<Integer>();
+        try {
+            // TODO complete code to use JDBC
+            if (conn != null){
+                System.out.println("Connection successful!");
+                Statement stmt = conn.createStatement();
+                String selectRecord = "SELECT chunkID FROM FileChunk\n" +
+                        "WHERE fileName='" + fileName + "';";
+                ResultSet rs = stmt.executeQuery(selectRecord);
+                if (rs == null) {
+                    logger.info("No record in Table FileChunk in the FileDB. Selecting...");
+                }
+                else {
+                    logger.info("Select table FileChunk in the FileDB successfully. ");
+                }
+
+                while(rs.next()){
+//                    String fileNamePrint = rs.getString(1);
+//                    System.out.println(fileNamePrint); // should print out "1"'     fileName
+                    int chunkIDPrint = rs.getInt(1);
+                    System.out.println("chunkID = " + chunkIDPrint); // should print out "2"'      chunkID
+//                    String dataPrint = rs.getString(3);
+//                    byte[] databyte = null;
+//                    System.out.println(dataPrint); // should print out "3"'         data
+//                    String file_id_Print = "";
+//                    System.out.println(file_id_Print); // should print out "4"'     file_id
+//                    int totalNoOfChunksPrint = rs.getInt(5);
+//                    System.out.println(totalNoOfChunksPrint); // should print out "5"'      totalNoOfChunks
+//                    arrayList.add(new ClassFileChunkRecord(fileNamePrint, chunkIDPrint, databyte, totalNoOfChunksPrint, file_id_Print));
+                    arrayList.add(chunkIDPrint);
+                }
+                return arrayList;
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            logger.error("failed/exception on selecting a record: file " + fileName, ex);
+            try {
+                conn.rollback();
+            } catch (SQLException e) {
+            } finally {
+                if (conn != null) {
+                    try {
+                        conn.close();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+            // indicate failure
+            return null;
+        }
+        return null;
+    }
+    
+    public ClassFileChunkRecord selectRecordFileChunk(String fileName, int chunkID) {
         init();
         if (fileName == null || fileName.length() == 0) {
             logger.info("No record to select.");
@@ -404,7 +508,7 @@ public class MySQLStorage {
                     System.out.println(totalNoOfChunksPrint); // should print out "5"'      totalNoOfChunks
                     arrayList.add(new ClassFileChunkRecord(fileNamePrint, chunkIDPrint, databyte, totalNoOfChunksPrint, file_id_Print));
                 }
-                return arrayList;
+                return arrayList.get(0);
             }
         } catch (Exception ex) {
             ex.printStackTrace();

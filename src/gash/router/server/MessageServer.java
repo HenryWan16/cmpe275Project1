@@ -175,7 +175,7 @@ public class MessageServer {
 		public StartCommandCommunication(RoutingConf conf) {
 			this.conf = conf;
 			QOSWorker qos = QOSWorker.getInstance();
-			System.out.println("Qos started");
+//			System.out.println("Qos started");
 //			Thread t = new Thread(qos);
 //			t.start();
 		}

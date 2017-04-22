@@ -42,7 +42,7 @@ import pipe.common.Common.Header;
 public class CommandHandler extends SimpleChannelInboundHandler<CommandMessage> {
 	protected static Logger logger = LoggerFactory.getLogger("cmd");
 	protected RoutingConf conf;
-	// QOSWorker qos;
+	QOSWorker qos;
 	public CommandHandler(RoutingConf conf) {
 		if (conf != null) {
 			this.conf = conf;
@@ -89,10 +89,9 @@ public class CommandHandler extends SimpleChannelInboundHandler<CommandMessage> 
 			} else if (msg.hasRequest()) {
 				logger.info("server get request: "+msg.getRequest().toString());
 				
-//				qos = QOSWorker.getInstance();
-//				logger.info("QOSWorker Thread Working : ");
-//				Session session = new CommandSession(conf, msg, channel);
-//				qos.getQueue().enqueue(session);
+				qos = QOSWorker.getInstance();
+				Session session = new CommandSession(conf, msg, channel);
+				qos.getQueue().enqueue(session);
 
 			} else {
 			}
