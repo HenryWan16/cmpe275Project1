@@ -2,6 +2,7 @@ package gash.router.server.raft;
 
 import java.util.Hashtable;
 
+import gash.router.redis.RedisServer;
 import gash.router.server.edges.EdgeInfo;
 import pipe.work.Work.WorkMessage;
 
@@ -107,7 +108,14 @@ public class CandidateNode implements NodeState {
 				System.out.println("Node " + this.handler.getNodeId() + " - " +  " become LEADER in term " + this.handler.getTerm());
 				this.handler.setLeaderNodeId(this.handler.getNodeId());
 				this.handler.setNodeState(this.handler.leader, 3);
-//				this.handler.flushAllChannels();
+
+				//update into redis the leader node
+				RedisServer.getInstance().getLocalhostJedis().select(0);
+				String host = handler.getHost();
+				int commandPort = handler.getServerState().getConf().getCommandPort();
+				RedisServer.getInstance().getLocalhostJedis().set("1", host +":" + commandPort);
+				System.out.println("---Redis updated---");
+
 				isAskedForVote = false;
 			}
 		}
