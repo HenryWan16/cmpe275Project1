@@ -9,7 +9,7 @@ public class RedisServer {
     private Jedis localhostJedis;
     private static RedisServer instance;
     private RedisServer(){
-        this.localhostJedis = new Jedis("localhost",6379);
+        this.localhostJedis = new Jedis(gash.router.container.RoutingConf.redis,6379);
     }
 
     public static RedisServer getInstance(){

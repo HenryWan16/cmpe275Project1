@@ -13,6 +13,7 @@ public class CandidateNode implements NodeState {
 	private int numOfVote = 1; //vote for itself
 	private boolean isAskedForVote = false;
 	
+	
 	public CandidateNode(RaftHandler handler) {
 		this.handler = handler;
 	}
@@ -38,7 +39,6 @@ public class CandidateNode implements NodeState {
 					System.out.println("Node " + this.handler.getNodeId() + " - " + "Timeout! Back to FOLLOWER");
 					this.handler.setNodeState(this.handler.follower, 1);
 					isAskedForVote = false;
-//					this.handler.flushAllChannels();
 					return;
 				}
 				
@@ -58,7 +58,7 @@ public class CandidateNode implements NodeState {
 					System.out.println("Node " + this.handler.getNodeId() + " - " +  "Become LEADER in term " + this.handler.getTerm());
 					isAskedForVote = false;
 					this.handler.setNodeState(this.handler.leader, 3);
-//					this.handler.flushAllChannels();
+					udpateRedis();
 					return;
 					
 				} else {
@@ -108,19 +108,22 @@ public class CandidateNode implements NodeState {
 				System.out.println("Node " + this.handler.getNodeId() + " - " +  " become LEADER in term " + this.handler.getTerm());
 				this.handler.setLeaderNodeId(this.handler.getNodeId());
 				this.handler.setNodeState(this.handler.leader, 3);
-
-				//update into redis the leader node
-				RedisServer.getInstance().getLocalhostJedis().select(0);
-				String host = handler.getHost();
-				int commandPort = handler.getServerState().getConf().getCommandPort();
-				RedisServer.getInstance().getLocalhostJedis().set("1", host +":" + commandPort);
-				System.out.println("---Redis updated---");
+				udpateRedis();
 
 				isAskedForVote = false;
 			}
 		}
 	}
 
+	public synchronized void udpateRedis() {
+		//update into redis the leader node
+		RedisServer.getInstance().getLocalhostJedis().select(0);
+		String host = handler.getHost();
+		int commandPort = handler.getServerState().getConf().getCommandPort();
+		RedisServer.getInstance().getLocalhostJedis().set(String.valueOf(gash.router.container.RoutingConf.clusterId), host +":" + commandPort);
+		System.out.println("---Redis updated---");
+	}
+	
 	@Override
 	public synchronized void processReplyHeartBeatToLeader(WorkMessage wm) {
 
@@ -131,7 +134,7 @@ public class CandidateNode implements NodeState {
 			this.handler.setLeaderNodeId(wm.getLeader().getLeaderId());
 			this.handler.setTerm(wm.getLeader().getLeaderTerm());
 			this.handler.setNodeState(this.handler.follower, 1);
-//			this.handler.flushAllChannels();
+
 			isAskedForVote = false;
 		}
 	}

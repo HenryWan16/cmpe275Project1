@@ -38,6 +38,8 @@ public class RoutingConf {
 	private boolean internalNode = true;
 	private int heartbeatDt = 2000;
 	private List<RoutingEntry> routing;
+	public static int clusterId = 1;
+	public static String redis = "localhost";
 
 	public HashMap<String, Integer> asHashMap() {
 		HashMap<String, Integer> map = new HashMap<String, Integer>();

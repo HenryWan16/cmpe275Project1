@@ -39,7 +39,6 @@ public class FollowerNode implements NodeState {
 					} else { //become candidate
 						System.out.println("Node " + this.handler.getNodeId() + " - " + "No signal from leader, change to CANDIDATE state");
 						this.handler.setNodeState(this.handler.candidate, 2);
-//						this.handler.flushAllChannels();
 					}
 					return;
 				}
