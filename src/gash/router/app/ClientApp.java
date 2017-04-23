@@ -118,13 +118,14 @@ public class ClientApp implements CommListener {
 		
 		
 		try {
-			TestSQLOperations test = new TestSQLOperations();
+//			TestSQLOperations test = new TestSQLOperations();
 //			test.createTable();
 //			test.insertRecordFileChunk(0);
 //			test.insertRecordFileChunk(1);
 //			test.insertRecordFileChunk(2);
 //			System.out.println("Insert some records to the database.");
 //			test.insertRecordFileChunk();
+//			test.checkFileExist("files/test.txt");
 			MessageClient mc = new MessageClient(host, port);
 			ClientApp ca = new ClientApp(mc);
 			ca.menu();

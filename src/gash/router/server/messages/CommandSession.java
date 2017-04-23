@@ -65,7 +65,6 @@ public class CommandSession implements Session, Runnable{
             channel.writeAndFlush(cm); //respond back to client
             
         } else if (msg.hasRequest()) {
-        	logger.info("Sever received msg hasRequest.");
         	logger.info("CommendSession handleMessage RequestType is " + type);
         	// key = chunkID; 
 			// value = sourceId + ";" + host + ";" + port;
@@ -75,13 +74,13 @@ public class CommandSession implements Session, Runnable{
         		logger.info("read fileName is " + fname);
         		MySQLStorage mySQLStorage = MySQLStorage.getInstance();
         		
-        		
         		// If the fname exists on the server.
         		if (mySQLStorage.checkFileExist(fname)) {
         			// The first time to receive the message from the client. 
         			// The client says that "I want to read the file whose name is fname." chunkID in the request will be -1.
         			int chunkId = msg.getRequest().getRrb().getChunkId();
         			logger.info("chunkID is " + chunkId);
+        			// if we don't set chunkId in the CommandMessage, its default to be 0;
         			if (chunkId == 0) {
             			// Get all the chunkIDs of the file from the database on the leader. 
             			// All the nodes have the same data and we just return the records on the leader.
@@ -135,7 +134,7 @@ public class CommandSession implements Session, Runnable{
                 	}
             	}
         		else {
-        			//// File isn't in the database and return to client FAIL to read
+        			// File isn't in the database and return to client FAIL to read
         			CommandMessage cm = MessageUtil.buildCommandMessage(
         					MessageUtil.buildHeader(conf.getNodeId(), System.currentTimeMillis()),
         					null,
@@ -145,22 +144,22 @@ public class CommandSession implements Session, Runnable{
                     channel.writeAndFlush(cm);
             	}
         	}
-        } else if (type.equals(TaskType.WRITEFILE)) {
-        	logger.info("CommendSession type = " + type);
-        	logger.info("type == TaskType.WRITEFILE is " + (type == TaskType.WRITEFILE));
-    		WriteBody wb = msg.getRequest().getRwb();
-    		
-    		String fname = wb.getFilename();
-    		int chunkId = wb.getChunk().getChunkId();
-    		byte[] data = wb.getChunk().getChunkData().toByteArray();
-    		int numOfChunk = wb.getChunk().getChunkSize();
-    		String fileId = "";
-    		if (wb.hasFileId()) {
-    			fileId = ((Long)wb.getFileId()).toString();
-    		}
-    		
-    		logger.info("Going to Write " + new String(data));
-    		boolean result = MySQLStorage.getInstance().insertRecordFileChunk(fname, chunkId, data, numOfChunk, fileId);
+        	else if (type.equals(TaskType.WRITEFILE)) {
+	        	logger.info("CommendSession type = " + type);
+	        	logger.info("type == TaskType.WRITEFILE is " + (type == TaskType.WRITEFILE));
+	    		WriteBody wb = msg.getRequest().getRwb();
+	    		
+	    		fname = wb.getFilename();
+	    		int chunkId = wb.getChunk().getChunkId();
+	    		byte[] data = wb.getChunk().getChunkData().toByteArray();
+	    		int numOfChunk = wb.getChunk().getChunkSize();
+	    		String fileId = "";
+	    		if (wb.hasFileId()) {
+	    			fileId = ((Long)wb.getFileId()).toString();
+	    		}
+	    		
+	    		logger.info("Going to Write " + new String(data));
+	    		boolean result = MySQLStorage.getInstance().insertRecordFileChunk(fname, chunkId, data, numOfChunk, fileId);
 
 //            		//write to logs
 //            		if (result) {
@@ -194,55 +193,56 @@ public class CommandSession implements Session, Runnable{
 //                        		MessageUtil.buildResponse(TaskType.WRITEFILE, fname, ResponseStatus.Success, null, null));
 //                        channel.writeAndFlush(cm); 
 //            		}
-    	} else if (type == TaskType.DELETEFILE) {
-    		
-    		ReadBody rb = msg.getRequest().getRrb();
-    		String fname = rb.getFilename();
-    		Hashtable<Integer, String> location = LogUtil.getListNodesToReadFile(fname);
+        	}
+	    	else if (type == TaskType.DELETEFILE) {	
+	    		ReadBody rb = msg.getRequest().getRrb();
+	    		fname = rb.getFilename();
+	    		// Hashtable<Integer, String> location = LogUtil.getListNodesToReadFile(fname);
 
-    		//send to all nodes to delete the file
-    		boolean result = false;
-    		if (location != null) {
-    			for(Integer sKey: location.keySet()) {
-    				String list = location.get(sKey);
-    				String[] parts = list.split(";");
-    				
-    				for(int j=0; j<parts.length; j=j+3) {
-    					int nodeId = Integer.parseInt(parts[j]);
-//            					String host = parts[j+1];
-//            					int port = Integer.parseInt(parts[j+2]);
-    					
-    					//send WM to remove file and logs
-    					WorkMessage wm = MessageUtil.buildWMDeleteFile(
-            					MessageUtil.buildHeader(conf.getNodeId(), System.currentTimeMillis()), fname);
-    					if (conf.getNodeId() != nodeId) {
-                			EdgeInfo node = RaftHandler.getInstance().getEdgeMonitor().getOutboundEdges().getMap().get(nodeId);
-                			if (node.getChannel() != null && node.getChannel().isActive())
-                				node.getChannel().writeAndFlush(wm);
-    					} else { //the node is in itself
-    						MySQLStorage.getInstance().deleteRecordFileChunk(fname);
-    						RaftHandler.getInstance().getNodeState().processSendRemoveLogs(wm);
-    					}
-    				}
-    			}
-        		result = true;
-    		}
+	    		//send to all nodes to delete the file
+	    		boolean result = false;
+	    		if (location != null) {
+	    			for(Integer sKey: location.keySet()) {
+	    				String list = location.get(sKey);
+	    				String[] parts = list.split(";");
+	    				
+	    				for(int j=0; j<parts.length; j=j+3) {
+	    					int nodeId = Integer.parseInt(parts[j]);
+	//            					String host = parts[j+1];
+	//            					int port = Integer.parseInt(parts[j+2]);
+	    					
+	    					//send WM to remove file and logs
+	    					WorkMessage wm = MessageUtil.buildWMDeleteFile(
+	            					MessageUtil.buildHeader(conf.getNodeId(), System.currentTimeMillis()), fname);
+	    					if (conf.getNodeId() != nodeId) {
+	                			EdgeInfo node = RaftHandler.getInstance().getEdgeMonitor().getOutboundEdges().getMap().get(nodeId);
+	                			if (node.getChannel() != null && node.getChannel().isActive())
+	                				node.getChannel().writeAndFlush(wm);
+	    					} else { //the node is in itself
+	    						MySQLStorage.getInstance().deleteRecordFileChunk(fname);
+	    						RaftHandler.getInstance().getNodeState().processSendRemoveLogs(wm);
+	    					}
+	    				}
+	    			}
+	        		result = true;
+	    		}
     		
-    		ResponseStatus status;
-    		if (result) {
-    			status = ResponseStatus.Success;
-    		} else status = ResponseStatus.Fail;
-        		
-    		//send back to client
-    		CommandMessage cm = MessageUtil.buildCommandMessage(
-					MessageUtil.buildHeader(conf.getNodeId(), System.currentTimeMillis()),
-					null,
-					null,
-					MessageUtil.buildResponse(TaskType.DELETEFILE, fname, status , null, null));
-            channel.writeAndFlush(cm);
-    	} else { 
-    		// UPDATEFILE: 
-    	}
+	    		ResponseStatus status;
+	    		if (result) {
+	    			status = ResponseStatus.Success;
+	    		} else status = ResponseStatus.Fail;
+	        		
+	    		//send back to client
+	    		CommandMessage cm = MessageUtil.buildCommandMessage(
+						MessageUtil.buildHeader(conf.getNodeId(), System.currentTimeMillis()),
+						null,
+						null,
+						MessageUtil.buildResponse(TaskType.DELETEFILE, fname, status , null, null));
+	            channel.writeAndFlush(cm);
+	    	} else { 
+	    		// UPDATEFILE: 
+	    	}
+        }
    		System.out.flush();
     }
     
