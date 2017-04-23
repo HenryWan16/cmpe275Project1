@@ -34,7 +34,6 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import pipe.common.Common;
 import pipe.common.Common.Failure;
-import pipe.common.Common.ResponseStatus;
 import pipe.work.Work.Heartbeat;
 import pipe.work.Work.Task;
 import pipe.work.Work.WorkMessage;
@@ -67,10 +66,10 @@ public class WorkHandler extends SimpleChannelInboundHandler<WorkMessage> {
 	 */
 	public void handleMessage(WorkMessage msg, Channel channel) {
 		
-//		QOSWorker qos = QOSWorker.getInstance();
-//		logger.info("QOSWorker Thread Working : ");
-//		Session session = new WorkSession(this.state, msg);
-//		qos.getQueue().enqueue(session);
+		QOSWorker qos = QOSWorker.getInstance();
+		logger.info("QOSWorker Thread Working : ");
+		Session session = new WorkSession(this.state, msg);
+		qos.getQueue().enqueue(session);
 
 		
 		

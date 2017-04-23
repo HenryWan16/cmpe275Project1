@@ -18,7 +18,6 @@ package gash.router.app;
 import gash.router.client.CommConnection;
 import gash.router.client.CommListener;
 import gash.router.client.MessageClient;
-import gash.router.server.storage.TestSQLOperations;
 import routing.Pipe.CommandMessage;
 
 import java.util.Scanner;
@@ -98,7 +97,7 @@ public class ClientApp implements CommListener {
 	                  }
 	          case "delete" : 
 	                  if(commands.length >1)
-	                	  mc.sendDeleteFile(commands[1]);
+//	                	  mc.sendDeleteFile(commands[1]);
 	                  break;
 	          default:
 	                  break;
@@ -118,13 +117,6 @@ public class ClientApp implements CommListener {
 		
 		
 		try {
-			TestSQLOperations test = new TestSQLOperations();
-//			test.createTable();
-//			test.insertRecordFileChunk(0);
-//			test.insertRecordFileChunk(1);
-//			test.insertRecordFileChunk(2);
-//			System.out.println("Insert some records to the database.");
-//			test.insertRecordFileChunk();
 			MessageClient mc = new MessageClient(host, port);
 			ClientApp ca = new ClientApp(mc);
 			ca.menu();

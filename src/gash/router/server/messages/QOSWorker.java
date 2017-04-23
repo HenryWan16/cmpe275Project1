@@ -1,8 +1,13 @@
 package gash.router.server.messages;
 
 import gash.router.server.MessageServer;
+import gash.router.server.edges.EdgeInfo;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import gash.router.server.raft.RaftHandler;
+import pipe.common.Common;
+import pipe.work.Work;
 
 /**
  * Created by henrywan16 on 3/25/17.
@@ -45,16 +50,36 @@ public class QOSWorker implements Runnable{
         while (forever) {
         	if (!queue.isEmpty()) {
         		//do work in queue
-        		logger.info("Task dequeue.");
-        		Session task = queue.dequeue();
-        		task.handleMessage();
+        		//Session task = queue.dequeue();
+        		//task.handleMessage();
         		
         	} else {//queue is empty, ask for work ** stealing work
-        		
+                //steals work from leader
+                RaftHandler raftHandler = RaftHandler.getInstance();
+        		int leaderNodeId = raftHandler.getLeaderNodeId();
+                EdgeInfo ei = raftHandler.getEdgeMonitor().getOutboundEdges().getNode(leaderNodeId);
+                if(ei != null && ei.getChannel() != null) {
+                    //check all edges for work is this node's queue is empty
+                    Common.Header.Builder hb = Common.Header.newBuilder();
+                    hb.setNodeId(raftHandler.getServerState().getConf().getNodeId());
+                    hb.setTime(System.currentTimeMillis());
+
+                    Work.WorkState.Builder ws = Work.WorkState.newBuilder();
+                    ws.setEnqueued(0);
+                    ws.setProcessed(1);
+
+                    Work.WorkMessage.Builder wm = Work.WorkMessage.newBuilder();
+                    wm.setHeader(hb);
+                    wm.setState(ws);
+                    wm.setSecret(1234);
+                    ei.getChannel().writeAndFlush(wm.build());
+                }
         	}
         	
+
 //        	logger.info("Queue Size: " + queue.size());
-//          try { Thread.sleep(2000); } catch(Exception e){ }
+//            try { Thread.sleep(2000); } catch(Exception e){ }
+
         }
     }
 

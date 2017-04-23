@@ -15,6 +15,11 @@
  */
 package gash.router.server.edges;
 
+import java.net.UnknownHostException;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import gash.router.container.RoutingConf.RoutingEntry;
 import gash.router.server.ServerState;
 import gash.router.server.WorkInit;
@@ -25,12 +30,8 @@ import io.netty.channel.Channel;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import pipe.common.Common;
 import pipe.work.Work;
-
-import java.net.UnknownHostException;
 
 
 public class EdgeMonitor implements EdgeListener, Runnable {
@@ -117,6 +118,7 @@ public class EdgeMonitor implements EdgeListener, Runnable {
 	                        }
 						} catch (Exception e) { /*do not show anything */ }
 					} 
+					/* //This is implemented in QOSWorker
 					if(ei.getChannel() != null) {
 						//check all edges for work is this node's queue is empty
 						if (QOSWorker.getInstance().getQueue().isEmpty()) {
@@ -135,6 +137,7 @@ public class EdgeMonitor implements EdgeListener, Runnable {
 							ei.getChannel().writeAndFlush(wm.build());
 						}
 					}
+					*/
 
 
 				}

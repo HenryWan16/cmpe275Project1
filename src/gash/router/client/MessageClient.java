@@ -15,7 +15,6 @@
  */
 package gash.router.client;
 
-import com.google.protobuf.ByteString;
 
 import gash.router.server.raft.MessageUtil;
 
@@ -72,6 +71,7 @@ public class MessageClient {
 			// using queue
 			logger.info("MessageClient send CommandMessage with ping=true to Netty Channel! ");
 			CommConnection.getInstance().enqueue(rb.build());
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -105,7 +105,7 @@ public class MessageClient {
 				logger.info("bytechunk: "+byteChunk.toString());
 
 				CommandMessage cm = MessageUtil.buildCommandMessage(MessageUtil.buildHeader(999,System.currentTimeMillis()),null,
-						MessageUtil.buildRequest(TaskType.WRITEFILE, MessageUtil.buildWriteBody(-1,fname,"txt",
+						MessageUtil.buildRequest(TaskType.REQUESTWRITEFILE, MessageUtil.buildWriteBody(-1,fname,"txt",
 								MessageUtil.buildChunk(numberOfChunks,byteChunk,chunkSize),
 								chunkSize),null),null);
 
@@ -121,8 +121,6 @@ public class MessageClient {
 		}
 	}
 
-	///
-	
 	//send file request to server
 	public void sendReadRequest(String fname){
 		/*
@@ -134,20 +132,20 @@ public class MessageClient {
 			readbody
 
 		 */
-//		if (fname.equals("log.txt")) {
-//			CommandMessage cmdb = MessageUtil.buildCommandMessage(
-//				MessageUtil.buildHeader(999, System.currentTimeMillis()),
-//				null,
-//				MessageUtil.buildRequest(TaskType.READFILE, null,
-//						MessageUtil.buildReadBody(fname, -1, -1, -1)),
-//				null);
-//			try {
-//				CommConnection.getInstance().enqueue(cmdb);
-//				
-//			} catch (Exception e) {
-//				e.printStackTrace();
-//			}
-//
+		if (fname.equals("log.txt")) {
+			CommandMessage cmdb = MessageUtil.buildCommandMessage(
+				MessageUtil.buildHeader(999, System.currentTimeMillis()),
+				null,
+				MessageUtil.buildRequest(TaskType.REQUESTREADFILE, null,
+						MessageUtil.buildReadBody(fname, -1, -1, -1)),
+				null);
+			try {
+				CommConnection.getInstance().enqueue(cmdb);
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 //		}else{
 //			CommandMessage cmdb = MessageUtil.buildCommandMessage(MessageUtil.buildHeader(999,System.currentTimeMillis()),null,
 //					MessageUtil.buildRequest(TaskType.READFILE,null,
@@ -163,7 +161,7 @@ public class MessageClient {
 		
 		// send a request to the server to read the file.
 		CommandMessage cmdb = MessageUtil.buildCommandMessage(MessageUtil.buildHeader(999,System.currentTimeMillis()),null,
-				MessageUtil.buildRequest(TaskType.READFILE,null,
+				MessageUtil.buildRequest(TaskType.REQUESTREADFILE,null,
 						MessageUtil.buildReadBody(fname,-1,-1,-1)),null);
 
 		try {
@@ -207,18 +205,18 @@ public class MessageClient {
 		}
 	}
 
-	public void sendDeleteFile(String fname) {
-		CommandMessage cmdb = MessageUtil.buildCommandMessage(
-				MessageUtil.buildHeader(999, System.currentTimeMillis()),
-				null,
-				MessageUtil.buildRequest(TaskType.DELETEFILE, null,
-						MessageUtil.buildReadBody(fname, -1, -1, -1)),
-				null);
-		try {
-			CommConnection.getInstance().enqueue(cmdb);
-		} 
-		catch (Exception e) { e.printStackTrace(); }
-	}
+//	public void sendDeleteFile(String fname) {
+//		CommandMessage cmdb = MessageUtil.buildCommandMessage(
+//				MessageUtil.buildHeader(999, System.currentTimeMillis()),
+//				null,
+//				MessageUtil.buildRequest(TaskType.REQUESTDELETE, null,
+//						MessageUtil.buildReadBody(fname, -1, -1, -1)),
+//				null);
+//		try {
+//			CommConnection.getInstance().enqueue(cmdb);
+//		} 
+//		catch (Exception e) { e.printStackTrace(); }
+//	}
 	
 	public void release() {
 		CommConnection.getInstance().release();

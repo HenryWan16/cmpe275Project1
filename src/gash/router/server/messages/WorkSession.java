@@ -1,5 +1,6 @@
 package gash.router.server.messages;
 
+import gash.router.server.MessageServer;
 import gash.router.server.PrintUtil;
 import gash.router.server.ServerState;
 import io.netty.channel.Channel;

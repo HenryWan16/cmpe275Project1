@@ -77,16 +77,15 @@ public class DemoApp implements CommListener {
 	 */
 	public static void main(String[] args) {
 		String host = "localhost";
-		int port = 4468;
-		String location = "/Users/henrywan16/Workspace/IntellijIdeaProject/cmpe275Project1/files/";
-		String fname = "test.txt";
+		int port = 4668;
+		String fname = "/Users/sam/Documents/2017spring/cmpe275/project1/cmpe275Project1/test.txt";
 		try {
 			MessageClient mc = new MessageClient(host, port);
 			DemoApp da = new DemoApp(mc);
 
 			// do stuff w/ the connection
 //			da.ping(2);
-			da.chunkAndSend(location+fname);
+			da.chunkAndSend(fname);
 			System.out.println("\n** exiting in 10 seconds. **");
 			System.out.flush();
 			Thread.sleep(10 * 1000);

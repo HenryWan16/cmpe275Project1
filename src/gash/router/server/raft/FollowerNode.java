@@ -59,7 +59,7 @@ public class FollowerNode implements NodeState {
 
 	@Override
 	public synchronized void processReplyAVoteToCandidate(WorkMessage wm) {
-		
+		System.out.println("received vote request");
 		if (this.handler.getNodeMode() == 1) {
 			//check if it already sent a vote to candidate on this term
 	    	if (this.handler.getTerm() < wm.getReqAVote().getCurrentTerm() && !isSentAVote) {    			
@@ -72,9 +72,12 @@ public class FollowerNode implements NodeState {
 	
 	    		EdgeInfo ei = this.handler.getEdgeMonitor().getOutboundEdges().getMap().get(candidateNode);
 	    		if (ei.isActive() && ei.getChannel().isActive()) {
-	    				ei.getChannel().writeAndFlush(MessageUtil.followerSendVote(myNode, candidateNode));
+					System.out.println("Node " + this.handler.getNodeId() + " - " + "Voted for CANDIDATE node " + candidateNode + " in term "
+							+ wm.getReqAVote().getCurrentTerm());
+					ei.getChannel().writeAndFlush(MessageUtil.followerSendVote(myNode, candidateNode));
 	    		}
 	    		isSentAVote = true;
+				this.handler.setRandomTimeout();
 	    	}
 		}
 	}

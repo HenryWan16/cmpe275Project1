@@ -14,7 +14,6 @@ import pipe.common.Common.ReadBody;
 import pipe.common.Common.ReadResponse;
 import pipe.common.Common.Request;
 import pipe.common.Common.Response;
-import pipe.common.Common.ResponseStatus;
 import pipe.common.Common.TaskType;
 import pipe.common.Common.WriteBody;
 import pipe.common.Common.WriteResponse;
@@ -60,7 +59,7 @@ public class MessageUtil {
 	public static WorkMessage candidateAskToVote(RaftHandler handler) {
 		Header.Builder hb = Header.newBuilder();
 		hb.setNodeId(handler.getNodeId());
-		hb.setDestination(-1);
+		hb.setDestination(-1);	
 		hb.setTime(System.currentTimeMillis());
 		
 		RequestVote.Builder rvb= RequestVote.newBuilder();
@@ -105,6 +104,19 @@ public class MessageUtil {
 		return wb.build();
 	}
 
+	public static WorkMessage replicateData(int nodeId, String host, int port, CommandMessage cm) {
+		Header.Builder hb = Header.newBuilder();
+		hb.setNodeId(nodeId);
+		hb.setDestination(-1);
+		hb.setTime(System.currentTimeMillis());
+
+		WorkMessage.Builder wb = WorkMessage.newBuilder();
+		wb.setHeader(hb);
+		wb.setCmdMessage(cm);
+		wb.setSecret(secret);
+
+		return wb.build();
+	}
 	/************ COMMAND MESSAGES ********/
 		
 	public static Chunk.Builder buildChunk(int id, byte[] data, int size) {
@@ -167,11 +179,11 @@ public class MessageUtil {
 		return wr;
 	}
 	
-	public static Response.Builder buildResponse(TaskType task, String fname, ResponseStatus ack, WriteResponse.Builder wr, ReadResponse.Builder rr) {
+	public static Response.Builder buildResponse(TaskType task, String fname, Response.Status status, WriteResponse.Builder wr, ReadResponse.Builder rr) {
 		Response.Builder r = Response.newBuilder();
 		r.setResponseType(task);
 		if (fname != null) r.setFilename(fname);
-		if (ack != null) r.setAck(ack);
+		if (status != null) r.setStatus(status);
 		if (wr != null) r.setWriteResponse(wr);
 		if (rr != null) r.setReadResponse(rr);
 		return r;

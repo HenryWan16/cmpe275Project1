@@ -80,7 +80,7 @@ public class CandidateNode implements NodeState {
 				}
 			}
 			Thread.sleep(200);
-			int dt = this.handler.getTimeout() - (int)(System.currentTimeMillis() - this.handler.getTimerStart());	
+			int dt = this.handler.getTimeout() - (int)(System.currentTimeMillis() - this.handler.getTimerStart());
 			this.handler.setTimeout(dt);
 			return;
 			
@@ -95,8 +95,8 @@ public class CandidateNode implements NodeState {
 	}
 
 	@Override
-	public synchronized void processHandleAVoteFromFollower(WorkMessage wm) {
-
+	public void processHandleAVoteFromFollower(WorkMessage wm) {
+		//System.out.println("received vote");
 		if (this.handler.getNodeMode() == 2) {
 			System.out.println("Node " + this.handler.getNodeId() + " - " + "Get voted from node "+  wm.getAVote().getVoterID() + " voted for node");
 			numOfVote++;

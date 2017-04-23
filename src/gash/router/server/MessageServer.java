@@ -303,6 +303,64 @@ public class MessageServer {
 		}
 	}
 
+//	private static class StartQOSWorker implements Runnable {
+//		QOSWorker qos;
+//		ServerState state;
+//
+//		public StartQOSWorker(RoutingConf conf) {
+//			this.qos = QOSWorker.getInstance();
+//			if (conf == null)
+//				throw new RuntimeException("missing conf");
+//
+//			state = new ServerState();
+//			state.setConf(conf);
+//
+//			TaskList tasks = new TaskList(new NoOpBalancer());
+//			state.setTasks(tasks);
+//		}
+//
+//		public void run() {
+//			// construct boss and worker threads (num threads = number of cores)
+//
+//			EventLoopGroup bossGroup = new NioEventLoopGroup();
+//			EventLoopGroup workerGroup = new NioEventLoopGroup();
+//
+//			try {
+//				ServerBootstrap b = new ServerBootstrap();
+//				bootstrap.put(state.getConf().getWorkPort(), b);
+//
+//				b.group(bossGroup, workerGroup);
+//				b.channel(NioServerSocketChannel.class);
+//				b.option(ChannelOption.SO_BACKLOG, 100);
+//				b.option(ChannelOption.TCP_NODELAY, true);
+//				b.option(ChannelOption.SO_KEEPALIVE, true);
+//				// b.option(ChannelOption.MESSAGE_SIZE_ESTIMATOR);
+//
+//				boolean compressComm = false;
+//				b.childHandler(new QOSWorkerInit(state, compressComm));
+//
+//				// Start the server.
+//				logger.info("Starting work server (" + state.getConf().getNodeId() + "), listening on port = "
+//						+ state.getConf().getWorkPort());
+//				ChannelFuture f = b.bind(state.getConf().getWorkPort()).syncUninterruptibly();
+//
+//				logger.info(f.channel().localAddress() + " -> open: " + f.channel().isOpen() + ", write: "
+//						+ f.channel().isWritable() + ", act: " + f.channel().isActive());
+//
+//				// block until the server socket is closed.
+//				f.channel().closeFuture().sync();
+//
+//			} catch (Exception ex) {
+//				// on bind().sync()
+//				logger.error("Failed to setup handler.", ex);
+//			} finally {
+//				// Shut down all event loops to terminate all threads.
+//				bossGroup.shutdownGracefully();
+//				workerGroup.shutdownGracefully();
+//			}
+//		}
+//	}
+
 	/**
 	 * help with processing the configuration information
 	 * 

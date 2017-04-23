@@ -34,7 +34,6 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import pipe.common.Common;
 import pipe.common.Common.Response;
-import pipe.common.Common.ResponseStatus;
 import pipe.common.Common.TaskType;
 import routing.Pipe.CommandMessage;
 
@@ -110,10 +109,10 @@ public class CommHandler extends SimpleChannelInboundHandler<CommandMessage> {
 				rb.setPing(true);
 				channel.writeAndFlush(rb);
 			}
-		}else if(msg.hasResponse()){ 
+		}else if(msg.hasResponse()){
 			TaskType type = msg.getResponse().getResponseType();
 			
-			if (type == TaskType.READFILE) {
+			if (type == TaskType.RESPONSEREADFILE) {
 				
 				if (msg.getResponse().getFilename().equals("log.txt")) {
 					String result = msg.getResponse().getReadResponse().getFileExt();
@@ -130,13 +129,13 @@ public class CommHandler extends SimpleChannelInboundHandler<CommandMessage> {
 					Common.Chunk chunk = msg.getResponse().getReadResponse().getChunk();
 					MergeWorker.upDateTable(chunk);
 					return;
-				} else 
-
-				{
+					
+				} else {
 					//first response from server
 					int numChunks = msg.getResponse().getReadResponse().getNumOfChunks();
 					mergeWorker = MergeWorker.getMergeWorkerInstance();
-					logger.info("###############total number of chunks is " + numChunks);
+					Thread mergeThread = new Thread(mergeWorker);
+					mergeThread.start();
 					mergeWorker.setTotalNoOfChunks(numChunks);
 					// get the HashMap<chunkID, Location> from the readResponse.
 					List<Common.ChunkLocation> list = msg.getResponse().getReadResponse().getChunkLocationList();
@@ -150,7 +149,7 @@ public class CommHandler extends SimpleChannelInboundHandler<CommandMessage> {
 						CommandMessage cm = MessageUtil.buildCommandMessage(
             					MessageUtil.buildHeader(999, System.currentTimeMillis()),
             					null,
-            					MessageUtil.buildRequest(TaskType.READFILE, null, MessageUtil.buildReadBody(fname, -1, chunkId, chunkSize)),
+            					MessageUtil.buildRequest(TaskType.REQUESTREADFILE, null, MessageUtil.buildReadBody(fname, -1, chunkId, chunkSize)),
             					null);
 						logger.info("############SEND RESQUEST FOR EACH CHUNK###");
 						try {
@@ -160,23 +159,18 @@ public class CommHandler extends SimpleChannelInboundHandler<CommandMessage> {
 						}
 					}
 				}
-			} else if (type == TaskType.WRITEFILE) {
-				ResponseStatus status = msg.getResponse().getAck();
-				if (status == ResponseStatus.Success) {
+			} else if (type == TaskType.RESPONSEWRITEFILE) {
+				Response.Status status = msg.getResponse().getStatus();
+				if (status == Response.Status.SUCCESS) {
 					System.out.println("The file " + msg.getResponse().getFilename() + " has been successfully uploaded");	
 				} else
 					System.out.println("Failed to upload file " + msg.getResponse().getFilename() + " to the server.");
 				
-			} else if (type == TaskType.DELETEFILE) {
-				ResponseStatus status = msg.getResponse().getAck();
-				if (status == ResponseStatus.Success) {
-					System.out.println("The file " + msg.getResponse().getFilename() + " has been successfully deleted from all server nodes");	
-				} else
-					System.out.println("Failed to delete file " + msg.getResponse().getFilename() + " in the server.");
-				
-			} else { //UPDATEFILE
+			} else { //delete?
 				
 			}
+
+
 		}
 
 		if (debug)

@@ -4,7 +4,7 @@ import java.util.Hashtable;
 
 import gash.router.server.edges.EdgeInfo;
 import pipe.work.Work.WorkMessage;
-
+import gash.router.redis.RedisServer;
 
 public class LeaderNode implements NodeState {
 
@@ -26,7 +26,12 @@ public class LeaderNode implements NodeState {
 
 	@Override
 	public synchronized void run() {
-		
+		RedisServer.getInstance().getLocalhostJedis().select(0);
+		String host = handler.getHost();
+		int commandPort = handler.getServerState().getConf().getCommandPort();
+		RedisServer.getInstance().getLocalhostJedis().set("1", host +":" + commandPort);
+		System.out.println("---Redis updated---");
+
 		System.out.println("Node " + this.handler.getNodeId() + " - " + "IN LEADER MODE, term = " + this.handler.getTerm());
 		try {
 			if (this.handler.getNodeMode() == 3) {

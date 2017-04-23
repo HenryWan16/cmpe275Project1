@@ -18,6 +18,11 @@ public class SimpleQueue implements QueueInterface{
     }
 
     @Override
+    public Session peekLast() {
+        return this.simpleMsgQueue.peekLast();
+    }
+
+    @Override
     public void enqueue(Session message) {
         this.simpleMsgQueue.offer(message);
     }

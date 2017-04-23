@@ -98,6 +98,7 @@ public class RaftHandler implements Runnable {
 	public synchronized EdgeMonitor getEdgeMonitor() {
 		return this.edgeMonitor;
 	}
+	public synchronized ServerState getServerState() { return this.serverState; }
 	
 	public synchronized int getTimebase() {
 		return timebase;
@@ -151,6 +152,7 @@ public class RaftHandler implements Runnable {
 	}
 
 	public synchronized NodeState getNodeState() {
+		System.out.println("nodeState: " + nodeState.toString());
 		return this.nodeState;
 	}
 

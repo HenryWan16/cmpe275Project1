@@ -3,7 +3,6 @@ package gash.router.client;
 import com.google.protobuf.ByteString;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import pipe.common.Common;
 
 import java.io.File;
@@ -18,7 +17,6 @@ import java.util.HashSet;
  */
 public class MergeWorker implements Runnable{
 	protected static Logger logger = LoggerFactory.getLogger("MergeWorker");
- 
     private int totalNoOfChunks;
     private static HashMap<Integer,byte[]> chunkIdDataMap;
     private static HashSet<Integer> chunkIdSet;
@@ -35,7 +33,7 @@ public class MergeWorker implements Runnable{
             mergeWorker = new MergeWorker();
         return mergeWorker;
     }
-    
+
     public MergeWorker() {
         mergeWorker = this;
 //        this.totalNoOfChunks = chunkNum;
@@ -49,17 +47,9 @@ public class MergeWorker implements Runnable{
      */
     @Override
     public void run() {
-        System.out.println("successMerge = " + successMerge);
-        System.out.println("current chunk id: "+currentChunkId);
-        
-        logger.info("************BEFORE RUN***************");
         while(!successMerge){
-        	
-//            System.out.println("table size now: "+chunkIdDataMap.size());
-//            System.out.println("current chunk id: "+currentChunkId);
             //receive chunk from inbound queue
             if(chunkIdDataMap.containsKey(currentChunkId)){
-                System.out.println("start merge for currentchunkid: "+currentChunkId);
                 byte[] temp = file;
                 byte[] add = chunkIdDataMap.get(currentChunkId);
                 file = new byte[temp.length + add.length];
@@ -68,7 +58,6 @@ public class MergeWorker implements Runnable{
                 chunkIdDataMap.remove(currentChunkId);
                 chunkIdSet.add(currentChunkId);
                 currentChunkId++;
-                System.out.println("merge part complete for part: "+currentChunkId);
             }
             logger.info("********" + currentChunkId+ "****INSIDE while*********" + totalNoOfChunks+"****" + totalNoOfChunks + " - " + chunkIdDataMap.size());
             System.out.println("total number of chunks: "+totalNoOfChunks);
@@ -81,12 +70,9 @@ public class MergeWorker implements Runnable{
         getFile(file, filename);
     }
 
-
     public void setTotalNoOfChunks(int num) {
         totalNoOfChunks = num;
-        logger.info("************setTotalNoOfChunks***************");
     }
-
 
     /**
      * update the table of chunks with new chunks
@@ -97,14 +83,12 @@ public class MergeWorker implements Runnable{
         byte[] data = chunk.getChunkData().toByteArray();
         synchronized (usageLock) {
             if(!chunkIdSet.contains(id))
-            	System.out.println("Put chunk" + id + " to the MergeWorker Table.");
-            	System.out.println("%%%%%%%%%%%%%%%%%%%%%%%" + "Chunk" + id + " data: " + new String(data));
                 chunkIdDataMap.put(id, data);
-                System.out.println("chunkIdDataMap.size = " + chunkIdDataMap.size());
         }
         System.out.println("table update complete for current chunk");
+        
     }
-
+    
     /**
      * return new file generated from chunks in the table
      * @param bytefile

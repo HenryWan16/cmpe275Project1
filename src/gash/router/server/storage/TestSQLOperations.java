@@ -126,4 +126,9 @@ public class TestSQLOperations {
     public void tearDown() throws Exception {
         this.mySQLStorage.dropTable();
     }
+    
+    public void checkFileExist(String fname) {
+    	boolean answer = this.mySQLStorage.checkFileExist("files/test.txt");
+    	System.out.println("checkFileExist(\"" + fname + "\") = " + answer);
+    }
 }
