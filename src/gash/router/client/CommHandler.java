@@ -128,11 +128,15 @@ public class CommHandler extends SimpleChannelInboundHandler<CommandMessage> {
 					//second response from server
 					logger.info("++++++++++++++++++ Begin to merge chunks +++++++++++++++++++++++++++++++++++++++");
 					Common.Chunk chunk = msg.getResponse().getReadResponse().getChunk();
-					MergeWorker.upDateTable(chunk);	
-				} else {
+					MergeWorker.upDateTable(chunk);
+					return;
+				} else 
+
+				{
 					//first response from server
 					int numChunks = msg.getResponse().getReadResponse().getNumOfChunks();
 					mergeWorker = MergeWorker.getMergeWorkerInstance();
+					logger.info("###############total number of chunks is " + numChunks);
 					mergeWorker.setTotalNoOfChunks(numChunks);
 					// get the HashMap<chunkID, Location> from the readResponse.
 					List<Common.ChunkLocation> list = msg.getResponse().getReadResponse().getChunkLocationList();
@@ -148,7 +152,7 @@ public class CommHandler extends SimpleChannelInboundHandler<CommandMessage> {
             					null,
             					MessageUtil.buildRequest(TaskType.READFILE, null, MessageUtil.buildReadBody(fname, -1, chunkId, chunkSize)),
             					null);
-
+						logger.info("############SEND RESQUEST FOR EACH CHUNK###");
 						try {
 							CommConnection.getInstance().enqueue(cm);
 						} catch (Exception e) {

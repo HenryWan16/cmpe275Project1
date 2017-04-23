@@ -74,6 +74,8 @@ public class CommandSession implements Session, Runnable{
         	if (type == TaskType.READFILE) {
         		logger.info("read fileName is " + fname);
         		MySQLStorage mySQLStorage = MySQLStorage.getInstance();
+        		
+        		
         		// If the fname exists on the server.
         		if (mySQLStorage.checkFileExist(fname)) {
         			// The first time to receive the message from the client. 
@@ -98,7 +100,7 @@ public class CommandSession implements Session, Runnable{
             			for (Integer e : chunkIDArray) {
             				location.put(e, locationAddress);
             			}
-            			
+
                 		//return to client a HashMap of locations
             			CommandMessage cm = MessageUtil.buildCommandMessage(
             					MessageUtil.buildHeader(conf.getNodeId(), System.currentTimeMillis()),

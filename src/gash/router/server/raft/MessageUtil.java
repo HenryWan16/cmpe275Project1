@@ -136,6 +136,7 @@ public class MessageUtil {
 		if (fileId != -1) rr.setFileId(fileId);
 		rr.setFilename(name);
 		if (ext != null) rr.setFileExt(ext);
+		if (noChunks != -1) rr.setNumOfChunks(noChunks);
 		if (location != null) {
 			for(Integer sKey: location.keySet()) {
 				String list = location.get(sKey);

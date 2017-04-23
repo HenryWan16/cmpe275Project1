@@ -1,0 +1,33 @@
+** starting server from /Users/henrywan16/Workspace_eclipse_ee/cmpe275Project1 **
+server home = /Users/henrywan16/Workspace_eclipse_ee/cmpe275Project1
+
+** config: runtime/route-1.conf **
+
+Hearbeat initially is 3000
+Election timeout initially is 5175
+Node 1 - No signal from leader, change to CANDIDATE state
+Node 1 - Become LEADER in term 1
+Node 1 - IN LEADER MODE, term = 1
+Node 1 - IN LEADER MODE, term = 1
+Node 1 - IN LEADER MODE, term = 1
+Node 1 - IN LEADER MODE, term = 1
+Node 1 - IN LEADER MODE, term = 1
+Node 1 - IN LEADER MODE, term = 1
+Node 1 - IN LEADER MODE, term = 1
+Node 1 - IN LEADER MODE, term = 1
+Node 1 - IN LEADER MODE, term = 1
+Node 1 - IN LEADER MODE, term = 1
+Node 1 - IN LEADER MODE, term = 1
+Node 1 - IN LEADER MODE, term = 1
+Node 1 - IN LEADER MODE, term = 1
+Node 1 - IN LEADER MODE, term = 1
+Node 1 - IN LEADER MODE, term = 1
+Node 1 - IN LEADER MODE, term = 1
+Node 1 - IN LEADER MODE, term = 1
+Node 1 - IN LEADER MODE, term = 1
+Node 1 - IN LEADER MODE, term = 1
+Node 1 - IN LEADER MODE, term = 1
+Node 1 - IN LEADER MODE, term = 1
+Node 1 - IN LEADER MODE, term = 1
+Node 1 - IN LEADER MODE, term = 1
+Node 1 - IN LEADER MODE, term = 1

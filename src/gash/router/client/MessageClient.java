@@ -176,6 +176,7 @@ public class MessageClient {
 		
 		//start the thread for waiting the chunks from server
 		this.mw.setResultFileName("files/result.txt");
+		this.mw.successMerge = false;
 		Thread cthread = new Thread(this.mw);
 		cthread.start();
 	}

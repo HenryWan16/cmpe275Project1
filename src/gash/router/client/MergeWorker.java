@@ -2,6 +2,8 @@ package gash.router.client;
 
 import com.google.protobuf.ByteString;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import pipe.common.Common;
 
 import java.io.File;
@@ -15,13 +17,14 @@ import java.util.HashSet;
  * Created by sam on 4/15/17.
  */
 public class MergeWorker implements Runnable{
-
+	protected static Logger logger = LoggerFactory.getLogger("MergeWorker");
+ 
     private int totalNoOfChunks;
     private static HashMap<Integer,byte[]> chunkIdDataMap;
     private static HashSet<Integer> chunkIdSet;
     public int num;
     protected static MergeWorker mergeWorker;
-    private boolean successMerge = false;
+    public boolean successMerge = false;
     public static final Object usageLock = new Object();
     private int currentChunkId = 1;
     byte[] file = new byte[0];
@@ -48,11 +51,12 @@ public class MergeWorker implements Runnable{
     public void run() {
         System.out.println("successMerge = " + successMerge);
         System.out.println("current chunk id: "+currentChunkId);
-        System.out.println("total number of chunks: "+totalNoOfChunks);
-        System.out.println("table size now: "+chunkIdDataMap.size());
+        
+        logger.info("************BEFORE RUN***************");
         while(!successMerge){
-            System.out.println("table size now: "+chunkIdDataMap.size());
-            System.out.println("current chunk id: "+currentChunkId);
+        	
+//            System.out.println("table size now: "+chunkIdDataMap.size());
+//            System.out.println("current chunk id: "+currentChunkId);
             //receive chunk from inbound queue
             if(chunkIdDataMap.containsKey(currentChunkId)){
                 System.out.println("start merge for currentchunkid: "+currentChunkId);
@@ -66,8 +70,13 @@ public class MergeWorker implements Runnable{
                 currentChunkId++;
                 System.out.println("merge part complete for part: "+currentChunkId);
             }
-            if(currentChunkId == totalNoOfChunks+1)
+            logger.info("********" + currentChunkId+ "****INSIDE while*********" + totalNoOfChunks+"****" + totalNoOfChunks + " - " + chunkIdDataMap.size());
+            System.out.println("total number of chunks: "+totalNoOfChunks);
+            System.out.println("table size now: "+chunkIdDataMap.size());
+            if(currentChunkId != 1 && currentChunkId == totalNoOfChunks+1)
                 successMerge = true;
+            
+            try { Thread.sleep(200); } catch (Exception e){ e.printStackTrace();}
         }
         getFile(file, filename);
     }
@@ -75,6 +84,7 @@ public class MergeWorker implements Runnable{
 
     public void setTotalNoOfChunks(int num) {
         totalNoOfChunks = num;
+        logger.info("************setTotalNoOfChunks***************");
     }
 
 
