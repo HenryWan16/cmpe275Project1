@@ -2,7 +2,103 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c054b1c7-8499-48ab-b5c2-5751c17fab07" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/common.proto" afterPath="$PROJECT_DIR$/resources/common.proto" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/classes/gash/router/server/storage/ClassChunkIdFilename.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/classes/pipe/common/Common$ResponseStatus$1.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/classes/pipe/common/Common$ResponseStatus.class" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/classes/gash/router/app/ClientApp.class" afterPath="$PROJECT_DIR$/classes/gash/router/app/ClientApp.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/classes/gash/router/app/DemoApp.class" afterPath="$PROJECT_DIR$/classes/gash/router/app/DemoApp.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/classes/gash/router/client/CommConnection$ClientClosedListener.class" afterPath="$PROJECT_DIR$/classes/gash/router/client/CommConnection$ClientClosedListener.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/classes/gash/router/client/CommConnection.class" afterPath="$PROJECT_DIR$/classes/gash/router/client/CommConnection.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/classes/gash/router/client/CommHandler.class" afterPath="$PROJECT_DIR$/classes/gash/router/client/CommHandler.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/classes/gash/router/client/MergeWorker.class" afterPath="$PROJECT_DIR$/classes/gash/router/client/MergeWorker.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/classes/gash/router/client/MessageClient.class" afterPath="$PROJECT_DIR$/classes/gash/router/client/MessageClient.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/classes/gash/router/container/RoutingConf$RoutingEntry.class" afterPath="$PROJECT_DIR$/classes/gash/router/container/RoutingConf$RoutingEntry.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/classes/gash/router/container/RoutingConf.class" afterPath="$PROJECT_DIR$/classes/gash/router/container/RoutingConf.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/classes/gash/router/server/MessageServer$JsonUtil.class" afterPath="$PROJECT_DIR$/classes/gash/router/server/MessageServer$JsonUtil.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/classes/gash/router/server/WorkHandler.class" afterPath="$PROJECT_DIR$/classes/gash/router/server/WorkHandler.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/classes/gash/router/server/edges/EdgeMonitor.class" afterPath="$PROJECT_DIR$/classes/gash/router/server/edges/EdgeMonitor.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/classes/gash/router/server/messages/CommandSession.class" afterPath="$PROJECT_DIR$/classes/gash/router/server/messages/CommandSession.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/classes/gash/router/server/messages/QOSWorker.class" afterPath="$PROJECT_DIR$/classes/gash/router/server/messages/QOSWorker.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/classes/gash/router/server/messages/QueueInterface.class" afterPath="$PROJECT_DIR$/classes/gash/router/server/messages/QueueInterface.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/classes/gash/router/server/messages/SimpleQueue.class" afterPath="$PROJECT_DIR$/classes/gash/router/server/messages/SimpleQueue.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/classes/gash/router/server/messages/WorkSession.class" afterPath="$PROJECT_DIR$/classes/gash/router/server/messages/WorkSession.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/classes/gash/router/server/raft/CandidateNode.class" afterPath="$PROJECT_DIR$/classes/gash/router/server/raft/CandidateNode.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/classes/gash/router/server/raft/FollowerNode.class" afterPath="$PROJECT_DIR$/classes/gash/router/server/raft/FollowerNode.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/classes/gash/router/server/raft/LeaderNode.class" afterPath="$PROJECT_DIR$/classes/gash/router/server/raft/LeaderNode.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/classes/gash/router/server/raft/MessageUtil.class" afterPath="$PROJECT_DIR$/classes/gash/router/server/raft/MessageUtil.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/classes/gash/router/server/raft/RaftHandler.class" afterPath="$PROJECT_DIR$/classes/gash/router/server/raft/RaftHandler.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/classes/gash/router/server/storage/ClassFileChunkRecord.class" afterPath="$PROJECT_DIR$/classes/gash/router/server/storage/ClassFileChunkRecord.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/classes/gash/router/server/storage/MySQLStorage.class" afterPath="$PROJECT_DIR$/classes/gash/router/server/storage/MySQLStorage.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/classes/gash/router/server/storage/MySQLStorage_Error.class" afterPath="$PROJECT_DIR$/classes/gash/router/server/storage/MySQLStorage_Error.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/classes/gash/router/server/storage/TestSQLOperations.class" afterPath="$PROJECT_DIR$/classes/gash/router/server/storage/TestSQLOperations.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/classes/pipe/common/Common$1.class" afterPath="$PROJECT_DIR$/classes/pipe/common/Common$1.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/classes/pipe/common/Common$2.class" afterPath="$PROJECT_DIR$/classes/pipe/common/Common$2.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/classes/pipe/common/Common$Chunk$1.class" afterPath="$PROJECT_DIR$/classes/pipe/common/Common$Chunk$1.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/classes/pipe/common/Common$Chunk$Builder.class" afterPath="$PROJECT_DIR$/classes/pipe/common/Common$Chunk$Builder.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/classes/pipe/common/Common$Chunk.class" afterPath="$PROJECT_DIR$/classes/pipe/common/Common$Chunk.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/classes/pipe/common/Common$ChunkLocation$1.class" afterPath="$PROJECT_DIR$/classes/pipe/common/Common$ChunkLocation$1.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/classes/pipe/common/Common$ChunkLocation$Builder.class" afterPath="$PROJECT_DIR$/classes/pipe/common/Common$ChunkLocation$Builder.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/classes/pipe/common/Common$ChunkLocation.class" afterPath="$PROJECT_DIR$/classes/pipe/common/Common$ChunkLocation.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/classes/pipe/common/Common$Failure$1.class" afterPath="$PROJECT_DIR$/classes/pipe/common/Common$Failure$1.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/classes/pipe/common/Common$Failure$Builder.class" afterPath="$PROJECT_DIR$/classes/pipe/common/Common$Failure$Builder.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/classes/pipe/common/Common$Failure.class" afterPath="$PROJECT_DIR$/classes/pipe/common/Common$Failure.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/classes/pipe/common/Common$Header$1.class" afterPath="$PROJECT_DIR$/classes/pipe/common/Common$Header$1.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/classes/pipe/common/Common$Header$Builder.class" afterPath="$PROJECT_DIR$/classes/pipe/common/Common$Header$Builder.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/classes/pipe/common/Common$Header.class" afterPath="$PROJECT_DIR$/classes/pipe/common/Common$Header.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/classes/pipe/common/Common$Node$1.class" afterPath="$PROJECT_DIR$/classes/pipe/common/Common$Node$1.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/classes/pipe/common/Common$Node$Builder.class" afterPath="$PROJECT_DIR$/classes/pipe/common/Common$Node$Builder.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/classes/pipe/common/Common$Node.class" afterPath="$PROJECT_DIR$/classes/pipe/common/Common$Node.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/classes/pipe/common/Common$ReadBody$1.class" afterPath="$PROJECT_DIR$/classes/pipe/common/Common$ReadBody$1.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/classes/pipe/common/Common$ReadBody$Builder.class" afterPath="$PROJECT_DIR$/classes/pipe/common/Common$ReadBody$Builder.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/classes/pipe/common/Common$ReadBody.class" afterPath="$PROJECT_DIR$/classes/pipe/common/Common$ReadBody.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/classes/pipe/common/Common$ReadResponse$1.class" afterPath="$PROJECT_DIR$/classes/pipe/common/Common$ReadResponse$1.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/classes/pipe/common/Common$ReadResponse$Builder.class" afterPath="$PROJECT_DIR$/classes/pipe/common/Common$ReadResponse$Builder.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/classes/pipe/common/Common$ReadResponse.class" afterPath="$PROJECT_DIR$/classes/pipe/common/Common$ReadResponse.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/classes/pipe/common/Common$Request$1.class" afterPath="$PROJECT_DIR$/classes/pipe/common/Common$Request$1.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/classes/pipe/common/Common$Request$Builder.class" afterPath="$PROJECT_DIR$/classes/pipe/common/Common$Request$Builder.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/classes/pipe/common/Common$Request$PayloadCase.class" afterPath="$PROJECT_DIR$/classes/pipe/common/Common$Request$PayloadCase.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/classes/pipe/common/Common$Request.class" afterPath="$PROJECT_DIR$/classes/pipe/common/Common$Request.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/classes/pipe/common/Common$Response$1.class" afterPath="$PROJECT_DIR$/classes/pipe/common/Common$Response$1.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/classes/pipe/common/Common$Response$Builder.class" afterPath="$PROJECT_DIR$/classes/pipe/common/Common$Response$Builder.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/classes/pipe/common/Common$Response$PayloadCase.class" afterPath="$PROJECT_DIR$/classes/pipe/common/Common$Response$PayloadCase.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/classes/pipe/common/Common$Response.class" afterPath="$PROJECT_DIR$/classes/pipe/common/Common$Response.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/classes/pipe/common/Common$ResponseOrBuilder.class" afterPath="$PROJECT_DIR$/classes/pipe/common/Common$ResponseOrBuilder.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/classes/pipe/common/Common$TaskType$1.class" afterPath="$PROJECT_DIR$/classes/pipe/common/Common$TaskType$1.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/classes/pipe/common/Common$TaskType.class" afterPath="$PROJECT_DIR$/classes/pipe/common/Common$TaskType.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/classes/pipe/common/Common$WriteBody$1.class" afterPath="$PROJECT_DIR$/classes/pipe/common/Common$WriteBody$1.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/classes/pipe/common/Common$WriteBody$Builder.class" afterPath="$PROJECT_DIR$/classes/pipe/common/Common$WriteBody$Builder.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/classes/pipe/common/Common$WriteBody.class" afterPath="$PROJECT_DIR$/classes/pipe/common/Common$WriteBody.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/classes/pipe/common/Common$WriteResponse$1.class" afterPath="$PROJECT_DIR$/classes/pipe/common/Common$WriteResponse$1.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/classes/pipe/common/Common$WriteResponse$Builder.class" afterPath="$PROJECT_DIR$/classes/pipe/common/Common$WriteResponse$Builder.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/classes/pipe/common/Common$WriteResponse.class" afterPath="$PROJECT_DIR$/classes/pipe/common/Common$WriteResponse.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/classes/pipe/common/Common$WriteResponseOrBuilder.class" afterPath="$PROJECT_DIR$/classes/pipe/common/Common$WriteResponseOrBuilder.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/classes/pipe/common/Common.class" afterPath="$PROJECT_DIR$/classes/pipe/common/Common.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/classes/pipe/election/Election$CandidateStatus$Builder.class" afterPath="$PROJECT_DIR$/classes/pipe/election/Election$CandidateStatus$Builder.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/classes/pipe/election/Election$CandidateStatus.class" afterPath="$PROJECT_DIR$/classes/pipe/election/Election$CandidateStatus.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/classes/pipe/election/Election$LeaderStatus$Builder.class" afterPath="$PROJECT_DIR$/classes/pipe/election/Election$LeaderStatus$Builder.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/classes/pipe/election/Election$LeaderStatus.class" afterPath="$PROJECT_DIR$/classes/pipe/election/Election$LeaderStatus.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/classes/pipe/election/Election$RequestVote$Builder.class" afterPath="$PROJECT_DIR$/classes/pipe/election/Election$RequestVote$Builder.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/classes/pipe/election/Election$RequestVote.class" afterPath="$PROJECT_DIR$/classes/pipe/election/Election$RequestVote.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/classes/pipe/election/Election$Vote$Builder.class" afterPath="$PROJECT_DIR$/classes/pipe/election/Election$Vote$Builder.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/classes/pipe/election/Election$Vote.class" afterPath="$PROJECT_DIR$/classes/pipe/election/Election$Vote.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/classes/pipe/work/Work$Heartbeat$Builder.class" afterPath="$PROJECT_DIR$/classes/pipe/work/Work$Heartbeat$Builder.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/classes/pipe/work/Work$Heartbeat.class" afterPath="$PROJECT_DIR$/classes/pipe/work/Work$Heartbeat.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/classes/pipe/work/Work$RegisterNode$Builder.class" afterPath="$PROJECT_DIR$/classes/pipe/work/Work$RegisterNode$Builder.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/classes/pipe/work/Work$RegisterNode.class" afterPath="$PROJECT_DIR$/classes/pipe/work/Work$RegisterNode.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/classes/pipe/work/Work$Task$Builder.class" afterPath="$PROJECT_DIR$/classes/pipe/work/Work$Task$Builder.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/classes/pipe/work/Work$Task.class" afterPath="$PROJECT_DIR$/classes/pipe/work/Work$Task.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/classes/pipe/work/Work$TaskStatus$Builder.class" afterPath="$PROJECT_DIR$/classes/pipe/work/Work$TaskStatus$Builder.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/classes/pipe/work/Work$TaskStatus.class" afterPath="$PROJECT_DIR$/classes/pipe/work/Work$TaskStatus.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/classes/pipe/work/Work$WorkMessage$Builder.class" afterPath="$PROJECT_DIR$/classes/pipe/work/Work$WorkMessage$Builder.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/classes/pipe/work/Work$WorkMessage.class" afterPath="$PROJECT_DIR$/classes/pipe/work/Work$WorkMessage.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/classes/pipe/work/Work$WorkState$Builder.class" afterPath="$PROJECT_DIR$/classes/pipe/work/Work$WorkState$Builder.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/classes/pipe/work/Work$WorkState.class" afterPath="$PROJECT_DIR$/classes/pipe/work/Work$WorkState.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/classes/routing/Pipe$CommandMessage$Builder.class" afterPath="$PROJECT_DIR$/classes/routing/Pipe$CommandMessage$Builder.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/classes/routing/Pipe$CommandMessage.class" afterPath="$PROJECT_DIR$/classes/routing/Pipe$CommandMessage.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/gash/router/server/WorkHandler.java" afterPath="$PROJECT_DIR$/src/gash/router/server/WorkHandler.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/gash/router/server/messages/QOSWorker.java" afterPath="$PROJECT_DIR$/src/gash/router/server/messages/QOSWorker.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/gash/router/server/raft/RaftHandler.java" afterPath="$PROJECT_DIR$/src/gash/router/server/raft/RaftHandler.java" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -17,14 +113,17 @@
   </component>
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FileEditorManager">
-    <leaf>
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="450">
       <file leaf-file-name="MessageClient.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/gash/router/client/MessageClient.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="135">
-              <caret line="53" column="8" lean-forward="false" selection-start-line="53" selection-start-column="8" selection-end-line="59" selection-end-column="25" />
+            <state relative-caret-position="729">
+              <caret line="54" column="5" lean-forward="false" selection-start-line="54" selection-start-column="5" selection-end-line="54" selection-end-column="5" />
               <folding>
-                <element signature="imports" expanded="true" />
+                <marker date="1492987627819" expanded="false" signature="6493:6498" ph=" { " />
+                <marker date="1492987627819" expanded="false" signature="6537:6540" ph=" }" />
+                <marker date="1492987627819" expanded="true" signature="6543:6686" ph="/**...*/" />
+                <marker date="1492987627819" expanded="false" signature="6742:6745" ph=" }" />
               </folding>
             </state>
           </provider>
@@ -33,19 +132,29 @@
       <file leaf-file-name="CommandHandler.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/gash/router/server/CommandHandler.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="567">
+            <state relative-caret-position="1458">
               <caret line="82" column="28" lean-forward="false" selection-start-line="82" selection-start-column="28" selection-end-line="82" selection-end-column="28" />
-              <folding />
+              <folding>
+                <marker date="1492987627819" expanded="true" signature="3415:3708" ph="/**...*/" />
+                <marker date="1492987627819" expanded="true" signature="3813:3936" ph="{...}" />
+                <marker date="1492987627819" expanded="true" signature="4039:4122" ph="{...}" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="CommHandler.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="CommHandler.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/gash/router/client/CommHandler.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="373">
-              <caret line="97" column="42" lean-forward="false" selection-start-line="97" selection-start-column="42" selection-end-line="97" selection-end-column="42" />
-              <folding />
+            <state relative-caret-position="-1004">
+              <caret line="98" column="42" lean-forward="false" selection-start-line="98" selection-start-column="42" selection-end-line="98" selection-end-column="42" />
+              <folding>
+                <marker date="1492987627819" expanded="true" signature="6059:6352" ph="/**...*/" />
+                <marker date="1492987627819" expanded="true" signature="6457:6825" ph="{...}" />
+                <marker date="1492987627819" expanded="true" signature="6662:6759" ph="//..." />
+                <marker date="1492987627819" expanded="true" signature="6909:6972" ph="{...}" />
+                <marker date="1492987627819" expanded="true" signature="7075:7155" ph="{...}" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -53,8 +162,38 @@
       <file leaf-file-name="QOSWorker.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/gash/router/server/messages/QOSWorker.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="675">
-              <caret line="62" column="16" lean-forward="false" selection-start-line="62" selection-start-column="16" selection-end-line="62" selection-end-column="16" />
+            <state relative-caret-position="142">
+              <caret line="66" column="22" lean-forward="false" selection-start-line="66" selection-start-column="22" selection-end-line="66" selection-end-column="22" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="NodeState.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/gash/router/server/raft/NodeState.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="108">
+              <caret line="4" column="17" lean-forward="false" selection-start-line="4" selection-start-column="17" selection-end-line="4" selection-end-column="17" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="FollowerNode.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/gash/router/server/raft/FollowerNode.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-540">
+              <caret line="8" column="13" lean-forward="false" selection-start-line="8" selection-start-column="13" selection-end-line="8" selection-end-column="13" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="RaftHandler.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/gash/router/server/raft/RaftHandler.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="568">
+              <caret line="153" column="74" lean-forward="false" selection-start-line="153" selection-start-column="74" selection-end-line="153" selection-end-column="74" />
               <folding />
             </state>
           </provider>
@@ -63,8 +202,8 @@
       <file leaf-file-name="common.proto" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/resources/common.proto">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="216">
-              <caret line="11" column="21" lean-forward="false" selection-start-line="11" selection-start-column="21" selection-end-line="11" selection-end-column="21" />
+            <state relative-caret-position="243">
+              <caret line="9" column="3" lean-forward="false" selection-start-line="9" selection-start-column="3" selection-end-line="9" selection-end-column="3" />
               <folding />
             </state>
           </provider>
@@ -94,9 +233,10 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/src/gash/router/client/MessageClient.java" />
-        <option value="$PROJECT_DIR$/src/gash/router/server/messages/QOSWorker.java" />
         <option value="$PROJECT_DIR$/src/gash/router/server/CommandHandler.java" />
         <option value="$PROJECT_DIR$/src/gash/router/client/CommHandler.java" />
+        <option value="$PROJECT_DIR$/src/gash/router/server/messages/QOSWorker.java" />
+        <option value="$PROJECT_DIR$/src/gash/router/server/raft/RaftHandler.java" />
       </list>
     </option>
   </component>
@@ -122,6 +262,8 @@
     </navigator>
     <panes>
       <pane id="PackagesPane" />
+      <pane id="Scratches" />
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -167,6 +309,32 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="server" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="cmpe275Project1" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="cmpe275Project1" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="router" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="server" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="raft" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -274,8 +442,6 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scratches" />
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="RunManager">
@@ -381,29 +547,29 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="81" y="30" width="1839" height="1050" extended-state="7" />
+    <frame x="81" y="30" width="1839" height="1050" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
-      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24985932" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25379854" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
+      <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
@@ -421,10 +587,76 @@
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/src/gash/router/client/MessageClient.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="135">
-          <caret line="53" column="8" lean-forward="false" selection-start-line="53" selection-start-column="8" selection-end-line="59" selection-end-column="25" />
+        <state relative-caret-position="1431">
+          <caret line="53" column="5" lean-forward="true" selection-start-line="53" selection-start-column="5" selection-end-line="59" selection-end-column="25" />
           <folding>
-            <element signature="imports" expanded="true" />
+            <marker date="1492987627819" expanded="false" signature="6493:6498" ph=" { " />
+            <marker date="1492987627819" expanded="false" signature="6537:6540" ph=" }" />
+            <marker date="1492987627819" expanded="true" signature="6543:6686" ph="/**...*/" />
+            <marker date="1492987627819" expanded="false" signature="6742:6745" ph=" }" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/gash/router/server/CommandHandler.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2214">
+          <caret line="82" column="28" lean-forward="false" selection-start-line="82" selection-start-column="28" selection-end-line="82" selection-end-column="28" />
+          <folding>
+            <marker date="1492987627819" expanded="true" signature="3415:3708" ph="/**...*/" />
+            <marker date="1492987627819" expanded="true" signature="3813:3936" ph="{...}" />
+            <marker date="1492987627819" expanded="true" signature="4039:4122" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/gash/router/client/CommHandler.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <marker date="1492987627819" expanded="true" signature="6059:6352" ph="/**...*/" />
+            <marker date="1492987627819" expanded="true" signature="6457:6825" ph="{...}" />
+            <marker date="1492987627819" expanded="true" signature="6662:6759" ph="//..." />
+            <marker date="1492987627819" expanded="true" signature="6909:6972" ph="{...}" />
+            <marker date="1492987627819" expanded="true" signature="7075:7155" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/gash/router/server/messages/QOSWorker.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1458">
+          <caret line="62" column="16" lean-forward="false" selection-start-line="62" selection-start-column="16" selection-end-line="62" selection-end-column="16" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/common.proto">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="297">
+          <caret line="11" column="3" lean-forward="true" selection-start-line="11" selection-start-column="3" selection-end-line="11" selection-end-column="3" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/pipe.proto">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/gash/router/client/MessageClient.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="729">
+          <caret line="54" column="5" lean-forward="false" selection-start-line="54" selection-start-column="5" selection-end-line="54" selection-end-column="5" />
+          <folding>
+            <marker date="1492987627819" expanded="false" signature="6493:6498" ph=" { " />
+            <marker date="1492987627819" expanded="false" signature="6537:6540" ph=" }" />
+            <marker date="1492987627819" expanded="true" signature="6543:6686" ph="/**...*/" />
+            <marker date="1492987627819" expanded="false" signature="6742:6745" ph=" }" />
           </folding>
         </state>
       </provider>
@@ -439,32 +671,66 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/resources/common.proto">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="216">
-          <caret line="11" column="21" lean-forward="false" selection-start-line="11" selection-start-column="21" selection-end-line="11" selection-end-column="21" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/gash/router/server/messages/QOSWorker.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="675">
-          <caret line="62" column="16" lean-forward="false" selection-start-line="62" selection-start-column="16" selection-end-line="62" selection-end-column="16" />
+        <state relative-caret-position="243">
+          <caret line="9" column="3" lean-forward="false" selection-start-line="9" selection-start-column="3" selection-end-line="9" selection-end-column="3" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/gash/router/server/CommandHandler.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="567">
+        <state relative-caret-position="1458">
           <caret line="82" column="28" lean-forward="false" selection-start-line="82" selection-start-column="28" selection-end-line="82" selection-end-column="28" />
-          <folding />
+          <folding>
+            <marker date="1492987627819" expanded="true" signature="3415:3708" ph="/**...*/" />
+            <marker date="1492987627819" expanded="true" signature="3813:3936" ph="{...}" />
+            <marker date="1492987627819" expanded="true" signature="4039:4122" ph="{...}" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/gash/router/client/CommHandler.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="373">
-          <caret line="97" column="42" lean-forward="false" selection-start-line="97" selection-start-column="42" selection-end-line="97" selection-end-column="42" />
+        <state relative-caret-position="-1004">
+          <caret line="98" column="42" lean-forward="false" selection-start-line="98" selection-start-column="42" selection-end-line="98" selection-end-column="42" />
+          <folding>
+            <marker date="1492987627819" expanded="true" signature="6059:6352" ph="/**...*/" />
+            <marker date="1492987627819" expanded="true" signature="6457:6825" ph="{...}" />
+            <marker date="1492987627819" expanded="true" signature="6662:6759" ph="//..." />
+            <marker date="1492987627819" expanded="true" signature="6909:6972" ph="{...}" />
+            <marker date="1492987627819" expanded="true" signature="7075:7155" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/gash/router/server/messages/QOSWorker.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="142">
+          <caret line="66" column="22" lean-forward="false" selection-start-line="66" selection-start-column="22" selection-end-line="66" selection-end-column="22" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/gash/router/server/raft/NodeState.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="108">
+          <caret line="4" column="17" lean-forward="false" selection-start-line="4" selection-start-column="17" selection-end-line="4" selection-end-column="17" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/gash/router/server/raft/FollowerNode.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-540">
+          <caret line="8" column="13" lean-forward="false" selection-start-line="8" selection-start-column="13" selection-end-line="8" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/gash/router/server/raft/RaftHandler.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="568">
+          <caret line="153" column="74" lean-forward="false" selection-start-line="153" selection-start-column="74" selection-end-line="153" selection-end-column="74" />
           <folding />
         </state>
       </provider>

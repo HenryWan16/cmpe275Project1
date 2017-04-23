@@ -34,6 +34,7 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import pipe.common.Common;
 import pipe.common.Common.Failure;
+import pipe.common.Common.Response.Status;
 import pipe.work.Work.Heartbeat;
 import pipe.work.Work.Task;
 import pipe.work.Work.WorkMessage;
@@ -66,10 +67,10 @@ public class WorkHandler extends SimpleChannelInboundHandler<WorkMessage> {
 	 */
 	public void handleMessage(WorkMessage msg, Channel channel) {
 		
-		QOSWorker qos = QOSWorker.getInstance();
-		logger.info("QOSWorker Thread Working : ");
-		Session session = new WorkSession(this.state, msg);
-		qos.getQueue().enqueue(session);
+//		QOSWorker qos = QOSWorker.getInstance();
+//		logger.info("QOSWorker Thread Working : ");
+//		Session session = new WorkSession(this.state, msg);
+//		qos.getQueue().enqueue(session);
 
 		
 		
@@ -138,24 +139,36 @@ public class WorkHandler extends SimpleChannelInboundHandler<WorkMessage> {
 			    
 			} else if(msg.hasState()){
 				//Other node is requesting work from this node
-				System.out.println("received stealing request");
-				if(!QOSWorker.getInstance().getQueue().isEmpty()){
-					//No clue how to send the channel as a message
-					//The node that steals the work from this node will not be able to talk to the client
-					Pipe.CommandMessage cMsg = ((CommandSession)QOSWorker.getInstance().getQueue().dequeue()).getMsg();
-	
-					Common.Header.Builder hd = Common.Header.newBuilder();
-					hd.setNodeId(state.getConf().getNodeId());
-					hd.setTime(System.currentTimeMillis());
-	
-					WorkMessage.Builder wm = WorkMessage.newBuilder();
-	
-					wm.setHeader(hd);
-					wm.setCmdMessage(cMsg);
-					wm.setSecret(1234);
-					channel.writeAndFlush(wm);
+				if(msg.getState().getProcessed() == 1){
+					//Remote node has empty queue
+					System.out.println("received stealing request");
+					if(!QOSWorker.getInstance().getQueue().isEmpty()) {
+						//No clue how to send the channel as a message
+						//The node that steals the work from this node will not be able to talk to the client
+						CommandSession commandSession = ((CommandSession) QOSWorker.getInstance().getQueue().dequeue());
+						if(commandSession != null) {
+							Pipe.CommandMessage cMsg = commandSession.getMsg();
+							if (cMsg.getRequest().getRequestType() == Common.TaskType.REQUESTWRITEFILE) {
+								//The network can only steal write requests
+								Common.Header.Builder hd = Common.Header.newBuilder();
+								hd.setNodeId(state.getConf().getNodeId());
+								hd.setTime(System.currentTimeMillis());
+
+								WorkMessage.Builder wm = WorkMessage.newBuilder();
+								wm.setHeader(hd);
+								wm.setCmdMessage(cMsg);
+								wm.setSecret(1234);
+								channel.writeAndFlush(wm);
+							}else{
+								//The remote node can't stole this task, so put it back on the local node's queue.
+								QOSWorker.getInstance().getQueue().enqueue(commandSession);
+							}
+						}
+					}
 				}
 			} else if (msg.hasCmdMessage()){
+				logger.info("stoled message from node: " + msg.getHeader().getNodeId());
+				logger.info("server stoled request: "+msg.getCmdMessage().getRequest().toString());
 				Pipe.CommandMessage cmdMessage = msg.getCmdMessage();
 				Session session1 = new CommandSession(state.getConf(), cmdMessage, channel);
 				QOSWorker.getInstance().getQueue().enqueue(session1);

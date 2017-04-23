@@ -151,10 +151,7 @@ public class RaftHandler implements Runnable {
 		this.currentNodeMode = mode;
 	}
 
-	public synchronized NodeState getNodeState() {
-		System.out.println("nodeState: " + nodeState.toString());
-		return this.nodeState;
-	}
+	public synchronized NodeState getNodeState() { return this.nodeState; }
 
 	public synchronized int getNodeMode() {
 		return this.currentNodeMode;
