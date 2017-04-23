@@ -19,7 +19,7 @@ import gash.router.client.CommConnection;
 import gash.router.client.CommListener;
 import gash.router.client.MessageClient;
 import routing.Pipe.CommandMessage;
-
+import gash.router.redis.RedisServer;
 import java.util.Scanner;
 
 public class ClientApp implements CommListener {
@@ -72,10 +72,10 @@ public class ClientApp implements CommListener {
 		do {
 	        System.out.print("\n\n------------------------\n" +
 	        				"Menu\n------------------------\n" +
-	        				"* ping\n" + 
+	        				"* ping\n" +
+							"* leader\n" +
 	                        "* read <fileName>\n" + 
 	                        "* write <filePath>\n" +
-	                        "* delete <fileName>\n" +
 	                        "* quit\n\n\n" +
 	                        "> ");
 	        System.out.flush();
@@ -83,23 +83,24 @@ public class ClientApp implements CommListener {
 	        command = scanner.nextLine();
 	        commands = command.split("\\s+");
 	        switch(commands[0]) {
-	          case "ping":
+	          	case "ping":
 	        	  	  mc.ping();
 	        	  	  break;
-	          case "read" : 
+				case "leader":
+					RedisServer.getInstance().getLocalhostJedis().select(0);
+					String leader = RedisServer.getInstance().getLocalhostJedis().get("1");
+					System.out.println(leader);
+					break;
+	          	case "read" :
 	                  if(commands.length > 1)
 	                	  mc.sendReadRequest(commands[1]);
 	                  break;
-	          case "write" : {
+	          	case "write" : {
 	                  if(commands.length > 1)
 	                	  mc.chunkAndSend(commands[1]);
 	                  break;
 	                  }
-	          case "delete" : 
-	                  if(commands.length >1)
-//	                	  mc.sendDeleteFile(commands[1]);
-	                  break;
-	          default:
+	          	default:
 	                  break;
 	        }
 	      } while(!commands[0].equals("quit"));
@@ -112,10 +113,17 @@ public class ClientApp implements CommListener {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		String host = "localhost";
-		int port = 4168;
-		
-		
+		RedisServer.getInstance().getLocalhostJedis().select(0);
+		String leader = RedisServer.getInstance().getLocalhostJedis().get("1");
+		String host;
+		int port;
+		if(leader != null) {
+			host = leader.split(":")[0];
+			port = Integer.parseInt(leader.split(":")[1]);
+		}else{
+			host = "localhost";
+			port = 4168;
+		}
 		try {
 			MessageClient mc = new MessageClient(host, port);
 			ClientApp ca = new ClientApp(mc);
