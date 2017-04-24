@@ -74,22 +74,20 @@ public class CommandHandler extends SimpleChannelInboundHandler<CommandMessage> 
 				
 				if(!senderIp.equals(msgIp)){
 					//msg from client
-					if (ServerState.clientChannel == null) { //start here
-						ServerState.clientChannel = channel;
-						logger.info("Server received returned ping from" + msg.getHeader().getNodeId());
+					ServerState.clientChannel = channel;
+					logger.info("Server received returned ping from" + msg.getHeader().getNodeId());
 						
-						//then forward to next cluster
-						ServerState.nextCluster.writeAndFlush(msg);
-						
-					} else { //stop here - completed 1 circle
-						//respond back to client
-						ServerState.clientChannel.writeAndFlush("Done a circle ping!!");
-						ServerState.clientChannel = null;
-					}
-				} else { //receive from cluster neighbor
-					
 					//then forward to next cluster
 					ServerState.nextCluster.writeAndFlush(msg);
+
+				} else { //receive from cluster neighbor
+					if (ServerState.clientChannel != null) { //STOP here
+						ServerState.clientChannel.writeAndFlush("Done a circle ping!!");
+						ServerState.clientChannel = null;
+					} else {
+						//then forward to next cluster
+						ServerState.nextCluster.writeAndFlush(msg);
+					}
 				}
 
 			} else if (msg.hasRequest()) {
