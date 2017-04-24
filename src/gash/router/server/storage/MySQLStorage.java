@@ -3,8 +3,9 @@ package gash.router.server.storage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import gash.router.server.messages.QOSWorker;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.sql.*;
 import java.util.ArrayList;
 
@@ -15,7 +16,7 @@ import java.util.ArrayList;
 public class MySQLStorage {
     protected static Logger logger = LoggerFactory.getLogger("MySQL");
 
-    private Connection conn;
+    public static Connection conn;
     public static MySQLStorage instance;
     
 
@@ -53,48 +54,9 @@ public class MySQLStorage {
         }
     }
 
-    /**
-     * testing database can be used.
-     * @return
-     */
-    public boolean testSQL() {
-        boolean result = false;
-        try {
-            // Do something with the Connection
-            Statement stmt = conn.createStatement();
-            String createStmt = "CREATE TABLE Persons\n" +
-                    "(\n" +
-                    "PersonID int,\n" +
-                    "LastName varchar(255),\n" +
-                    "FirstName varchar(255),\n" +
-                    "Address varchar(255),\n" +
-                    "City varchar(255),\n" +
-                    "Primary Key(PersonID, Address)\n" +
-                    ");\n";
-            result = stmt.execute(createStmt);
-            result = stmt.execute("INSERT into Persons (PersonID, LastName, FirstName, Address, City)\n" +
-                    "VALUES (1, 'Henry', 'Wan','Modern', 'SJ');");
-            result = stmt.execute("INSERT into Persons (PersonID, LastName, FirstName, Address, City)\n" +
-                    "VALUES (2, 'Jerry', 'Gao','SJSU', 'CA');");
-            result = stmt.execute("INSERT into Persons (PersonID, LastName, FirstName, Address, City)\n" +
-                    "VALUES (3, 'John', 'White','ICE', 'SJ');");
-            result = stmt.execute("INSERT into Persons (PersonID, LastName, FirstName, Address, City)\n" +
-                    "VALUES (4, 'Tom', 'Nash','Done', 'SJ');");
-            ResultSet rs=stmt.executeQuery("select * from Persons");
-            while(rs.next())
-                System.out.println(rs.getInt(1)+"  "+rs.getString(2)+"  "+rs.getString(3));
-            conn.close();
-        } catch (SQLException ex) {
-            // handle any errors
-            System.out.println("SQLException: " + ex.getMessage());
-            System.out.println("SQLState: " + ex.getSQLState());
-            System.out.println("VendorError: " + ex.getErrorCode());
-        }
-        return result;
-    }
 
     public boolean createTable() {
-        init();
+        
         try {
             // TODO complete code to use JDBC
             if (conn != null){
@@ -104,7 +66,7 @@ public class MySQLStorage {
                         "(\n" +
                         "fileName varchar(255),\n" +
                         "chunkID int,\n" +
-                        "data varchar(10240),\n" +
+                        "data longblob,\n" +
                         "file_id varchar(255),\n" +
                         "totalNoOfChunks int,\n" +
                         "Primary Key(fileName, chunkID)\n" +
@@ -129,7 +91,7 @@ public class MySQLStorage {
         } finally {
             if (conn != null) {
                 try {
-                    conn.close();
+                   // conn.close();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -139,7 +101,7 @@ public class MySQLStorage {
     }
 
     public boolean dropTable() {
-        init();
+        // init();
         try {
             // TODO complete code to use JDBC
             if (conn != null){
@@ -167,7 +129,7 @@ public class MySQLStorage {
         } finally {
             if (conn != null) {
                 try {
-                    conn.close();
+                 //   conn.close();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -177,25 +139,31 @@ public class MySQLStorage {
     }
 
     public boolean insertRecordFileChunk(String fileName, int chunkID, byte[] data, int totalNoOfChunks, String file_id) {
-        init();
+        // init();
         if (fileName == null || fileName.length() == 0) {
             logger.info("No record to insert.");
             return false;
         }
         try {
-            String str = "";
+            InputStream blob = null; 
             // TODO complete code to use JDBC
             if (conn != null) {
                 System.out.println("Connection successful!");
                 Statement stmt = conn.createStatement();
                 if (data != null) {
-                    str = new String(data);
+                    blob = new ByteArrayInputStream(data);
                 }
-                String insertRecord = "INSERT INTO FileChunk (fileName, chunkID, data, file_id, totalNoOfChunks)\n" +
-                        "VALUES ('" + fileName + "'," + chunkID + ",'" + str + "','" + file_id + "'," + totalNoOfChunks + ");";
-                //logger.info(insertRecord);
-                boolean insertResult = stmt.execute(insertRecord);
-                if (insertResult == true) {
+                String insertRecord = "INSERT INTO FileChunk VALUES (?, ?, ?, ?, ?)";
+                PreparedStatement statement = conn.prepareStatement(insertRecord);
+                
+                statement.setString(1,fileName);
+                statement.setInt(2, chunkID);
+                statement.setBinaryStream(3, new ByteArrayInputStream(data),data.length);
+                statement.setString(4,file_id);
+                statement.setInt(5, totalNoOfChunks);
+
+                int insertResult = statement.executeUpdate();
+                if (insertResult > 0) {
                     logger.info("Insert table FileChunk in the FileDB successfully. ");
                 }
             }
@@ -212,7 +180,7 @@ public class MySQLStorage {
         } finally {
             if (conn != null) {
                 try {
-                    conn.close();
+                   // conn.close();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -222,7 +190,7 @@ public class MySQLStorage {
     }
 
     public boolean deleteRecordFileChunk(String fileName) {
-        init();
+        // init();
         try {
             if (fileName == null || fileName.length() == 0) {
                 logger.info("No record to delete.");
@@ -255,7 +223,7 @@ public class MySQLStorage {
         } finally {
             if (conn != null) {
                 try {
-                    conn.close();
+                    //conn.close();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -263,56 +231,7 @@ public class MySQLStorage {
         }
         return true;
     }
-
-    public int updateRecordFileChunk(String fileName, int chunkID, byte[] data, int totalNoOfChunks, String file_id) {
-        init();
-        int result = 0;
-        if (fileName == null || fileName.length() == 0) {
-            logger.info("No record to update.");
-            return -1;
-        }
-        try {
-            String str = "";
-            // TODO complete code to use JDBC
-            if (conn != null){
-                System.out.println("Connection successful!");
-                Statement stmt = conn.createStatement();
-                if (data != null) {
-                    str = new String(data);
-                }
-                String updateRecord = "UPDATE FileChunk\n" +
-                        "SET fileName='" + fileName + "', chunkID=" + chunkID + ", data='" + str + "', totalNoOfChunks=" + totalNoOfChunks + ", file_id='" + file_id + "'\n" +
-                        "WHERE fileName='" + fileName + "' and chunkID=" + chunkID + ";";
-                logger.info(updateRecord);
-                result = stmt.executeUpdate(updateRecord);
-                if (result == 0) {
-                    logger.info("No record in Table FileChunk in the FileDB updated. ");
-                }
-                else {
-                    logger.info("Update table FileChunk in the FileDB successfully. ");
-                }
-            }
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            logger.error("failed/exception on updating a record: chunkId " + chunkID + " of the file " + fileName, ex);
-            try {
-                conn.rollback();
-            } catch (SQLException e) {
-            }
-
-            // indicate failure
-            return -1;
-        } finally {
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-        return result;
-    }
+    
 
     /**
      * We don't use this method.
@@ -324,7 +243,7 @@ public class MySQLStorage {
      * @return
      */
     public ResultSet selectRecordFileChunk(String fileName, int chunkID, byte[] data, int totalNoOfChunks, String file_id) {
-        init();
+        // init();
         if (fileName == null || fileName.length() == 0) {
             logger.info("No record to select.");
             return null;
@@ -332,11 +251,28 @@ public class MySQLStorage {
         try {
             // TODO complete code to use JDBC
             if (conn != null){
+                
+//                String sql = "SELECT blobcolumn FROM testtable WHERE theID="+theID;
+//                Statement statement = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+//                ResultSet result    = statement.executeQuery(sql);
+//                if(result.next()){ // got at least one row, and only one row if theID is primary key
+//                   Blob blob = result.getBlob("blobcolumn"); // creates the blob object from the result
+//                   /*
+//                      blob index starts with 1 instead of 0, and starting index must be (long).
+//                      we want all the bytes back, so this grabs everything.
+//                      keep in mind, if the blob is longer than max int length, this won't work right
+//                      because a byte array has max length of max int length.
+//                   */
+//                   byte[] theBytes = blob.getBytes(1L, (int)blob.length());
+//                   // just to make sure:
+//                   System.out.println("blob back to string |"+new String(theBytes)+"|");
+                                   
                 System.out.println("Connection successful!");
-                Statement stmt = conn.createStatement();
-                String selectRecord = "SELECT * FROM FileChunk\n" +
-                        "WHERE fileName='" + fileName + "' and chunkID=" + chunkID + ";";
-                logger.info(selectRecord);
+               	Statement stmt = conn.createStatement();
+               	String selectRecord = "SELECT * FROM FileChunk\n" +
+                       "WHERE fileName='" + fileName + "' and chunkID=" + chunkID + ";";
+               	Statement statement = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);                        
+//                logger.info(selectRecord);
                 ResultSet rs = stmt.executeQuery(selectRecord);
                 if (rs == null) {
                     logger.info("No record in Table FileChunk in the FileDB. Selecting...");
@@ -359,7 +295,7 @@ public class MySQLStorage {
         } finally {
             if (conn != null) {
                 try {
-                    conn.close();
+                    //conn.close();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -369,7 +305,7 @@ public class MySQLStorage {
     }
 
     public boolean checkFileExist(String fileName) {
-    	init();
+    	// init();
         if (fileName == null || fileName.length() == 0) {
             logger.info("No record to select.");
             return false;
@@ -380,15 +316,20 @@ public class MySQLStorage {
             if (conn != null){
                 System.out.println("Connection successful!");
                 Statement stmt = conn.createStatement();
-                String selectRecord = "SELECT * FROM FileChunk\n" +
+                String selectRecord = "SELECT count(fileName) FROM FileChunk\n" +
                         "WHERE fileName='" + fileName + "';";
                 ResultSet rs = stmt.executeQuery(selectRecord);
+                
                 if (rs == null) {
                     logger.info("No record in Table FileChunk in the FileDB. Selecting...");
                     return false;
                 }
                 else {
-                    return true;
+                	rs.next();
+                	if (rs.getInt(1)> 0)
+                		return true;
+                	else 
+                		return false;
                 }
             }
         } catch (Exception ex) {
@@ -400,7 +341,7 @@ public class MySQLStorage {
             } finally {
                 if (conn != null) {
                     try {
-                        conn.close();
+                        //conn.close();
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -413,7 +354,7 @@ public class MySQLStorage {
     
     // Only return all the chunkID of the file;
     public ArrayList<Integer> selectRecordFilenameChunkID(String fileName) {
-    	init();
+    	// init();
         if (fileName == null || fileName.length() == 0) {
             logger.info("No record to select.");
             return null;
@@ -438,7 +379,7 @@ public class MySQLStorage {
 //                    String fileNamePrint = rs.getString(1);
 //                    System.out.println(fileNamePrint); // should print out "1"'     fileName
                     int chunkIDPrint = rs.getInt(1);
-                    System.out.println("chunkID = " + chunkIDPrint); // should print out "2"'      chunkID
+//                    System.out.println("chunkID = " + chunkIDPrint); // should print out "2"'      chunkID
 //                    String dataPrint = rs.getString(3);
 //                    byte[] databyte = null;
 //                    System.out.println(dataPrint); // should print out "3"'         data
@@ -460,7 +401,7 @@ public class MySQLStorage {
             } finally {
                 if (conn != null) {
                     try {
-                        conn.close();
+                        //conn.close();
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -473,17 +414,30 @@ public class MySQLStorage {
     }
     
     public ClassFileChunkRecord selectRecordFileChunk(String fileName, int chunkID) {
-        init();
+        // init();
         if (fileName == null || fileName.length() == 0) {
             logger.info("No record to select.");
             return null;
         }
         ArrayList<ClassFileChunkRecord> arrayList = new ArrayList<ClassFileChunkRecord>();
         try {
-            // TODO complete code to use JDBC
+//        	 String sql = "SELECT blobcolumn FROM testtable WHERE theID="+theID;
+//           Statement statement = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+//           ResultSet result    = statement.executeQuery(sql);
+//           if(result.next()){ // got at least one row, and only one row if theID is primary key
+//              Blob blob = result.getBlob("blobcolumn"); // creates the blob object from the result
+//              /*
+//                 blob index starts with 1 instead of 0, and starting index must be (long).
+//                 we want all the bytes back, so this grabs everything.
+//                 keep in mind, if the blob is longer than max int length, this won't work right
+//                 because a byte array has max length of max int length.
+//              */
+//              byte[] theBytes = blob.getBytes(1L, (int)blob.length());
+//              // just to make sure:
+//              System.out.println("blob back to string |"+new String(theBytes)+"|");
             if (conn != null){
                 System.out.println("Connection successful!");
-                Statement stmt = conn.createStatement();
+                Statement stmt = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
                 String selectRecord = "SELECT * FROM FileChunk\n" +
                         "WHERE fileName='" + fileName + "' and chunkID=" + chunkID + ";";
                 ResultSet rs = stmt.executeQuery(selectRecord);
@@ -496,16 +450,16 @@ public class MySQLStorage {
 
                 while(rs.next()){
                     String fileNamePrint = rs.getString(1);
-//                    System.out.println(fileNamePrint); // should print out "1"'     fileName
+                    System.out.println(fileNamePrint); // should print out "1"'     fileName
                     int chunkIDPrint = rs.getInt(2);
-//                    System.out.println(chunkIDPrint); // should print out "2"'      chunkID
-                    String dataPrint = rs.getString(3);
-                    byte[] databyte = dataPrint.getBytes();
-//                    System.out.println(dataPrint); // should print out "3"'         data
+                    System.out.println(chunkIDPrint); // should print out "2"'      chunkID
+                    Blob dataPrint = rs.getBlob(3);
+                    byte[] databyte = dataPrint.getBytes(1L, (int)dataPrint.length());
+                    System.out.println(dataPrint); // should print out "3"'         data
                     String file_id_Print = rs.getString(4);
-//                    System.out.println(file_id_Print); // should print out "4"'     file_id
+                    System.out.println(file_id_Print); // should print out "4"'     file_id
                     int totalNoOfChunksPrint = rs.getInt(5);
-//                    System.out.println(totalNoOfChunksPrint); // should print out "5"'      totalNoOfChunks
+                    System.out.println(totalNoOfChunksPrint); // should print out "5"'      totalNoOfChunks
                     arrayList.add(new ClassFileChunkRecord(fileNamePrint, chunkIDPrint, databyte, totalNoOfChunksPrint, file_id_Print));
                 }
                 return arrayList.get(0);
@@ -519,7 +473,7 @@ public class MySQLStorage {
             } finally {
                 if (conn != null) {
                     try {
-                        conn.close();
+                        //conn.close();
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

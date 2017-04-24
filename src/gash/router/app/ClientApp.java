@@ -60,7 +60,7 @@ public class ClientApp implements CommListener {
 
 	@Override
 	public void onMessage(CommandMessage msg) {
-		System.out.println("---> " + msg);
+		// System.out.println("---> " + msg);
 	}	
 
 	private void menu() {
@@ -126,6 +126,8 @@ public class ClientApp implements CommListener {
 			port = 4168;
 		}
 		try {
+//			TestSQLOperations testSQLOperations = new TestSQLOperations();
+//			testSQLOperations.createTable();
 			MessageClient mc = new MessageClient(host, port);
 			ClientApp ca = new ClientApp(mc);
 			ca.menu();

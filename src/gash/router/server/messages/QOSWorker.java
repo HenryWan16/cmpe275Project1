@@ -46,7 +46,6 @@ public class QOSWorker implements Runnable{
 
     @Override
     public void run() {
-    	//logger.info("QOSWorker Thread Working : ");
         while (forever) {
         	if (!queue.isEmpty()) {
         		//do work in queue
@@ -78,7 +77,7 @@ public class QOSWorker implements Runnable{
         	
 
         	logger.info("Queue Size: " + queue.size());
-            try { Thread.sleep(5000); } catch(Exception e){ }
+        	try { Thread.sleep(300); } catch(Exception e){ }
 
         }
     }

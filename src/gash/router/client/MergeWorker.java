@@ -24,7 +24,7 @@ public class MergeWorker implements Runnable{
     protected static MergeWorker mergeWorker;
     public boolean successMerge = false;
     public static final Object usageLock = new Object();
-    private int currentChunkId = 1;
+    private int currentChunkId = 0;
     byte[] file = new byte[0];
     String filename;
 
@@ -59,10 +59,10 @@ public class MergeWorker implements Runnable{
                 chunkIdSet.add(currentChunkId);
                 currentChunkId++;
             }
-            logger.info("********" + currentChunkId+ "****INSIDE while*********" + totalNoOfChunks+"****" + totalNoOfChunks + " - " + chunkIdDataMap.size());
-            System.out.println("total number of chunks: "+totalNoOfChunks);
-            System.out.println("table size now: "+chunkIdDataMap.size());
-            if(currentChunkId != 1 && currentChunkId == totalNoOfChunks+1)
+//            logger.info("********" + currentChunkId+ "****INSIDE while*********" + totalNoOfChunks+"****" + totalNoOfChunks + " - " + chunkIdDataMap.size());
+//            System.out.println("total number of chunks: "+totalNoOfChunks);
+//            System.out.println("table size now: "+chunkIdDataMap.size());
+            if(currentChunkId != 0 && currentChunkId == totalNoOfChunks)
                 successMerge = true;
             
             try { Thread.sleep(200); } catch (Exception e){ e.printStackTrace();}
@@ -81,6 +81,7 @@ public class MergeWorker implements Runnable{
     public static void upDateTable(Common.Chunk chunk) {
         int id = chunk.getChunkId();
         byte[] data = chunk.getChunkData().toByteArray();
+        System.out.println("MergeWork upDateTable id = " + id);
         synchronized (usageLock) {
             if(!chunkIdSet.contains(id))
                 chunkIdDataMap.put(id, data);

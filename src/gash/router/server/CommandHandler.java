@@ -127,7 +127,7 @@ public class CommandHandler extends SimpleChannelInboundHandler<CommandMessage> 
 	 */
 	@Override
 	protected void channelRead0(ChannelHandlerContext ctx, CommandMessage msg) throws Exception {
-		logger.info("CommandHandler Accept the message: " + acceptInboundMessage(msg));
+		// logger.info("CommandHandler Accept the message: " + acceptInboundMessage(msg));
 		handleMessage(msg, ctx.channel());
 	}
 

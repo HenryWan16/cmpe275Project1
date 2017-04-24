@@ -86,8 +86,7 @@ public class CommandSession implements Session, Runnable{
             			logger.info("chunkID is " + chunkId);
             			
             			// if we don't set chunkId in the CommandMessage, its default to be 0;
-            			// ask for the list of location
-            			if (chunkId == 0) {
+            			if (chunkId == -1) {
                 			// Get all the chunkIDs of the file from the database on the leader. 
                 			// All the nodes have the same data and we just return the records on the leader.
                 			ArrayList<Integer> chunkIDArray = mySQLStorage.selectRecordFilenameChunkID(fname);
@@ -113,7 +112,7 @@ public class CommandSession implements Session, Runnable{
                 					MessageUtil.buildResponse(TaskType.RESPONSEREADFILE, fname, null , null, 
                 								MessageUtil.buildReadResponse(-1, fname, null, location.size(), 
                 										location, null)));
-                    		logger.info("READFILE location isn't null and " + cm.toString());
+                    		// logger.info("READFILE location isn't null and " + cm.toString());
                     		channel.writeAndFlush(cm);
                     	
                     	//ask for chunk data
@@ -126,7 +125,7 @@ public class CommandSession implements Session, Runnable{
                 			ClassFileChunkRecord record = mySQLStorage.selectRecordFileChunk(fileName, chunkID);
                 			byte[] chunkData = record.getData();
                 			int chunkSize = record.getTotalNoOfChunks();
-                			logger.info("Send chunkData to the client: " + new String(chunkData));
+                			// logger.info("Send chunkData to the client: " + new String(chunkData));
                 			CommandMessage cm = MessageUtil.buildCommandMessage(
                 					MessageUtil.buildHeader(conf.getNodeId(), System.currentTimeMillis()),
                 					null,
@@ -167,7 +166,7 @@ public class CommandSession implements Session, Runnable{
     	    			fileId = ((Long)wb.getFileId()).toString();
     	    		}
     	    		
-    	    		//logger.info("Going to Write " + new String(data));
+    	    		// logger.info("Going to Write " + new String(data));
     	    		boolean result = MySQLStorage.getInstance().insertRecordFileChunk(fname, chunkId, data, numOfChunk, fileId);
     	    		logger.info("ChunkId " + chunkId);
     	    		
@@ -181,7 +180,7 @@ public class CommandSession implements Session, Runnable{
     						ClassFileChunkRecord record = mySQLStorage.selectRecordFileChunk(fname, chunkId);
     						byte[] chunkData = record.getData();
     						int chunkSize = record.getTotalNoOfChunks();
-    						logger.info("replicate chunkData to other nodes: " + new String(chunkData));
+    						// logger.info("replicate chunkData to other nodes: " + new String(chunkData));
 //    						CommandMessage cm = MessageUtil.buildCommandMessage(
 //    								MessageUtil.buildHeader(conf.getNodeId(), System.currentTimeMillis()),
 //    								null,
@@ -215,7 +214,9 @@ public class CommandSession implements Session, Runnable{
             		
             	}
             	
-    	    		}}}
+    	    	}
+    	    }
+           }
 
         } catch (Exception e) {
             // TODO add logging

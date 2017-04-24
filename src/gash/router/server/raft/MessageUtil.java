@@ -193,7 +193,12 @@ public class MessageUtil {
 		ReadBody.Builder rb = ReadBody.newBuilder();
 		if (fname != null) rb.setFilename(fname);
 		if (fId != -1) rb.setFileId(fId);
-		if (chunkId != -1) rb.setChunkId(chunkId);
+		if (chunkId != -1) {
+			rb.setChunkId(chunkId);
+		}
+		else {
+			rb.setChunkId(-1);
+		}
 		if (chunkSize != -1) rb.setChunkSize(chunkSize);
 		return rb;
 	}

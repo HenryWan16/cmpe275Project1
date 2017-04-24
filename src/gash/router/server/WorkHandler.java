@@ -169,7 +169,7 @@ public class WorkHandler extends SimpleChannelInboundHandler<WorkMessage> {
 				}
 			} else if (msg.hasCmdMessage()){
 				logger.info("stoled message from node: " + msg.getHeader().getNodeId());
-				logger.info("server stoled request: "+msg.getCmdMessage().getRequest().toString());
+				// logger.info("server stoled request: "+msg.getCmdMessage().getRequest().toString());
 				Pipe.CommandMessage cmdMessage = msg.getCmdMessage();
 				Session session1 = new CommandSession(state.getConf(), cmdMessage, channel);
 				QOSWorker.getInstance().getQueue().enqueue(session1);

@@ -23,9 +23,9 @@ public class TestSQLOperations {
         int totalNoOfChunks = 3;
         String file_id = "Just for testing.";
         mySQLStorage.createTable();
-        mySQLStorage.insertRecordFileChunk(fileName, chunkID, data, totalNoOfChunks, file_id);
-        ClassFileChunkRecord result = mySQLStorage.selectRecordFileChunk(fileName, chunkID);
-        System.out.println("Selecting results: " + result);
+        //mySQLStorage.insertRecordFileChunk(fileName, chunkID, data, totalNoOfChunks, file_id);
+        //ClassFileChunkRecord result = mySQLStorage.selectRecordFileChunk(fileName, chunkID);
+        //System.out.println("Selecting results: " + result);
         //mySQLStorage.deleteRecordFileChunk(fileName, chunkID);
     }
 
@@ -113,7 +113,7 @@ public class TestSQLOperations {
         byte[] data = temp.getBytes();
         int totalNoOfChunks = 10;
         String file_id = "Finished updating test.";
-        mySQLStorage.updateRecordFileChunk(fileName, chunkID, data, totalNoOfChunks, file_id);
+        //mySQLStorage.updateRecordFileChunk(fileName, chunkID, data, totalNoOfChunks, file_id);
     }
 
     public void selectRecordFileChunk() throws Exception {
@@ -128,7 +128,7 @@ public class TestSQLOperations {
     }
     
     public void checkFileExist(String fname) {
-    	boolean answer = this.mySQLStorage.checkFileExist("files/test.txt");
+    	boolean answer = this.mySQLStorage.checkFileExist("files/simplefile.txt");
     	System.out.println("checkFileExist(\"" + fname + "\") = " + answer);
     }
 }

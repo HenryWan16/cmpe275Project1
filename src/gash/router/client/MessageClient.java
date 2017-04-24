@@ -83,8 +83,8 @@ public class MessageClient {
 		FileInputStream fis;
 
 		int file_size = (int)file.length();
-		final int CHUNK_SIZE = 2 * 1024;
-		int numberOfChunks = 0;
+		final int CHUNK_SIZE = 1024 * 1024;
+		int chunkId = 0;
 		int readLength = CHUNK_SIZE;
 		byte[] byteChunk;
 		int read = 0;
@@ -101,17 +101,16 @@ public class MessageClient {
 				read = fis.read(byteChunk, 0, readLength);
 				file_size -= read;
 				assert (read == byteChunk.length);
-				numberOfChunks++;
 				// get hash key for store, to do
-				logger.info("bytechunk: "+byteChunk.toString());
-
+				// logger.info("bytechunk: "+byteChunk.toString());
+				logger.info("Current chunkId is " + chunkId);
 				CommandMessage cm = MessageUtil.buildCommandMessage(MessageUtil.buildHeader(999,System.currentTimeMillis()),null,
-						MessageUtil.buildRequest(TaskType.REQUESTWRITEFILE, MessageUtil.buildWriteBody(-1,fname,null,
-								MessageUtil.buildChunk(numberOfChunks,byteChunk,chunkSize),
+						MessageUtil.buildRequest(TaskType.REQUESTWRITEFILE, MessageUtil.buildWriteBody(-1,fname,"txt",
+								MessageUtil.buildChunk(chunkId,byteChunk,chunkSize),
 								chunkSize),null),null);
-
+				chunkId++;
 				logger.info("build success, start to enque");
-				logger.info("msg enque is: "+cm.getRequest().getRwb().getChunk().toString());
+				// logger.info("msg enque is: "+cm.getRequest().getRwb().getChunk().toString());
 				CommConnection.getInstance().enqueue(cm);
 				logger.info("enque success");
 				byteChunk = null;
@@ -155,7 +154,7 @@ public class MessageClient {
 						MessageUtil.buildReadBody(fname,-1,-1,-1)),null);
 
 		try {
-			logger.info("The first time to send Read message to server " + cmdb);
+			// logger.info("The first time to send Read message to server " + cmdb);
 			CommConnection.getInstance().enqueue(cmdb);
 
 		} catch (Exception e) {

@@ -140,8 +140,8 @@ public class CommHandler extends SimpleChannelInboundHandler<CommandMessage> {
 					//first response from server
 					int numChunks = msg.getResponse().getReadResponse().getNumOfChunks();
 					mergeWorker = MergeWorker.getMergeWorkerInstance();
-					Thread mergeThread = new Thread(mergeWorker);
-					mergeThread.start();
+//					Thread mergeThread = new Thread(mergeWorker);
+//					mergeThread.start();
 					mergeWorker.setTotalNoOfChunks(numChunks);
 					
 					// get the HashMap<chunkID, Location> from the readResponse.
