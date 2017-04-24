@@ -74,7 +74,34 @@ public class CommandSession implements Session, Runnable{
         		String fname = msg.getRequest().getRrb().getFilename();
         		
         		/**************** READ ****************/
+        		if (type == TaskType.RESPONSEREADFILE) {
+        			if (msg.getHeader().getDestination() == RoutingConf.clusterId) {
+        				
+        				ServerState.clientChannel.writeAndFlush(msg);
+        				ServerState.clientChannel = null;
+        				return;
+        			}
+        		}
+        		
+        		
             	if (type == TaskType.REQUESTREADFILE) {
+            		
+            		if (ServerState.clientChannel == null) {
+						//msg from client
+						ServerState.clientChannel = channel;
+						logger.info("Server received read request from client" + msg.getHeader().getNodeId());
+            		}
+						//then forward to next cluster
+						logger.info("Forwarding r from client");
+						ServerState.nextCluster.writeAndFlush(msg);
+
+            		
+            		
+            		
+            		
+            		
+            		
+            	
             		logger.info("read fileName is " + fname);
             		MySQLStorage mySQLStorage = MySQLStorage.getInstance();
             		
@@ -126,7 +153,8 @@ public class CommandSession implements Session, Runnable{
                 								MessageUtil.buildReadResponse(-1, fname, null, location.size(), 
                 										location, null)));
                     		// logger.info("READFILE location isn't null and " + cm.toString());
-                    		channel.writeAndFlush(cm);
+                    		//channel.writeAndFlush(cm);
+                			ServerState.nextCluster.writeAndFlush(cm);
                     	
                     	//ask for chunk data
                     	} else {
@@ -159,7 +187,8 @@ public class CommandSession implements Session, Runnable{
             					null,
             					MessageUtil.buildResponse(TaskType.RESPONSEREADFILE, fname, Response.Status.FILENOTFOUND , null, null));
                         logger.info("File " + fname + " isn't in the database. Read failed on the server.");
-                        channel.writeAndFlush(cm);
+                        //channel.writeAndFlush(cm);
+                        ServerState.nextCluster.writeAndFlush(cm);
                 	}
             	}
             	

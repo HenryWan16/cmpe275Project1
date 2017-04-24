@@ -69,10 +69,6 @@ public class CommandHandler extends SimpleChannelInboundHandler<CommandMessage> 
 		try {
 			// TODO How can you implement this without if-else statements?
 			if (msg.hasPing()) {
-				//String senderIp = ServerState.prevCluster.remoteAddress().toString().split(":")[0];
-				//System.out.println("senderIp: " + senderIp);
-				//String msgIp = channel.remoteAddress().toString().split(":")[0];
-				//System.out.println("msgIp: " + msgIp);
 
 				if(msg.getHeader().getDestination() == RoutingConf.clusterId) {
 					if (ServerState.clientChannel == null) {
