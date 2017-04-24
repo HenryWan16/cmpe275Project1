@@ -39,7 +39,7 @@ public class RoutingConf {
 	private int heartbeatDt = 2000;
 	private List<RoutingEntry> routing;
 	public static int clusterId = 1;
-	public static String redis = "localhost";
+	public static String redis = "169.254.144.2";
 
 	public HashMap<String, Integer> asHashMap() {
 		HashMap<String, Integer> map = new HashMap<String, Integer>();

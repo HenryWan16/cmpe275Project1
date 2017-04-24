@@ -90,27 +90,31 @@ public class EdgeMonitor implements EdgeListener, Runnable {
 				//set channel to next cluster's leader
 				if (ServerState.nextCluster == null) {
 					RedisServer.getInstance().getLocalhostJedis().select(0);
-					String leader = RedisServer.getInstance().getLocalhostJedis().get(String.valueOf(RoutingConf.clusterId + 1));
+					String leader = RedisServer.getInstance().getLocalhostJedis().get("3");//String.valueOf(RoutingConf.clusterId + 1));
 					String host;
 					int port;
 					if(leader != null) {
 						host = leader.split(":")[0];
 						port = Integer.parseInt(leader.split(":")[1]);
 						
-						ServerState.nextCluster = createChannel(host, port);
+						try {
+							ServerState.nextCluster = createChannel(host, port);
+						} catch (Exception e) {}
 					}
 				}
 				
 				if (ServerState.prevCluster == null) {
 					RedisServer.getInstance().getLocalhostJedis().select(0);
-					String leader = RedisServer.getInstance().getLocalhostJedis().get(String.valueOf(RoutingConf.clusterId - 1));
+					String leader = RedisServer.getInstance().getLocalhostJedis().get("1");//String.valueOf(RoutingConf.clusterId - 1));
 					String host;
 					int port;
 					if(leader != null) {
 						host = leader.split(":")[0];
 						port = Integer.parseInt(leader.split(":")[1]);
 						
-						ServerState.prevCluster = createChannel(host, port);
+						try {
+							ServerState.prevCluster = createChannel(host, port);
+						} catch (Exception e) {}
 					}
 				}
 				

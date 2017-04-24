@@ -53,7 +53,7 @@ public class RaftHandler implements Runnable {
 			candidate = new CandidateNode(this);
 			follower = new FollowerNode(this);
 			
-			host = Inet4Address.getLocalHost().getHostAddress();
+			host = "169.254.148.122";//Inet4Address.getLocalHost().getHostAddress();
 			port = serverState.getConf().getWorkPort();
 			edgeMonitor = serverState.getEmon();
 

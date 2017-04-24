@@ -108,31 +108,7 @@ public class WorkHandler extends SimpleChannelInboundHandler<WorkMessage> {
 			} else if (msg.hasANode()) {
 				state.getHandler().getEdgeMonitor().createOutboundIfNew(msg.getHeader().getNodeId(), 
 									msg.getANode().getHost(), msg.getANode().getPort());
-				
-			} else if (msg.hasTaskStatus()) {
-				System.out.println("******hasTaskStatus******");
-				state.getHandler().getNodeState().processSendUpdateLogs(msg);
-				
-			} else if (msg.getLogCount() > 0) {
-				System.out.println("*****getLogCount*******");
-				state.getHandler().getNodeState().processAddLogs(msg);
-				
-			} else if (msg.hasDeleteFile()) {
-				System.out.println("*****hasDeleteFile*******");
-				boolean result = MySQLStorage.getInstance().deleteRecordFileChunk(msg.getDeleteFile());
-				
-        		if (result) {
-        			String host = Inet4Address.getLocalHost().getHostAddress();
-        			WorkMessage wm = MessageUtil.buildWMDeleteLog(
-        					MessageUtil.buildHeader(this.state.getConf().getNodeId(), System.currentTimeMillis()),
-        					msg.getDeleteFile());
-        			EdgeInfo leaderEdgeInfo = RaftHandler.getInstance().getEdgeMonitor().getOutboundEdges().getMap().get(RaftHandler.getInstance().getLeaderNodeId());
-        			leaderEdgeInfo.getChannel().writeAndFlush(wm);
-        		}
-			} else if (msg.hasDeleteLog()) {
-				System.out.println("****hasDeleteLog********");
-				state.getHandler().getNodeState().processSendRemoveLogs(msg);
-				
+								
 			} else if (msg.hasErr()) {
 				Failure err = msg.getErr();
 				logger.error("failure from " + msg.getHeader().getNodeId());

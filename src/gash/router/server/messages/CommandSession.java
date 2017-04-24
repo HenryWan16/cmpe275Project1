@@ -170,54 +170,19 @@ public class CommandSession implements Session, Runnable{
     	    		boolean result = MySQLStorage.getInstance().insertRecordFileChunk(fname, chunkId, data, numOfChunk, fileId);
     	    		logger.info("ChunkId " + chunkId);
     	    		
-    	    		MySQLStorage mySQLStorage = MySQLStorage.getInstance();
+    	    		// Replication
     	    		for(EdgeInfo ei:RaftHandler.getInstance().getEdgeMonitor().getOutboundEdges().getMap().values()){
     					if (ei.isActive() && ei.getChannel().isActive()) {
     						int nodeId = ei.getRef();
     						String nodehost = ei.getHost();
     						int port = ei.getPort();
     						
-    						ClassFileChunkRecord record = mySQLStorage.selectRecordFileChunk(fname, chunkId);
-    						byte[] chunkData = record.getData();
-    						int chunkSize = record.getTotalNoOfChunks();
-    						// logger.info("replicate chunkData to other nodes: " + new String(chunkData));
-//    						CommandMessage cm = MessageUtil.buildCommandMessage(
-//    								MessageUtil.buildHeader(conf.getNodeId(), System.currentTimeMillis()),
-//    								null,
-//    								null,
-//    								MessageUtil.buildResponse(TaskType.WRITEFILE, fname, null , null,
-//    										MessageUtil.buildReadResponse(-1, fname, null, location.size(),
-//    												location, MessageUtil.buildChunk(chunkId, chunkData, chunkSize))));
-    						CommandMessage cm = MessageUtil.buildCommandMessage(
-    								MessageUtil.buildHeader(conf.getNodeId(), System.currentTimeMillis()),
-    								null,
-    								MessageUtil.buildRequest(
-    										TaskType.REQUESTWRITEFILE, MessageUtil.buildWriteBody(
-    												-1,
-    												fname,
-    												null,
-    												MessageUtil.buildChunk(
-    														chunkId,
-    														chunkData,
-    														chunkSize
-    												),
-    												chunkSize
-    										),
-    										null
-    								),
-    								null
-    						);
-    						WorkMessage wm = MessageUtil.replicateData(nodeId, nodehost, port, cm);
+    						WorkMessage wm = MessageUtil.replicateData(nodeId, nodehost, port, msg);
     						ei.getChannel().writeAndFlush(wm);
-            	} 
-            	else { //update, delete: 
-            		
-            	}
-            	
-    	    	}
+    					}
+    	    		} 
+    	    	} else { }//update, delete:
     	    }
-           }
-
         } catch (Exception e) {
             // TODO add logging
             Common.Failure.Builder eb = Common.Failure.newBuilder();
