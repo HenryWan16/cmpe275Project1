@@ -166,21 +166,27 @@ public class CommandSession implements Session, Runnable{
     	    			fileId = ((Long)wb.getFileId()).toString();
     	    		}
     	    		
-    	    		// logger.info("Going to Write " + new String(data));
-    	    		boolean result = MySQLStorage.getInstance().insertRecordFileChunk(fname, chunkId, data, numOfChunk, fileId);
-    	    		logger.info("ChunkId " + chunkId);
-    	    		
-    	    		// Replication
-    	    		for(EdgeInfo ei:RaftHandler.getInstance().getEdgeMonitor().getOutboundEdges().getMap().values()){
-    					if (ei.isActive() && ei.getChannel().isActive()) {
-    						int nodeId = ei.getRef();
-    						String nodehost = ei.getHost();
-    						int port = ei.getPort();
-    						
-    						WorkMessage wm = MessageUtil.replicateData(nodeId, nodehost, port, msg);
-    						ei.getChannel().writeAndFlush(wm);
-    					}
-    	    		} 
+    	    		MySQLStorage mySQLStorage = MySQLStorage.getInstance();
+            		
+            		// If the file and chunkid already in server.
+            		if (!mySQLStorage.checkFileChunkExist(fname, chunkId)) {
+            			
+	    	    		boolean result = mySQLStorage.insertRecordFileChunk(fname, chunkId, data, numOfChunk, fileId);
+	    	    		logger.info("ChunkId " + chunkId);
+	    	    		if (result) {
+	    	    			// Replication
+		    	    		for(EdgeInfo ei:RaftHandler.getInstance().getEdgeMonitor().getOutboundEdges().getMap().values()){
+		    					if (ei.isActive() && ei.getChannel().isActive()) {
+		    						int nodeId = ei.getRef();
+		    						String nodehost = ei.getHost();
+		    						int port = ei.getPort();
+		    						
+		    						WorkMessage wm = MessageUtil.replicateData(nodeId, nodehost, port, msg);
+		    						ei.getChannel().writeAndFlush(wm);
+		    					}
+		    	    		}
+	    	    		}
+            		}
     	    	} else { }//update, delete:
     	    }
         } catch (Exception e) {

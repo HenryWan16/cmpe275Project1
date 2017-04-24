@@ -352,6 +352,55 @@ public class MySQLStorage {
         return false;
     }
     
+    
+    public boolean checkFileChunkExist(String fileName, int chunkId) {
+        if (fileName == null || fileName.length() == 0) {
+            logger.info("No record to select.");
+            return false;
+        }
+        ArrayList<ClassFileChunkRecord> arrayList = new ArrayList<ClassFileChunkRecord>();
+        try {
+            // TODO complete code to use JDBC
+            if (conn != null){
+                System.out.println("Connection successful!");
+                Statement stmt = conn.createStatement();
+                String selectRecord = "SELECT count(fileName) FROM FileChunk\n" +
+                        "WHERE fileName='" + fileName + "' AND chunkId="+chunkId+";";
+                ResultSet rs = stmt.executeQuery(selectRecord);
+                
+                if (rs == null) {
+                    logger.info("No record in Table FileChunk in the FileDB. Selecting...");
+                    return false;
+                }
+                else {
+                	rs.next();
+                	if (rs.getInt(1)> 0)
+                		return true;
+                	else 
+                		return false;
+                }
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            logger.error("failed/exception on selecting a record: filename "  + fileName, ex);
+            try {
+                conn.rollback();
+            } catch (SQLException e) {
+            } finally {
+                if (conn != null) {
+                    try {
+                        //conn.close();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+            // indicate failure
+        }
+        return false;
+    }
+    
+    
     // Only return all the chunkID of the file;
     public ArrayList<Integer> selectRecordFilenameChunkID(String fileName) {
     	// init();

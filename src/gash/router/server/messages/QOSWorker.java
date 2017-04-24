@@ -54,6 +54,7 @@ public class QOSWorker implements Runnable{
         		
         	} else {//queue is empty, ask for work ** stealing work
                 //steals work from leader
+
                 RaftHandler raftHandler = RaftHandler.getInstance();
         		int leaderNodeId = raftHandler.getLeaderNodeId();
                 EdgeInfo ei = raftHandler.getEdgeMonitor().getOutboundEdges().getNode(leaderNodeId);
@@ -72,12 +73,14 @@ public class QOSWorker implements Runnable{
                     wm.setState(ws);
                     wm.setSecret(1234);
                     ei.getChannel().writeAndFlush(wm.build());
+
                 }
+                
         	}
         	
 
         	logger.info("Queue Size: " + queue.size());
-        	try { Thread.sleep(300); } catch(Exception e){ }
+        	try { Thread.sleep(500); } catch(Exception e){ }
 
         }
     }
