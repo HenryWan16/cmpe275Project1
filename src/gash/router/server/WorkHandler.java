@@ -135,7 +135,10 @@ public class WorkHandler extends SimpleChannelInboundHandler<WorkMessage> {
 								wm.setHeader(hd);
 								wm.setCmdMessage(cMsg);
 								wm.setSecret(1234);
+								wm.setStolenMsg(true);
 								channel.writeAndFlush(wm);
+								logger.info("sending stoled Work message to node: " + msg.getHeader().getNodeId());
+								
 							}else{
 								//The remote node can't stole this task, so put it back on the local node's queue.
 								QOSWorker.getInstance().getQueue().enqueue(commandSession);
@@ -144,8 +147,9 @@ public class WorkHandler extends SimpleChannelInboundHandler<WorkMessage> {
 					}
 				}
 			} else if (msg.hasCmdMessage()){
-				logger.info("stoled message from node: " + msg.getHeader().getNodeId());
-				// logger.info("server stoled request: "+msg.getCmdMessage().getRequest().toString());
+				if (msg.hasStolenMsg()) {
+					logger.info("Stoled work message from node: " + msg.getHeader().getNodeId());
+				}
 				Pipe.CommandMessage cmdMessage = msg.getCmdMessage();
 				Session session1 = new CommandSession(state.getConf(), cmdMessage, channel);
 				QOSWorker.getInstance().getQueue().enqueue(session1);

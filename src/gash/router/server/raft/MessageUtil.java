@@ -254,35 +254,4 @@ public class MessageUtil {
 		return ts;
 	}
 	
-	public static WorkMessage buildWMLogs(Header.Builder h, Map<String, String> logs) {
-		WorkMessage.Builder wm = WorkMessage.newBuilder();
-		wm.setHeader(h);
-		wm.setSecret(secret);
-		wm.putAllLog(logs);
-		return wm.build();
-	}
-	
-	public static WorkMessage buildWMTaskStatus(Header.Builder h, TaskStatus.Builder t) {
-		WorkMessage.Builder wm = WorkMessage.newBuilder();
-		wm.setHeader(h);
-		wm.setSecret(secret);
-		wm.setTaskStatus(t);
-		return wm.build();
-	}
-	
-	public static WorkMessage buildWMDeleteFile(Header.Builder h, String fname) {
-		WorkMessage.Builder wm = WorkMessage.newBuilder();
-		wm.setHeader(h);
-		wm.setSecret(secret);
-		wm.setDeleteFile(fname);
-		return wm.build();
-	}
-	
-	public static WorkMessage buildWMDeleteLog(Header.Builder h, String fname) {
-		WorkMessage.Builder wm = WorkMessage.newBuilder();
-		wm.setHeader(h);
-		wm.setSecret(secret);
-		wm.setDeleteLog(fname);
-		return wm.build();
-	}
 }

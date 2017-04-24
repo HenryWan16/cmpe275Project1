@@ -132,21 +132,6 @@ public class MessageClient {
 			readbody
 
 		 */
-//		if (fname.equals("log.txt")) {
-//			CommandMessage cmdb = MessageUtil.buildCommandMessage(
-//				MessageUtil.buildHeader(999, System.currentTimeMillis()),
-//				null,
-//				MessageUtil.buildRequest(TaskType.REQUESTREADFILE, null,
-//						MessageUtil.buildReadBody(fname, -1, -1, -1)),
-//				null);
-//			try {
-//				CommConnection.getInstance().enqueue(cmdb);
-//				
-//			} catch (Exception e) {
-//				e.printStackTrace();
-//			}
-//		}
-
 		
 		// send a request to the server to read the file.
 		CommandMessage cmdb = MessageUtil.buildCommandMessage(MessageUtil.buildHeader(999,System.currentTimeMillis()),null,
@@ -162,7 +147,7 @@ public class MessageClient {
 		}
 		
 		//start the thread for waiting the chunks from server
-		this.mw.setResultFileName("result.txt");
+		this.mw.setResultFileName("bk_" + fname);
 		this.mw.successMerge = false;
 		Thread cthread = new Thread(this.mw);
 		cthread.start();

@@ -59,9 +59,7 @@ public class MergeWorker implements Runnable{
                 chunkIdSet.add(currentChunkId);
                 currentChunkId++;
             }
-//            logger.info("********" + currentChunkId+ "****INSIDE while*********" + totalNoOfChunks+"****" + totalNoOfChunks + " - " + chunkIdDataMap.size());
-//            System.out.println("total number of chunks: "+totalNoOfChunks);
-//            System.out.println("table size now: "+chunkIdDataMap.size());
+
             if(currentChunkId != 0 && currentChunkId == totalNoOfChunks)
                 successMerge = true;
             

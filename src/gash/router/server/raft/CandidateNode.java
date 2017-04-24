@@ -139,28 +139,4 @@ public class CandidateNode implements NodeState {
 		}
 	}
 
-	@Override
-	public void processSendUpdateLogs(WorkMessage wm) {
-		// TODO Auto-generated method stub
-		
-	}
-	
-	@Override
-	public synchronized void processAddLogs(WorkMessage wm) {
-		Hashtable<String, String> newTable = new Hashtable<String, String>();
-		for(String sKey: newTable.keySet()) {
-			handler.logs.put(sKey, newTable.get(sKey));
-		}
-	}
-	
-	@Override
-	public synchronized void processSendRemoveLogs(WorkMessage wm) {
-		String fname = wm.getTaskStatus().getFilename();
-		for(String sKey: handler.logs.keySet()) {
-			if (sKey.contains(fname)) {
-				handler.logs.remove(sKey);
-			}
-		}
-	}
-
 }

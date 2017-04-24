@@ -158,7 +158,7 @@ public class CommHandler extends SimpleChannelInboundHandler<CommandMessage> {
             					null,
             					MessageUtil.buildRequest(TaskType.REQUESTREADFILE, null, MessageUtil.buildReadBody(fname, -1, chunkId, chunkSize)),
             					null);
-						logger.info("############SEND RESQUEST FOR EACH CHUNK###");
+
 						try {
 							CommConnection.getInstance().enqueue(cm);
 						} catch (Exception e) {
