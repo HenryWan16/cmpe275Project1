@@ -73,7 +73,7 @@ public class QOSWorker implements Runnable{
                     wm.setState(ws);
                     wm.setSecret(1234);
                     ei.getChannel().writeAndFlush(wm.build());
-
+                    
                 }
                 
         	}

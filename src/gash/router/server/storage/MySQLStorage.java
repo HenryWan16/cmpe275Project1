@@ -533,4 +533,51 @@ public class MySQLStorage {
         }
         return null;
     }
+    
+    
+    
+    public ArrayList<ClassFileChunkRecord> selectAllRecordsFileChunk() {
+
+        ArrayList<ClassFileChunkRecord> arrayList = new ArrayList<ClassFileChunkRecord>();
+        try {
+        	if (conn != null){
+                System.out.println("Connection successful!");
+                Statement stmt = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+                String selectRecord = "SELECT fileName, chunkID FROM FileChunk ORDER BY fileName, chunkID ASC;";
+                ResultSet rs = stmt.executeQuery(selectRecord);
+                if (rs == null) {
+                    logger.info("No record in Table FileChunk in the FileDB. Selecting...");
+                }
+                else {
+                    logger.info("Select table FileChunk in the FileDB successfully. ");
+                    while(rs.next()){
+                        String fileNamePrint = rs.getString(1);
+                        int chunkIDPrint = rs.getInt(2);
+                        
+                        arrayList.add(new ClassFileChunkRecord(fileNamePrint, chunkIDPrint));
+                    }
+                }
+
+                return arrayList;
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            logger.error("failed/exception on selecting a record");
+            try {
+                conn.rollback();
+            } catch (SQLException e) {
+            } finally {
+                if (conn != null) {
+                    try {
+                        //conn.close();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+            // indicate failure
+            return null;
+        }
+        return null;
+    }
 }

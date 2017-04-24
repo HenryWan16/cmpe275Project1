@@ -59,7 +59,7 @@ public class MessageClient {
 		Header.Builder hb = Header.newBuilder();
 		hb.setNodeId(-1);
 		hb.setTime(System.currentTimeMillis());
-		hb.setDestination(-1);
+		hb.setDestination(1);
 
 		CommandMessage.Builder rb = CommandMessage.newBuilder();
 		rb.setHeader(hb);
@@ -78,6 +78,20 @@ public class MessageClient {
 		}
 	}
 
+	public void lsFiles() {
+		CommandMessage cmdb = MessageUtil.buildCommandMessage(MessageUtil.buildHeader(999,System.currentTimeMillis()),null,
+				MessageUtil.buildRequest(TaskType.REQUESTREADFILE,null,
+						MessageUtil.buildReadBody("ls_all_the_files_and_chunks",-1,-1,-1)),null);
+
+		try {
+			// logger.info("The first time to send Read message to server " + cmdb);
+			CommConnection.getInstance().enqueue(cmdb);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
 	public void chunkAndSend(String fname){
 		File file = new File(fname);
 		FileInputStream fis;
@@ -123,15 +137,6 @@ public class MessageClient {
 
 	//send file request to server
 	public void sendReadRequest(String fname){
-		/*
-		* commandmessage
-		* 	header
-		* 	request
-			* requesttype
-				* readfile
-			readbody
-
-		 */
 		
 		// send a request to the server to read the file.
 		CommandMessage cmdb = MessageUtil.buildCommandMessage(MessageUtil.buildHeader(999,System.currentTimeMillis()),null,

@@ -137,7 +137,7 @@ public class WorkHandler extends SimpleChannelInboundHandler<WorkMessage> {
 								wm.setSecret(1234);
 								wm.setStolenMsg(true);
 								channel.writeAndFlush(wm);
-								logger.info("sending stoled Work message to node: " + msg.getHeader().getNodeId());
+								logger.info("sending stoled work message to node: " + msg.getHeader().getNodeId());
 								
 							}else{
 								//The remote node can't stole this task, so put it back on the local node's queue.

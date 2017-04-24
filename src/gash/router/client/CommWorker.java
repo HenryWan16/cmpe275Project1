@@ -42,7 +42,8 @@ public class CommWorker extends Thread {
 				CommandMessage msg = conn.outbound.take();
 				// System.out.println("message from outbound: "+msg.toString());
 				System.out.println("--> Channel: CommWorker is going to write message. ");
-				Thread.sleep(100);
+				Thread.sleep(500);
+				
 				if (ch.isWritable()) {
 					if (!conn.write(msg)) {
 						conn.outbound.putFirst(msg);

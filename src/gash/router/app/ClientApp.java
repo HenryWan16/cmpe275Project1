@@ -73,9 +73,11 @@ public class ClientApp implements CommListener {
 		String[] commands;
 	
 		do {
+			System.out.flush();
 	        System.out.print("\n\n------------------------\n" +
 	        				"Menu\n------------------------\n" +
 	        				"* ping\n" +
+	        				"* ls\n" +
 							"* leader\n" +
 	                        "* read <fileName>\n" + 
 	                        "* write <filePath>\n" +
@@ -98,11 +100,13 @@ public class ClientApp implements CommListener {
 	                  if(commands.length > 1)
 	                	  mc.sendReadRequest(commands[1]);
 	                  break;
-	          	case "write" : {
+	          	case "write" :
 	                  if(commands.length > 1)
 	                	  mc.chunkAndSend(commands[1]);
 	                  break;
-	                  }
+	          	case "ls" :
+	                	  mc.lsFiles();
+	                  break;
 	          	default:
 	                  break;
 	        }

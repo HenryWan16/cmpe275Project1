@@ -14,7 +14,6 @@ public class ServerState {
 	private int leaderId;
 	private String status = "";
 	public static Channel nextCluster = null;
-	public static Channel prevCluster = null;
 	public static Channel clientChannel = null;
 
 	public String getStatus() { 

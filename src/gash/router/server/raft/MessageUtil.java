@@ -1,11 +1,13 @@
 package gash.router.server.raft;
 
 import java.net.UnknownHostException;
+import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Map;
 
 import com.google.protobuf.ByteString;
 
+import gash.router.server.storage.ClassFileChunkRecord;
 import pipe.common.Common.Chunk;
 import pipe.common.Common.ChunkLocation;
 import pipe.common.Common.Header;
@@ -158,6 +160,24 @@ public class MessageUtil {
 									parts[1], Integer.parseInt(parts[2]))));
 			}
 		}
+		if (chunk != null) rr.setChunk(chunk);
+		return rr;
+	}
+	
+	public static ReadResponse.Builder buildReadResponseAllFiles(int fileId, String name, int noChunks, 
+			ArrayList<ClassFileChunkRecord> fileList, Chunk.Builder chunk) {
+		ReadResponse.Builder rr = ReadResponse.newBuilder();
+		if (fileId != -1) rr.setFileId(fileId);
+		rr.setFilename(name);
+		if (noChunks != -1) rr.setNumOfChunks(noChunks);
+		String s= "";
+		if (fileList != null) {
+			for(ClassFileChunkRecord file: fileList) {
+				s += file.getFileName()+":"+file.getChunkID();
+				s += ";";
+			}
+		}
+		rr.setFileExt(s);
 		if (chunk != null) rr.setChunk(chunk);
 		return rr;
 	}

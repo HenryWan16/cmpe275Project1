@@ -94,35 +94,12 @@ public class CommHandler extends SimpleChannelInboundHandler<CommandMessage> {
 			return;
 
 		}else if(msg.hasPing()){
-			//if the destination is this node's id then it is a returned ping
-			if(msg.getHeader().getDestination() == -1) {
-				//logger.info("Received returned ping from " + msg.getHeader().getNodeId());
-				logger.info("Ping success");
-			}else{
-				Common.Header.Builder hb = Common.Header.newBuilder();
-				//node id -1 is client
-				hb.setNodeId(-1);
-				hb.setDestination(msg.getHeader().getNodeId());
-				hb.setTime(System.currentTimeMillis());
-				CommandMessage.Builder rb = CommandMessage.newBuilder();
-				rb.setHeader(hb);
-				rb.setPing(true);
-				channel.writeAndFlush(rb);
-			}
+			logger.info("Ping success");
 		}else if(msg.hasResponse()){
 			TaskType type = msg.getResponse().getResponseType();
 			Response.Status status =  msg.getResponse().getStatus();
 			
 			if (type == TaskType.RESPONSEREADFILE) {
-				
-//				if (msg.getResponse().getFilename().equals("log.txt")) {
-//					String result = msg.getResponse().getReadResponse().getFileExt();
-//					
-//					if (result.equals("")) result = "All the servers are empty!!";
-//					System.out.print(result);
-//					
-//					return;
-//				}
 				
 				if (status == Response.Status.FILENOTFOUND) {
 					System.out.println("The file " + msg.getResponse().getFilename() + " is not in the servers.");
@@ -131,17 +108,16 @@ public class CommHandler extends SimpleChannelInboundHandler<CommandMessage> {
 				//response has data
 				else if(msg.getResponse().getReadResponse().hasChunk()){
 					//second response from server
-					logger.info("++++++++++++++++++ Begin to merge chunks +++++++++++++++++++++++++++++++++++++++");
+					logger.info("Begin to merge chunks....");
 					Common.Chunk chunk = msg.getResponse().getReadResponse().getChunk();
 					MergeWorker.upDateTable(chunk);
 					return;
 					
 				} else {
 					//first response from server
+					//with ls of the files & chunks
 					int numChunks = msg.getResponse().getReadResponse().getNumOfChunks();
 					mergeWorker = MergeWorker.getMergeWorkerInstance();
-//					Thread mergeThread = new Thread(mergeWorker);
-//					mergeThread.start();
 					mergeWorker.setTotalNoOfChunks(numChunks);
 					
 					// get the HashMap<chunkID, Location> from the readResponse.
@@ -149,20 +125,36 @@ public class CommHandler extends SimpleChannelInboundHandler<CommandMessage> {
 					String fname = msg.getResponse().getReadResponse().getFilename();
 					// TODO if chunkID = n; we need to send n requests to the location
 					int chunkSize = list.size();
-					for(int i=0;i<chunkSize;i++){
-						
-						int chunkId = list.get(i).getChunkid();
-						
-						CommandMessage cm = MessageUtil.buildCommandMessage(
-            					MessageUtil.buildHeader(999, System.currentTimeMillis()),
-            					null,
-            					MessageUtil.buildRequest(TaskType.REQUESTREADFILE, null, MessageUtil.buildReadBody(fname, -1, chunkId, chunkSize)),
-            					null);
-
-						try {
-							CommConnection.getInstance().enqueue(cm);
-						} catch (Exception e) {
-							e.printStackTrace();
+					
+					if (!msg.getResponse().getFilename().equals("ls_all_the_files_and_chunks")) {
+						for(int i=0;i<chunkSize;i++){
+							
+							int chunkId = list.get(i).getChunkid();
+							
+							CommandMessage cm = MessageUtil.buildCommandMessage(
+	            					MessageUtil.buildHeader(999, System.currentTimeMillis()),
+	            					null,
+	            					MessageUtil.buildRequest(TaskType.REQUESTREADFILE, null, MessageUtil.buildReadBody(fname, -1, chunkId, chunkSize)),
+	            					null);
+	
+							try {
+								CommConnection.getInstance().enqueue(cm);
+							} catch (Exception e) {
+								e.printStackTrace();
+							}
+						}
+					} else {
+						//list all the data out
+						String files = msg.getResponse().getReadResponse().getFileExt();
+						if (files == null || files.equals("")) {
+							System.out.println("\nThere is no files in the servers.");
+						} else {
+							String []listFilesChunks = files.split(";");
+							System.out.println("Files are on the servers:");
+							for (int i=0; i<listFilesChunks.length; i++) {
+								String []parts = listFilesChunks[i].split(":");
+								System.out.println("+ " + parts[0] + "_" + parts[1]);
+							}
 						}
 					}
 				}
@@ -197,7 +189,7 @@ public class CommHandler extends SimpleChannelInboundHandler<CommandMessage> {
 	@Override
 	protected void channelRead0(ChannelHandlerContext ctx, CommandMessage msg) throws Exception {
 		System.out.println("--> got incoming message");
-		System.out.println("--> listeners.size() = " + listeners.size());
+//		System.out.println("--> listeners.size() = " + listeners.size());
 		for (String id : listeners.keySet()) {
 			CommListener cl = listeners.get(id);
 

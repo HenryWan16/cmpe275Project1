@@ -16,6 +16,7 @@
 package gash.router.server.edges;
 
 import java.net.UnknownHostException;
+import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -87,34 +88,23 @@ public class EdgeMonitor implements EdgeListener, Runnable {
 	public void run() {
 		while (forever) {
 			try {
+				Thread.sleep(2000);
 				//set channel to next cluster's leader
 				if (ServerState.nextCluster == null) {
-					RedisServer.getInstance().getLocalhostJedis().select(0);
-					String leader = RedisServer.getInstance().getLocalhostJedis().get("3");//String.valueOf(RoutingConf.clusterId + 1));
-					String host;
-					int port;
-					if(leader != null) {
-						host = leader.split(":")[0];
-						port = Integer.parseInt(leader.split(":")[1]);
-						
-						try {
-							ServerState.nextCluster = createChannel(host, port);
-						} catch (Exception e) {}
+					Set<String> list = RedisServer.getInstance().getLocalhostJedis().keys("*");
+					int nextClusterId = RoutingConf.clusterId + 1;
+					if(nextClusterId > list.size()){
+						nextClusterId = 1;
 					}
-				}
-				
-				if (ServerState.prevCluster == null) {
 					RedisServer.getInstance().getLocalhostJedis().select(0);
-					String leader = RedisServer.getInstance().getLocalhostJedis().get("1");//String.valueOf(RoutingConf.clusterId - 1));
+					String leader = RedisServer.getInstance().getLocalhostJedis().get(String.valueOf(nextClusterId));
 					String host;
 					int port;
 					if(leader != null) {
 						host = leader.split(":")[0];
 						port = Integer.parseInt(leader.split(":")[1]);
-						
-						try {
-							ServerState.prevCluster = createChannel(host, port);
-						} catch (Exception e) {}
+						//System.out.println("next cluster:" + host + ":" + port);
+						ServerState.nextCluster = createChannel(host, port);
 					}
 				}
 				
@@ -156,10 +146,15 @@ public class EdgeMonitor implements EdgeListener, Runnable {
 				Thread.sleep(dt);
 			} catch (InterruptedException e) {			
 				e.printStackTrace();
+				continue;
 			} catch (UnknownHostException e) {
 				e.printStackTrace();
+				continue;
+			} catch (Exception e){
+				continue;
 			}
 		}
+
 	}
 	
 	private Channel createChannel(String host, int port) {

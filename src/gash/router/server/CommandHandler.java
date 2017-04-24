@@ -69,25 +69,29 @@ public class CommandHandler extends SimpleChannelInboundHandler<CommandMessage> 
 		try {
 			// TODO How can you implement this without if-else statements?
 			if (msg.hasPing()) {
-				String senderIp = ServerState.prevCluster.remoteAddress().toString();
-				String msgIp = channel.remoteAddress().toString();
-				
-				if(!senderIp.equals(msgIp)){
-					//msg from client
-					ServerState.clientChannel = channel;
-					logger.info("Server received returned ping from" + msg.getHeader().getNodeId());
-						
-					//then forward to next cluster
-					ServerState.nextCluster.writeAndFlush(msg);
+				//String senderIp = ServerState.prevCluster.remoteAddress().toString().split(":")[0];
+				//System.out.println("senderIp: " + senderIp);
+				//String msgIp = channel.remoteAddress().toString().split(":")[0];
+				//System.out.println("msgIp: " + msgIp);
 
-				} else { //receive from cluster neighbor
-					if (ServerState.clientChannel != null) { //STOP here
-						ServerState.clientChannel.writeAndFlush("Done a circle ping!!");
-						ServerState.clientChannel = null;
-					} else {
+				if(msg.getHeader().getDestination() == RoutingConf.clusterId) {
+					if (ServerState.clientChannel == null) {
+						//msg from client
+						ServerState.clientChannel = channel;
+						logger.info("Server received ping from" + msg.getHeader().getNodeId());
+
 						//then forward to next cluster
+						logger.info("Forwarding ping from client");
 						ServerState.nextCluster.writeAndFlush(msg);
+					} else {
+						//stop
+						logger.info("Sending ping back to client");
+						ServerState.clientChannel.writeAndFlush(msg);
+						ServerState.clientChannel = null;
 					}
+				}else{
+					logger.info("Forwarding ping from server");
+					ServerState.nextCluster.writeAndFlush(msg);
 				}
 
 			} else if (msg.hasRequest()) {

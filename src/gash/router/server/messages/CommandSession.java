@@ -79,7 +79,20 @@ public class CommandSession implements Session, Runnable{
             		MySQLStorage mySQLStorage = MySQLStorage.getInstance();
             		
             		// If the fname exists on the server.
-            		if (mySQLStorage.checkFileExist(fname)) {
+            		if (fname.equals("ls_all_the_files_and_chunks")) {
+            			ArrayList<ClassFileChunkRecord> fileList = mySQLStorage.selectAllRecordsFileChunk();
+                		//return to client a HashMap of locations
+            			CommandMessage cm = MessageUtil.buildCommandMessage(
+            					MessageUtil.buildHeader(conf.getNodeId(), System.currentTimeMillis()),
+            					null,
+            					null,
+            					MessageUtil.buildResponse(TaskType.RESPONSEREADFILE, fname, null , null, 
+            								MessageUtil.buildReadResponseAllFiles(-1, fname, fileList.size(), 
+            										fileList, null)));
+                		// logger.info("READFILE location isn't null and " + cm.toString());
+                		channel.writeAndFlush(cm);
+                		
+            		} else if (mySQLStorage.checkFileExist(fname)) {
             			// The first time to receive the message from the client. 
             			// The client says that "I want to read the file whose name is fname." chunkID in the request will be -1.
             			int chunkId = msg.getRequest().getRrb().getChunkId();
