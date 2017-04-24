@@ -4,6 +4,7 @@ import gash.router.container.RoutingConf;
 import gash.router.server.edges.EdgeMonitor;
 import gash.router.server.raft.RaftHandler;
 import gash.router.server.tasks.TaskList;
+import io.netty.channel.Channel;
 
 public class ServerState {
 	private RoutingConf conf;
@@ -12,6 +13,9 @@ public class ServerState {
 	private RaftHandler handler;
 	private int leaderId;
 	private String status = "";
+	public static Channel nextCluster = null;
+	public static Channel prevCluster = null;
+	public static Channel clientChannel = null;
 
 	public String getStatus() { 
 		return status;

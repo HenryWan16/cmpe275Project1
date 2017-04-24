@@ -20,7 +20,9 @@ import java.net.UnknownHostException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import gash.router.container.RoutingConf;
 import gash.router.container.RoutingConf.RoutingEntry;
+import gash.router.redis.RedisServer;
 import gash.router.server.ServerState;
 import gash.router.server.WorkInit;
 import gash.router.server.messages.QOSWorker;
@@ -85,6 +87,33 @@ public class EdgeMonitor implements EdgeListener, Runnable {
 	public void run() {
 		while (forever) {
 			try {
+				//set channel to next cluster's leader
+				if (ServerState.nextCluster == null) {
+					RedisServer.getInstance().getLocalhostJedis().select(0);
+					String leader = RedisServer.getInstance().getLocalhostJedis().get(String.valueOf(RoutingConf.clusterId + 1));
+					String host;
+					int port;
+					if(leader != null) {
+						host = leader.split(":")[0];
+						port = Integer.parseInt(leader.split(":")[1]);
+						
+						ServerState.nextCluster = createChannel(host, port);
+					}
+				}
+				
+				if (ServerState.prevCluster == null) {
+					RedisServer.getInstance().getLocalhostJedis().select(0);
+					String leader = RedisServer.getInstance().getLocalhostJedis().get(String.valueOf(RoutingConf.clusterId - 1));
+					String host;
+					int port;
+					if(leader != null) {
+						host = leader.split(":")[0];
+						port = Integer.parseInt(leader.split(":")[1]);
+						
+						ServerState.prevCluster = createChannel(host, port);
+					}
+				}
+				
 				// check if node gets initialized yet
 				if (!isStarted) {
 					for (EdgeInfo ei:this.outboundEdges.map.values()) {
@@ -118,28 +147,6 @@ public class EdgeMonitor implements EdgeListener, Runnable {
 	                        }
 						} catch (Exception e) { /*do not show anything */ }
 					} 
-					/* //This is implemented in QOSWorker
-					if(ei.getChannel() != null) {
-						//check all edges for work is this node's queue is empty
-						if (QOSWorker.getInstance().getQueue().isEmpty()) {
-							Common.Header.Builder hb = Common.Header.newBuilder();
-							hb.setNodeId(state.getConf().getNodeId());
-							hb.setTime(System.currentTimeMillis());
-
-							Work.WorkState.Builder ws = Work.WorkState.newBuilder();
-							ws.setEnqueued(0);
-							ws.setProcessed(1);
-
-							Work.WorkMessage.Builder wm = Work.WorkMessage.newBuilder();
-							wm.setHeader(hb);
-							wm.setState(ws);
-							wm.setSecret(1234);
-							ei.getChannel().writeAndFlush(wm.build());
-						}
-					}
-					*/
-
-
 				}
 				
 				Thread.sleep(dt);

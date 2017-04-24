@@ -72,6 +72,8 @@ public class CommandSession implements Session, Runnable{
     			// value = sourceId + ";" + host + ";" + port;
     			Hashtable<Integer, String> location = new Hashtable<Integer, String>();
         		String fname = msg.getRequest().getRrb().getFilename();
+        		
+        		/**************** READ ****************/
             	if (type == TaskType.REQUESTREADFILE) {
             		logger.info("read fileName is " + fname);
             		MySQLStorage mySQLStorage = MySQLStorage.getInstance();
@@ -82,7 +84,9 @@ public class CommandSession implements Session, Runnable{
             			// The client says that "I want to read the file whose name is fname." chunkID in the request will be -1.
             			int chunkId = msg.getRequest().getRrb().getChunkId();
             			logger.info("chunkID is " + chunkId);
+            			
             			// if we don't set chunkId in the CommandMessage, its default to be 0;
+            			// ask for the list of location
             			if (chunkId == 0) {
                 			// Get all the chunkIDs of the file from the database on the leader. 
                 			// All the nodes have the same data and we just return the records on the leader.
@@ -92,7 +96,6 @@ public class CommandSession implements Session, Runnable{
     						try {
     							host = Inet4Address.getLocalHost().getHostAddress();
     						} catch (UnknownHostException e1) {
-    							// TODO Auto-generated catch block
     							e1.printStackTrace();
     						}
                 			int port = conf.getCommandPort();
@@ -112,7 +115,8 @@ public class CommandSession implements Session, Runnable{
                 										location, null)));
                     		logger.info("READFILE location isn't null and " + cm.toString());
                     		channel.writeAndFlush(cm);
-                    			
+                    	
+                    	//ask for chunk data
                     	} else {
                     		// The second time to receive the message from the client which has received the HashMap<chunkID, location> from the server (Only one location of each chunk).
                     		// The client say that "I want to get the data of chunkId from the location."
@@ -146,6 +150,9 @@ public class CommandSession implements Session, Runnable{
                         channel.writeAndFlush(cm);
                 	}
             	}
+            	
+            	
+            	/**************** WRITE ****************/
             	else if (type.equals(TaskType.REQUESTWRITEFILE)) {
     	        	logger.info("CommendSession type = " + type);
     	        	logger.info("type == TaskType.WRITEFILE is " + (type == TaskType.REQUESTWRITEFILE));
@@ -160,8 +167,9 @@ public class CommandSession implements Session, Runnable{
     	    			fileId = ((Long)wb.getFileId()).toString();
     	    		}
     	    		
-    	    		logger.info("Going to Write " + new String(data));
+    	    		//logger.info("Going to Write " + new String(data));
     	    		boolean result = MySQLStorage.getInstance().insertRecordFileChunk(fname, chunkId, data, numOfChunk, fileId);
+    	    		logger.info("ChunkId " + chunkId);
     	    		
     	    		MySQLStorage mySQLStorage = MySQLStorage.getInstance();
     	    		for(EdgeInfo ei:RaftHandler.getInstance().getEdgeMonitor().getOutboundEdges().getMap().values()){

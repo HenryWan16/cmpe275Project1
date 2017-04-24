@@ -40,7 +40,7 @@ public class CommWorker extends Thread {
 				// block until a message is enqueued AND the outgoing
 				// channel is active
 				CommandMessage msg = conn.outbound.take();
-				System.out.println("message from outbound: "+msg.toString());
+				//System.out.println("message from outbound: "+msg.toString());
 				System.out.println("--> Channel: CommWorker is going to write message. ");
 				if (ch.isWritable()) {
 					if (!conn.write(msg)) {

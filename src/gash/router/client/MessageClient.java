@@ -59,6 +59,7 @@ public class MessageClient {
 		Header.Builder hb = Header.newBuilder();
 		hb.setNodeId(-1);
 		hb.setTime(System.currentTimeMillis());
+		hb.setDestination(-1);
 
 		CommandMessage.Builder rb = CommandMessage.newBuilder();
 		rb.setHeader(hb);
@@ -105,7 +106,7 @@ public class MessageClient {
 				logger.info("bytechunk: "+byteChunk.toString());
 
 				CommandMessage cm = MessageUtil.buildCommandMessage(MessageUtil.buildHeader(999,System.currentTimeMillis()),null,
-						MessageUtil.buildRequest(TaskType.REQUESTWRITEFILE, MessageUtil.buildWriteBody(-1,fname,"txt",
+						MessageUtil.buildRequest(TaskType.REQUESTWRITEFILE, MessageUtil.buildWriteBody(-1,fname,null,
 								MessageUtil.buildChunk(numberOfChunks,byteChunk,chunkSize),
 								chunkSize),null),null);
 
@@ -132,32 +133,21 @@ public class MessageClient {
 			readbody
 
 		 */
-		if (fname.equals("log.txt")) {
-			CommandMessage cmdb = MessageUtil.buildCommandMessage(
-				MessageUtil.buildHeader(999, System.currentTimeMillis()),
-				null,
-				MessageUtil.buildRequest(TaskType.REQUESTREADFILE, null,
-						MessageUtil.buildReadBody(fname, -1, -1, -1)),
-				null);
-			try {
-				CommConnection.getInstance().enqueue(cmdb);
-				
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-//		}else{
-//			CommandMessage cmdb = MessageUtil.buildCommandMessage(MessageUtil.buildHeader(999,System.currentTimeMillis()),null,
-//					MessageUtil.buildRequest(TaskType.READFILE,null,
-//							MessageUtil.buildReadBody(fname,-1,-1,-1)),null);
-//
+//		if (fname.equals("log.txt")) {
+//			CommandMessage cmdb = MessageUtil.buildCommandMessage(
+//				MessageUtil.buildHeader(999, System.currentTimeMillis()),
+//				null,
+//				MessageUtil.buildRequest(TaskType.REQUESTREADFILE, null,
+//						MessageUtil.buildReadBody(fname, -1, -1, -1)),
+//				null);
 //			try {
 //				CommConnection.getInstance().enqueue(cmdb);
-//
+//				
 //			} catch (Exception e) {
 //				e.printStackTrace();
 //			}
 //		}
+
 		
 		// send a request to the server to read the file.
 		CommandMessage cmdb = MessageUtil.buildCommandMessage(MessageUtil.buildHeader(999,System.currentTimeMillis()),null,
@@ -173,7 +163,7 @@ public class MessageClient {
 		}
 		
 		//start the thread for waiting the chunks from server
-		this.mw.setResultFileName("files/result.txt");
+		this.mw.setResultFileName("result.txt");
 		this.mw.successMerge = false;
 		Thread cthread = new Thread(this.mw);
 		cthread.start();
@@ -194,29 +184,15 @@ public class MessageClient {
 		CommandMessage.Builder rb = CommandMessage.newBuilder();
 		rb.setHeader(hb);
 		rb.setPing(false);
-//		rb.setMessage(message);
-//		logger.info("rb.hasMessage() = " + rb.hasMessage());
+
 		try {
 			// using queue
-//            logger.info("MessageClient send CommandMessage with message=True to Netty Channel! ");
 			CommConnection.getInstance().enqueue(rb.build());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
-//	public void sendDeleteFile(String fname) {
-//		CommandMessage cmdb = MessageUtil.buildCommandMessage(
-//				MessageUtil.buildHeader(999, System.currentTimeMillis()),
-//				null,
-//				MessageUtil.buildRequest(TaskType.REQUESTDELETE, null,
-//						MessageUtil.buildReadBody(fname, -1, -1, -1)),
-//				null);
-//		try {
-//			CommConnection.getInstance().enqueue(cmdb);
-//		} 
-//		catch (Exception e) { e.printStackTrace(); }
-//	}
 	
 	public void release() {
 		CommConnection.getInstance().release();

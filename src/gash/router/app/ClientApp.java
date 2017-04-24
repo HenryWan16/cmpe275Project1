@@ -18,6 +18,7 @@ package gash.router.app;
 import gash.router.client.CommConnection;
 import gash.router.client.CommListener;
 import gash.router.client.MessageClient;
+import gash.router.container.RoutingConf;
 import routing.Pipe.CommandMessage;
 import gash.router.redis.RedisServer;
 import java.util.Scanner;
@@ -114,7 +115,7 @@ public class ClientApp implements CommListener {
 	 */
 	public static void main(String[] args) {
 		RedisServer.getInstance().getLocalhostJedis().select(0);
-		String leader = RedisServer.getInstance().getLocalhostJedis().get(String.valueOf(gash.router.container.RoutingConf.clusterId));
+		String leader = RedisServer.getInstance().getLocalhostJedis().get(String.valueOf(RoutingConf.clusterId));
 		String host;
 		int port;
 		if(leader != null) {

@@ -193,7 +193,7 @@ public class MySQLStorage {
                 }
                 String insertRecord = "INSERT INTO FileChunk (fileName, chunkID, data, file_id, totalNoOfChunks)\n" +
                         "VALUES ('" + fileName + "'," + chunkID + ",'" + str + "','" + file_id + "'," + totalNoOfChunks + ");";
-                logger.info(insertRecord);
+                //logger.info(insertRecord);
                 boolean insertResult = stmt.execute(insertRecord);
                 if (insertResult == true) {
                     logger.info("Insert table FileChunk in the FileDB successfully. ");
@@ -496,16 +496,16 @@ public class MySQLStorage {
 
                 while(rs.next()){
                     String fileNamePrint = rs.getString(1);
-                    System.out.println(fileNamePrint); // should print out "1"'     fileName
+//                    System.out.println(fileNamePrint); // should print out "1"'     fileName
                     int chunkIDPrint = rs.getInt(2);
-                    System.out.println(chunkIDPrint); // should print out "2"'      chunkID
+//                    System.out.println(chunkIDPrint); // should print out "2"'      chunkID
                     String dataPrint = rs.getString(3);
                     byte[] databyte = dataPrint.getBytes();
-                    System.out.println(dataPrint); // should print out "3"'         data
+//                    System.out.println(dataPrint); // should print out "3"'         data
                     String file_id_Print = rs.getString(4);
-                    System.out.println(file_id_Print); // should print out "4"'     file_id
+//                    System.out.println(file_id_Print); // should print out "4"'     file_id
                     int totalNoOfChunksPrint = rs.getInt(5);
-                    System.out.println(totalNoOfChunksPrint); // should print out "5"'      totalNoOfChunks
+//                    System.out.println(totalNoOfChunksPrint); // should print out "5"'      totalNoOfChunks
                     arrayList.add(new ClassFileChunkRecord(fileNamePrint, chunkIDPrint, databyte, totalNoOfChunksPrint, file_id_Print));
                 }
                 return arrayList.get(0);

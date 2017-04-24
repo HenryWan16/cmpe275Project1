@@ -80,8 +80,9 @@ public class WorkHandler extends SimpleChannelInboundHandler<WorkMessage> {
 			return;
 		}
 
-		if (debug)
+		if (debug) {
 			PrintUtil.printWork(msg);
+		}
 
 		// TODO How can you implement this without if-else statements?
 		try {

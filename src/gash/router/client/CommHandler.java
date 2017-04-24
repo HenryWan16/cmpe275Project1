@@ -111,19 +111,25 @@ public class CommHandler extends SimpleChannelInboundHandler<CommandMessage> {
 			}
 		}else if(msg.hasResponse()){
 			TaskType type = msg.getResponse().getResponseType();
+			Response.Status status =  msg.getResponse().getStatus();
 			
 			if (type == TaskType.RESPONSEREADFILE) {
 				
-				if (msg.getResponse().getFilename().equals("log.txt")) {
-					String result = msg.getResponse().getReadResponse().getFileExt();
-					
-					if (result.equals("")) result = "All the servers are empty!!";
-					System.out.print(result);
-					
-					return;
-				}
+//				if (msg.getResponse().getFilename().equals("log.txt")) {
+//					String result = msg.getResponse().getReadResponse().getFileExt();
+//					
+//					if (result.equals("")) result = "All the servers are empty!!";
+//					System.out.print(result);
+//					
+//					return;
+//				}
 				
-				if(msg.getResponse().getReadResponse().hasChunk()){
+				if (status == Response.Status.FILENOTFOUND) {
+					System.out.println("The file " + msg.getResponse().getFilename() + " is not in the servers.");
+					return;
+				} 
+				//response has data
+				else if(msg.getResponse().getReadResponse().hasChunk()){
 					//second response from server
 					logger.info("++++++++++++++++++ Begin to merge chunks +++++++++++++++++++++++++++++++++++++++");
 					Common.Chunk chunk = msg.getResponse().getReadResponse().getChunk();
@@ -137,6 +143,7 @@ public class CommHandler extends SimpleChannelInboundHandler<CommandMessage> {
 					Thread mergeThread = new Thread(mergeWorker);
 					mergeThread.start();
 					mergeWorker.setTotalNoOfChunks(numChunks);
+					
 					// get the HashMap<chunkID, Location> from the readResponse.
 					List<Common.ChunkLocation> list = msg.getResponse().getReadResponse().getChunkLocationList();
 					String fname = msg.getResponse().getReadResponse().getFilename();
@@ -160,21 +167,21 @@ public class CommHandler extends SimpleChannelInboundHandler<CommandMessage> {
 					}
 				}
 			} else if (type == TaskType.RESPONSEWRITEFILE) {
-				Response.Status status = msg.getResponse().getStatus();
 				if (status == Response.Status.SUCCESS) {
 					System.out.println("The file " + msg.getResponse().getFilename() + " has been successfully uploaded");	
 				} else
 					System.out.println("Failed to upload file " + msg.getResponse().getFilename() + " to the server.");
 				
-			} else { //delete?
-				
+			} else {
+				 //delete?
 			}
 
 
 		}
 
-		if (debug)
+		if (debug) {
 			PrintUtil.printCommand(msg);
+		}
 	}
 
 	/**
