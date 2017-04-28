@@ -6,129 +6,106 @@ option java_package = "pipe.common";
  * the accompanying information for all messages. Provides origination,
  * security, authentication, and tracking information
  */
-
-message Header {
-
-   // As we need to identify message from different network, message_id would help with that. 
-   // in addition with node_id, it will remain unique every time.
-   //optional int32 message_id = 1;  //New field Added
-   required int32 node_id = 1;
-   required int64 time = 2; 
-   // if the message is for a specific node, this will be set
-   optional int32 destination = 8;
-
-   // This factor limits the distance that a msg travels from the originating 
-   // node. Default (-1) is the whole network (not restricted). 
-   optional int32 max_hops = 10 [default = -1];
+message Header { 
+ required int32 node_id = 1; //source
+ required int64 time = 2; 
+ optional int32 message_id = 3;
+ 
+ // if the message is for a specific node, this will be set
+ optional int32 destination = 4;
+ // This factor limits the distance that a msg travels from the originating 
+ // node. Default (-1) is the whole network (not restricted).
+ optional int32 max_hops = 5 [default = -1];
 }
 
-
-/*
-Failure Message was defined previously. So added this again
-*/
 message Failure {
  required int32 id = 1;
  optional int32 ref_id = 2;
  optional string message = 3;
 }
 
+message Node{
+ required int32 node_id = 1;
+ required string host = 2;
+ required int32 port = 3;
+}
+
 
 enum TaskType{ 
-     PING = 1;
-     PINGRESPONSE = 2;
-     REQUESTREADFILE = 3;
-     REQUESTWRITEFILE = 4;
-     RESPONSEREADFILE = 5;
-     RESPONSEWRITEFILE = 6;
+ REQUESTREADFILE = 1;
+ REQUESTWRITEFILE = 2;
+ RESPONSEREADFILE = 3;
+ RESPONSEWRITEFILE = 4;
 }
-
 
 message Request { 
-   required TaskType requestType = 3;
-
-   oneof payload {
-      WriteBody rwb = 4;
-      ReadBody rrb = 5;
-   } 
+ required TaskType requestType = 1; 
+ oneof payload{
+ WriteBody rwb = 2;
+ ReadBody rrb = 3;
+ } 
 }
 
-
-message WriteBody {
-   optional int64 file_id = 1;
-   required string filename = 2;
-   optional string file_ext = 3;
-   optional Chunk chunk = 4;
-   optional int32 num_of_chunks = 5;
+message Chunk{
+ required int32 chunk_id = 1;
+ required bytes chunk_data = 2;
+ optional int32 chunk_size=9;
 }
 
-
-message ReadBody {
-   optional string filename = 1; // to get all use * wildcard
-   optional int64 file_id = 2;
-   optional int32 chunk_id = 3;
-   optional int32 chunk_size = 4;
+message WriteBody{
+ required string filename = 1;
+ optional string file_ext = 2;
+ optional Chunk chunk=3;
+ optional string file_id = 4;
+ optional int32 num_of_chunks = 5;
 }
 
-
-message Chunk {
-   required int32 chunk_id = 1;
-   required bytes chunk_data = 6;
-   optional int32 chunk_size = 9;
+message ReadBody{
+ optional string filename = 1; // to get all use * wildcard
+ optional string file_id = 2;
+ optional int32 chunk_id = 3;
+ optional int32 chunk_size = 4;
 }
 
-/*
-Response Message was defined previously. So added this again
-*/
 message Response{
  required TaskType responseType = 1; 
- optional string filename=3; 
- optional Status status = 10;  // Status should be part of Response
+ optional string filename=2; 
+ optional Status status = 3; // Status should be part of Response
 
- enum Status {
-     SUCCESS = 1;
-     SERVERTIMEOUT = 2; //if message got lost in intra cluster you need to send a resonpse back to client.
-     REDIRECTION = 3; // when leader sends a response back with location of chunks node.
-     FILENOTFOUND = 4; // no file was found on server
-     NOLEADER = 5; // cannot recieve request, or must say client to stop sending request
-     UNREACHABLE = 6; //cluster to clust communication stops working, broken link.
-     SERVICEDOWN = 7; //what if it has less number of nodes alive in cluster.
-     ERROR = 8; //similiar to failure messages.
+ enum Status{
+  SUCCESS = 1;
+  SERVERTIMEOUT = 2; //if message got lost in intra cluster you need to send a resonpse back to client.
+  REDIRECTION = 3; // when leader sends a response back with location of chunks node.
+  FILENOTFOUND = 4; // no file was found on server
+  NOLEADER = 5; // cannot receive request, or must say client to stop sending request
+  UNREACHABLE = 6; //cluster to cluster communication stops working, broken link.
+  SERVICEDOWN = 7; //what if it has less number of nodes alive in cluster.
+  ERROR = 8; //similar to failure messages.
+  INCOMPLETE = 41;
+ }
+ oneof payload{
+  WriteResponse writeResponse = 4;
+  ReadResponse readResponse = 5;
+ }
 }
 
-
-oneof payload{
- WriteResponse writeResponse = 4;
- ReadResponse readResponse = 5;
-}
-}
-
-
-//this payload will be only present when chunks are missing on server during write
-//and will request client to send it again.
 message WriteResponse {
-    repeated int32 ChunkId = 1;
-    optional string filename = 2;
+ //condition not handled : lost chunk on network.
+ //send status according from server/leader along with write response.
+ repeated int32 ChunkId=1;
+ optional string filename=2;
 }
 
-
-message ReadResponse {
-   optional int64 file_id = 1;
-   required string filename = 2;
-   optional string file_ext= 3;
-   optional int32 num_of_chunks = 4;
-   repeated ChunkLocation chunk_location = 5;
-   optional Chunk chunk = 6;
+message ReadResponse{
+ required string filename = 1;
+ optional string file_id = 3;
+ optional string file_ext= 2;
+ optional int32 num_of_chunks = 4;
+ repeated ChunkLocation chunk_location = 5;
+ optional Chunk chunk = 6;
 }
 
-
-message ChunkLocation {
-   optional int32 chunkid = 1;
-   repeated Node node = 2;
-}
-
-
-message Node {
-   required int32 node_id = 1;
-   required string host = 2;
-   required int32 port = 3;
+message ChunkLocation{
+ optional int32 chunk_id = 1;
+ optional Node node =2;
 }
