@@ -121,7 +121,7 @@ public class ClientApp implements CommListener {
 	 */
 	public static void main(String[] args) {
 		RedisServer.getInstance().getLocalhostJedis().select(0);
-		String leader = RedisServer.getInstance().getLocalhostJedis().get("1");//String.valueOf(RoutingConf.clusterId));
+		String leader = RedisServer.getInstance().getLocalhostJedis().get(String.valueOf(RoutingConf.clusterDestination));
 		String host;
 		int port;
 		if(leader != null) {

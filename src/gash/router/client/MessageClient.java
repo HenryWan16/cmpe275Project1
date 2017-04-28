@@ -16,6 +16,7 @@
 package gash.router.client;
 
 
+import gash.router.container.RoutingConf;
 import gash.router.server.raft.MessageUtil;
 
 import org.slf4j.Logger;
@@ -57,9 +58,9 @@ public class MessageClient {
 	public void ping() {
 		// construct the message to send
 		Header.Builder hb = Header.newBuilder();
-		hb.setNodeId(-1);
+		hb.setNodeId(999);
 		hb.setTime(System.currentTimeMillis());
-		hb.setDestination(1);
+		hb.setDestination(RoutingConf.clusterDestination);
 
 		CommandMessage.Builder rb = CommandMessage.newBuilder();
 		rb.setHeader(hb);
@@ -139,7 +140,7 @@ public class MessageClient {
 	public void sendReadRequest(String fname){
 		
 		// send a request to the server to read the file.
-		CommandMessage cmdb = MessageUtil.buildCommandMessage(MessageUtil.buildHeader(999,System.currentTimeMillis()),null,
+		CommandMessage cmdb = MessageUtil.buildCommandMessage(MessageUtil.buildHeader(999,System.currentTimeMillis(), RoutingConf.clusterDestination),null,
 				MessageUtil.buildRequest(TaskType.REQUESTREADFILE,null,
 						MessageUtil.buildReadBody(fname,-1,-1,-1)),null);
 

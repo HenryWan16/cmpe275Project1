@@ -32,13 +32,34 @@ public final class Pipe {
     pipe.common.Common.HeaderOrBuilder getHeaderOrBuilder();
 
     /**
-     * <code>optional bool ping = 4;</code>
+     * <pre>
+     * a client (external) sanity check for testing
+     * </pre>
+     *
+     * <code>optional bool ping = 3;</code>
      */
     boolean hasPing();
     /**
-     * <code>optional bool ping = 4;</code>
+     * <pre>
+     * a client (external) sanity check for testing
+     * </pre>
+     *
+     * <code>optional bool ping = 3;</code>
      */
     boolean getPing();
+
+    /**
+     * <code>optional .Failure err = 5;</code>
+     */
+    boolean hasErr();
+    /**
+     * <code>optional .Failure err = 5;</code>
+     */
+    pipe.common.Common.Failure getErr();
+    /**
+     * <code>optional .Failure err = 5;</code>
+     */
+    pipe.common.Common.FailureOrBuilder getErrOrBuilder();
 
     /**
      * <code>optional .Request request = 6;</code>
@@ -65,19 +86,6 @@ public final class Pipe {
      * <code>optional .Response response = 7;</code>
      */
     pipe.common.Common.ResponseOrBuilder getResponseOrBuilder();
-
-    /**
-     * <code>optional .Failure err = 5;</code>
-     */
-    boolean hasErr();
-    /**
-     * <code>optional .Failure err = 5;</code>
-     */
-    pipe.common.Common.Failure getErr();
-    /**
-     * <code>optional .Failure err = 5;</code>
-     */
-    pipe.common.Common.FailureOrBuilder getErrOrBuilder();
 
     public routing.Pipe.CommandMessage.PayloadCase getPayloadCase();
   }
@@ -136,8 +144,8 @@ public final class Pipe {
               bitField0_ |= 0x00000001;
               break;
             }
-            case 32: {
-              payloadCase_ = 4;
+            case 24: {
+              payloadCase_ = 3;
               payload_ = input.readBool();
               break;
             }
@@ -212,10 +220,10 @@ public final class Pipe {
     private java.lang.Object payload_;
     public enum PayloadCase
         implements com.google.protobuf.Internal.EnumLite {
-      PING(4),
+      PING(3),
+      ERR(5),
       REQUEST(6),
       RESPONSE(7),
-      ERR(5),
       PAYLOAD_NOT_SET(0);
       private final int value;
       private PayloadCase(int value) {
@@ -231,10 +239,10 @@ public final class Pipe {
 
       public static PayloadCase forNumber(int value) {
         switch (value) {
-          case 4: return PING;
+          case 3: return PING;
+          case 5: return ERR;
           case 6: return REQUEST;
           case 7: return RESPONSE;
-          case 5: return ERR;
           case 0: return PAYLOAD_NOT_SET;
           default: return null;
         }
@@ -271,21 +279,55 @@ public final class Pipe {
       return header_ == null ? pipe.common.Common.Header.getDefaultInstance() : header_;
     }
 
-    public static final int PING_FIELD_NUMBER = 4;
+    public static final int PING_FIELD_NUMBER = 3;
     /**
-     * <code>optional bool ping = 4;</code>
+     * <pre>
+     * a client (external) sanity check for testing
+     * </pre>
+     *
+     * <code>optional bool ping = 3;</code>
      */
     public boolean hasPing() {
-      return payloadCase_ == 4;
+      return payloadCase_ == 3;
     }
     /**
-     * <code>optional bool ping = 4;</code>
+     * <pre>
+     * a client (external) sanity check for testing
+     * </pre>
+     *
+     * <code>optional bool ping = 3;</code>
      */
     public boolean getPing() {
-      if (payloadCase_ == 4) {
+      if (payloadCase_ == 3) {
         return (java.lang.Boolean) payload_;
       }
       return false;
+    }
+
+    public static final int ERR_FIELD_NUMBER = 5;
+    /**
+     * <code>optional .Failure err = 5;</code>
+     */
+    public boolean hasErr() {
+      return payloadCase_ == 5;
+    }
+    /**
+     * <code>optional .Failure err = 5;</code>
+     */
+    public pipe.common.Common.Failure getErr() {
+      if (payloadCase_ == 5) {
+         return (pipe.common.Common.Failure) payload_;
+      }
+      return pipe.common.Common.Failure.getDefaultInstance();
+    }
+    /**
+     * <code>optional .Failure err = 5;</code>
+     */
+    public pipe.common.Common.FailureOrBuilder getErrOrBuilder() {
+      if (payloadCase_ == 5) {
+         return (pipe.common.Common.Failure) payload_;
+      }
+      return pipe.common.Common.Failure.getDefaultInstance();
     }
 
     public static final int REQUEST_FIELD_NUMBER = 6;
@@ -340,32 +382,6 @@ public final class Pipe {
       return pipe.common.Common.Response.getDefaultInstance();
     }
 
-    public static final int ERR_FIELD_NUMBER = 5;
-    /**
-     * <code>optional .Failure err = 5;</code>
-     */
-    public boolean hasErr() {
-      return payloadCase_ == 5;
-    }
-    /**
-     * <code>optional .Failure err = 5;</code>
-     */
-    public pipe.common.Common.Failure getErr() {
-      if (payloadCase_ == 5) {
-         return (pipe.common.Common.Failure) payload_;
-      }
-      return pipe.common.Common.Failure.getDefaultInstance();
-    }
-    /**
-     * <code>optional .Failure err = 5;</code>
-     */
-    public pipe.common.Common.FailureOrBuilder getErrOrBuilder() {
-      if (payloadCase_ == 5) {
-         return (pipe.common.Common.Failure) payload_;
-      }
-      return pipe.common.Common.Failure.getDefaultInstance();
-    }
-
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
@@ -380,6 +396,12 @@ public final class Pipe {
         memoizedIsInitialized = 0;
         return false;
       }
+      if (hasErr()) {
+        if (!getErr().isInitialized()) {
+          memoizedIsInitialized = 0;
+          return false;
+        }
+      }
       if (hasRequest()) {
         if (!getRequest().isInitialized()) {
           memoizedIsInitialized = 0;
@@ -388,12 +410,6 @@ public final class Pipe {
       }
       if (hasResponse()) {
         if (!getResponse().isInitialized()) {
-          memoizedIsInitialized = 0;
-          return false;
-        }
-      }
-      if (hasErr()) {
-        if (!getErr().isInitialized()) {
           memoizedIsInitialized = 0;
           return false;
         }
@@ -407,9 +423,9 @@ public final class Pipe {
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
         output.writeMessage(1, getHeader());
       }
-      if (payloadCase_ == 4) {
+      if (payloadCase_ == 3) {
         output.writeBool(
-            4, (boolean)((java.lang.Boolean) payload_));
+            3, (boolean)((java.lang.Boolean) payload_));
       }
       if (payloadCase_ == 5) {
         output.writeMessage(5, (pipe.common.Common.Failure) payload_);
@@ -432,10 +448,10 @@ public final class Pipe {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(1, getHeader());
       }
-      if (payloadCase_ == 4) {
+      if (payloadCase_ == 3) {
         size += com.google.protobuf.CodedOutputStream
           .computeBoolSize(
-              4, (boolean)((java.lang.Boolean) payload_));
+              3, (boolean)((java.lang.Boolean) payload_));
       }
       if (payloadCase_ == 5) {
         size += com.google.protobuf.CodedOutputStream
@@ -475,9 +491,13 @@ public final class Pipe {
           other.getPayloadCase());
       if (!result) return false;
       switch (payloadCase_) {
-        case 4:
+        case 3:
           result = result && (getPing()
               == other.getPing());
+          break;
+        case 5:
+          result = result && getErr()
+              .equals(other.getErr());
           break;
         case 6:
           result = result && getRequest()
@@ -486,10 +506,6 @@ public final class Pipe {
         case 7:
           result = result && getResponse()
               .equals(other.getResponse());
-          break;
-        case 5:
-          result = result && getErr()
-              .equals(other.getErr());
           break;
         case 0:
         default:
@@ -510,10 +526,14 @@ public final class Pipe {
         hash = (53 * hash) + getHeader().hashCode();
       }
       switch (payloadCase_) {
-        case 4:
+        case 3:
           hash = (37 * hash) + PING_FIELD_NUMBER;
           hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
               getPing());
+          break;
+        case 5:
+          hash = (37 * hash) + ERR_FIELD_NUMBER;
+          hash = (53 * hash) + getErr().hashCode();
           break;
         case 6:
           hash = (37 * hash) + REQUEST_FIELD_NUMBER;
@@ -522,10 +542,6 @@ public final class Pipe {
         case 7:
           hash = (37 * hash) + RESPONSE_FIELD_NUMBER;
           hash = (53 * hash) + getResponse().hashCode();
-          break;
-        case 5:
-          hash = (37 * hash) + ERR_FIELD_NUMBER;
-          hash = (53 * hash) + getErr().hashCode();
           break;
         case 0:
         default:
@@ -689,8 +705,15 @@ public final class Pipe {
         } else {
           result.header_ = headerBuilder_.build();
         }
-        if (payloadCase_ == 4) {
+        if (payloadCase_ == 3) {
           result.payload_ = payload_;
+        }
+        if (payloadCase_ == 5) {
+          if (errBuilder_ == null) {
+            result.payload_ = payload_;
+          } else {
+            result.payload_ = errBuilder_.build();
+          }
         }
         if (payloadCase_ == 6) {
           if (requestBuilder_ == null) {
@@ -704,13 +727,6 @@ public final class Pipe {
             result.payload_ = payload_;
           } else {
             result.payload_ = responseBuilder_.build();
-          }
-        }
-        if (payloadCase_ == 5) {
-          if (errBuilder_ == null) {
-            result.payload_ = payload_;
-          } else {
-            result.payload_ = errBuilder_.build();
           }
         }
         result.bitField0_ = to_bitField0_;
@@ -764,16 +780,16 @@ public final class Pipe {
             setPing(other.getPing());
             break;
           }
+          case ERR: {
+            mergeErr(other.getErr());
+            break;
+          }
           case REQUEST: {
             mergeRequest(other.getRequest());
             break;
           }
           case RESPONSE: {
             mergeResponse(other.getResponse());
-            break;
-          }
-          case ERR: {
-            mergeErr(other.getErr());
             break;
           }
           case PAYLOAD_NOT_SET: {
@@ -792,6 +808,11 @@ public final class Pipe {
         if (!getHeader().isInitialized()) {
           return false;
         }
+        if (hasErr()) {
+          if (!getErr().isInitialized()) {
+            return false;
+          }
+        }
         if (hasRequest()) {
           if (!getRequest().isInitialized()) {
             return false;
@@ -799,11 +820,6 @@ public final class Pipe {
         }
         if (hasResponse()) {
           if (!getResponse().isInitialized()) {
-            return false;
-          }
-        }
-        if (hasErr()) {
-          if (!getErr().isInitialized()) {
             return false;
           }
         }
@@ -963,39 +979,191 @@ public final class Pipe {
       }
 
       /**
-       * <code>optional bool ping = 4;</code>
+       * <pre>
+       * a client (external) sanity check for testing
+       * </pre>
+       *
+       * <code>optional bool ping = 3;</code>
        */
       public boolean hasPing() {
-        return payloadCase_ == 4;
+        return payloadCase_ == 3;
       }
       /**
-       * <code>optional bool ping = 4;</code>
+       * <pre>
+       * a client (external) sanity check for testing
+       * </pre>
+       *
+       * <code>optional bool ping = 3;</code>
        */
       public boolean getPing() {
-        if (payloadCase_ == 4) {
+        if (payloadCase_ == 3) {
           return (java.lang.Boolean) payload_;
         }
         return false;
       }
       /**
-       * <code>optional bool ping = 4;</code>
+       * <pre>
+       * a client (external) sanity check for testing
+       * </pre>
+       *
+       * <code>optional bool ping = 3;</code>
        */
       public Builder setPing(boolean value) {
-        payloadCase_ = 4;
+        payloadCase_ = 3;
         payload_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>optional bool ping = 4;</code>
+       * <pre>
+       * a client (external) sanity check for testing
+       * </pre>
+       *
+       * <code>optional bool ping = 3;</code>
        */
       public Builder clearPing() {
-        if (payloadCase_ == 4) {
+        if (payloadCase_ == 3) {
           payloadCase_ = 0;
           payload_ = null;
           onChanged();
         }
         return this;
+      }
+
+      private com.google.protobuf.SingleFieldBuilderV3<
+          pipe.common.Common.Failure, pipe.common.Common.Failure.Builder, pipe.common.Common.FailureOrBuilder> errBuilder_;
+      /**
+       * <code>optional .Failure err = 5;</code>
+       */
+      public boolean hasErr() {
+        return payloadCase_ == 5;
+      }
+      /**
+       * <code>optional .Failure err = 5;</code>
+       */
+      public pipe.common.Common.Failure getErr() {
+        if (errBuilder_ == null) {
+          if (payloadCase_ == 5) {
+            return (pipe.common.Common.Failure) payload_;
+          }
+          return pipe.common.Common.Failure.getDefaultInstance();
+        } else {
+          if (payloadCase_ == 5) {
+            return errBuilder_.getMessage();
+          }
+          return pipe.common.Common.Failure.getDefaultInstance();
+        }
+      }
+      /**
+       * <code>optional .Failure err = 5;</code>
+       */
+      public Builder setErr(pipe.common.Common.Failure value) {
+        if (errBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          payload_ = value;
+          onChanged();
+        } else {
+          errBuilder_.setMessage(value);
+        }
+        payloadCase_ = 5;
+        return this;
+      }
+      /**
+       * <code>optional .Failure err = 5;</code>
+       */
+      public Builder setErr(
+          pipe.common.Common.Failure.Builder builderForValue) {
+        if (errBuilder_ == null) {
+          payload_ = builderForValue.build();
+          onChanged();
+        } else {
+          errBuilder_.setMessage(builderForValue.build());
+        }
+        payloadCase_ = 5;
+        return this;
+      }
+      /**
+       * <code>optional .Failure err = 5;</code>
+       */
+      public Builder mergeErr(pipe.common.Common.Failure value) {
+        if (errBuilder_ == null) {
+          if (payloadCase_ == 5 &&
+              payload_ != pipe.common.Common.Failure.getDefaultInstance()) {
+            payload_ = pipe.common.Common.Failure.newBuilder((pipe.common.Common.Failure) payload_)
+                .mergeFrom(value).buildPartial();
+          } else {
+            payload_ = value;
+          }
+          onChanged();
+        } else {
+          if (payloadCase_ == 5) {
+            errBuilder_.mergeFrom(value);
+          }
+          errBuilder_.setMessage(value);
+        }
+        payloadCase_ = 5;
+        return this;
+      }
+      /**
+       * <code>optional .Failure err = 5;</code>
+       */
+      public Builder clearErr() {
+        if (errBuilder_ == null) {
+          if (payloadCase_ == 5) {
+            payloadCase_ = 0;
+            payload_ = null;
+            onChanged();
+          }
+        } else {
+          if (payloadCase_ == 5) {
+            payloadCase_ = 0;
+            payload_ = null;
+          }
+          errBuilder_.clear();
+        }
+        return this;
+      }
+      /**
+       * <code>optional .Failure err = 5;</code>
+       */
+      public pipe.common.Common.Failure.Builder getErrBuilder() {
+        return getErrFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>optional .Failure err = 5;</code>
+       */
+      public pipe.common.Common.FailureOrBuilder getErrOrBuilder() {
+        if ((payloadCase_ == 5) && (errBuilder_ != null)) {
+          return errBuilder_.getMessageOrBuilder();
+        } else {
+          if (payloadCase_ == 5) {
+            return (pipe.common.Common.Failure) payload_;
+          }
+          return pipe.common.Common.Failure.getDefaultInstance();
+        }
+      }
+      /**
+       * <code>optional .Failure err = 5;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilderV3<
+          pipe.common.Common.Failure, pipe.common.Common.Failure.Builder, pipe.common.Common.FailureOrBuilder> 
+          getErrFieldBuilder() {
+        if (errBuilder_ == null) {
+          if (!(payloadCase_ == 5)) {
+            payload_ = pipe.common.Common.Failure.getDefaultInstance();
+          }
+          errBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              pipe.common.Common.Failure, pipe.common.Common.Failure.Builder, pipe.common.Common.FailureOrBuilder>(
+                  (pipe.common.Common.Failure) payload_,
+                  getParentForChildren(),
+                  isClean());
+          payload_ = null;
+        }
+        payloadCase_ = 5;
+        onChanged();;
+        return errBuilder_;
       }
 
       private com.google.protobuf.SingleFieldBuilderV3<
@@ -1269,142 +1437,6 @@ public final class Pipe {
         onChanged();;
         return responseBuilder_;
       }
-
-      private com.google.protobuf.SingleFieldBuilderV3<
-          pipe.common.Common.Failure, pipe.common.Common.Failure.Builder, pipe.common.Common.FailureOrBuilder> errBuilder_;
-      /**
-       * <code>optional .Failure err = 5;</code>
-       */
-      public boolean hasErr() {
-        return payloadCase_ == 5;
-      }
-      /**
-       * <code>optional .Failure err = 5;</code>
-       */
-      public pipe.common.Common.Failure getErr() {
-        if (errBuilder_ == null) {
-          if (payloadCase_ == 5) {
-            return (pipe.common.Common.Failure) payload_;
-          }
-          return pipe.common.Common.Failure.getDefaultInstance();
-        } else {
-          if (payloadCase_ == 5) {
-            return errBuilder_.getMessage();
-          }
-          return pipe.common.Common.Failure.getDefaultInstance();
-        }
-      }
-      /**
-       * <code>optional .Failure err = 5;</code>
-       */
-      public Builder setErr(pipe.common.Common.Failure value) {
-        if (errBuilder_ == null) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          payload_ = value;
-          onChanged();
-        } else {
-          errBuilder_.setMessage(value);
-        }
-        payloadCase_ = 5;
-        return this;
-      }
-      /**
-       * <code>optional .Failure err = 5;</code>
-       */
-      public Builder setErr(
-          pipe.common.Common.Failure.Builder builderForValue) {
-        if (errBuilder_ == null) {
-          payload_ = builderForValue.build();
-          onChanged();
-        } else {
-          errBuilder_.setMessage(builderForValue.build());
-        }
-        payloadCase_ = 5;
-        return this;
-      }
-      /**
-       * <code>optional .Failure err = 5;</code>
-       */
-      public Builder mergeErr(pipe.common.Common.Failure value) {
-        if (errBuilder_ == null) {
-          if (payloadCase_ == 5 &&
-              payload_ != pipe.common.Common.Failure.getDefaultInstance()) {
-            payload_ = pipe.common.Common.Failure.newBuilder((pipe.common.Common.Failure) payload_)
-                .mergeFrom(value).buildPartial();
-          } else {
-            payload_ = value;
-          }
-          onChanged();
-        } else {
-          if (payloadCase_ == 5) {
-            errBuilder_.mergeFrom(value);
-          }
-          errBuilder_.setMessage(value);
-        }
-        payloadCase_ = 5;
-        return this;
-      }
-      /**
-       * <code>optional .Failure err = 5;</code>
-       */
-      public Builder clearErr() {
-        if (errBuilder_ == null) {
-          if (payloadCase_ == 5) {
-            payloadCase_ = 0;
-            payload_ = null;
-            onChanged();
-          }
-        } else {
-          if (payloadCase_ == 5) {
-            payloadCase_ = 0;
-            payload_ = null;
-          }
-          errBuilder_.clear();
-        }
-        return this;
-      }
-      /**
-       * <code>optional .Failure err = 5;</code>
-       */
-      public pipe.common.Common.Failure.Builder getErrBuilder() {
-        return getErrFieldBuilder().getBuilder();
-      }
-      /**
-       * <code>optional .Failure err = 5;</code>
-       */
-      public pipe.common.Common.FailureOrBuilder getErrOrBuilder() {
-        if ((payloadCase_ == 5) && (errBuilder_ != null)) {
-          return errBuilder_.getMessageOrBuilder();
-        } else {
-          if (payloadCase_ == 5) {
-            return (pipe.common.Common.Failure) payload_;
-          }
-          return pipe.common.Common.Failure.getDefaultInstance();
-        }
-      }
-      /**
-       * <code>optional .Failure err = 5;</code>
-       */
-      private com.google.protobuf.SingleFieldBuilderV3<
-          pipe.common.Common.Failure, pipe.common.Common.Failure.Builder, pipe.common.Common.FailureOrBuilder> 
-          getErrFieldBuilder() {
-        if (errBuilder_ == null) {
-          if (!(payloadCase_ == 5)) {
-            payload_ = pipe.common.Common.Failure.getDefaultInstance();
-          }
-          errBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-              pipe.common.Common.Failure, pipe.common.Common.Failure.Builder, pipe.common.Common.FailureOrBuilder>(
-                  (pipe.common.Common.Failure) payload_,
-                  getParentForChildren(),
-                  isClean());
-          payload_ = null;
-        }
-        payloadCase_ = 5;
-        onChanged();;
-        return errBuilder_;
-      }
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
         return super.setUnknownFields(unknownFields);
@@ -1469,10 +1501,10 @@ public final class Pipe {
   static {
     java.lang.String[] descriptorData = {
       "\n\npipe.proto\032\014common.proto\"\231\001\n\016CommandMe" +
-      "ssage\022\027\n\006header\030\001 \002(\0132\007.Header\022\016\n\004ping\030\004" +
-      " \001(\010H\000\022\033\n\007request\030\006 \001(\0132\010.RequestH\000\022\035\n\010r" +
-      "esponse\030\007 \001(\0132\t.ResponseH\000\022\027\n\003err\030\005 \001(\0132" +
-      "\010.FailureH\000B\t\n\007payloadB\013\n\007routingH\001"
+      "ssage\022\027\n\006header\030\001 \002(\0132\007.Header\022\016\n\004ping\030\003" +
+      " \001(\010H\000\022\027\n\003err\030\005 \001(\0132\010.FailureH\000\022\033\n\007reque" +
+      "st\030\006 \001(\0132\010.RequestH\000\022\035\n\010response\030\007 \001(\0132\t" +
+      ".ResponseH\000B\t\n\007payloadB\013\n\007routingH\001"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -1492,7 +1524,7 @@ public final class Pipe {
     internal_static_CommandMessage_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_CommandMessage_descriptor,
-        new java.lang.String[] { "Header", "Ping", "Request", "Response", "Err", "Payload", });
+        new java.lang.String[] { "Header", "Ping", "Err", "Request", "Response", "Payload", });
     pipe.common.Common.getDescriptor();
   }
 

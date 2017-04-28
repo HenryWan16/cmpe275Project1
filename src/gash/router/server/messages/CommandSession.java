@@ -11,9 +11,13 @@ import gash.router.server.storage.MySQLStorage;
 import io.netty.channel.Channel;
 
 import java.net.Inet4Address;
+import java.net.InetAddress;
+import java.net.NetworkInterface;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.Hashtable;
+import java.util.regex.Pattern;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -66,41 +70,32 @@ public class CommandSession implements Session, Runnable{
                 cm.setPing(true);
                 channel.writeAndFlush(cm); //respond back to client
                 
-            } else if (msg.hasRequest()) {
+//            } else if (msg.hasResponse()) {
+//            	if (msg.getHeader().getDestination() == RoutingConf.clusterId) {
+//    				
+//    				ServerState.clientChannel.writeAndFlush(msg);
+//    				ServerState.clientChannel = null;
+//    				
+//    				return;
+//    			}
+//            	else {
+//            		ServerState.nextCluster.writeAndFlush(msg);
+//            	}
+        	}else if (msg.hasRequest()) {
             	logger.info("CommendSession handleMessage RequestType is " + type);
             	// key = chunkID; 
     			// value = sourceId + ";" + host + ";" + port;
     			Hashtable<Integer, String> location = new Hashtable<Integer, String>();
         		String fname = msg.getRequest().getRrb().getFilename();
         		
-        		/**************** READ ****************/
-        		if (type == TaskType.RESPONSEREADFILE) {
-        			if (msg.getHeader().getDestination() == RoutingConf.clusterId) {
-        				
-        				ServerState.clientChannel.writeAndFlush(msg);
-        				ServerState.clientChannel = null;
-        				return;
-        			}
-        		}
-        		
-        		
             	if (type == TaskType.REQUESTREADFILE) {
             		
-            		if (ServerState.clientChannel == null) {
-						//msg from client
-						ServerState.clientChannel = channel;
-						logger.info("Server received read request from client" + msg.getHeader().getNodeId());
-            		}
-						//then forward to next cluster
-						logger.info("Forwarding r from client");
-						ServerState.nextCluster.writeAndFlush(msg);
-
-            		
-            		
-            		
-            		
-            		
-            		
+//            		if (ServerState.clientChannel == null) {
+//						//msg from client
+//						ServerState.clientChannel = channel;
+//						logger.info("Server received read request from client" + msg.getHeader().getNodeId());
+//            		}
+//            		
             	
             		logger.info("read fileName is " + fname);
             		MySQLStorage mySQLStorage = MySQLStorage.getInstance();
@@ -126,22 +121,49 @@ public class CommandSession implements Session, Runnable{
             			logger.info("chunkID is " + chunkId);
             			
             			// if we don't set chunkId in the CommandMessage, its default to be 0;
-            			if (chunkId == -1) {
+            			if (!msg.getRequest().getRrb().hasChunkId()) {
+            				//System.out.println("AAAAAAAAAAAAAAA");
                 			// Get all the chunkIDs of the file from the database on the leader. 
                 			// All the nodes have the same data and we just return the records on the leader.
                 			ArrayList<Integer> chunkIDArray = mySQLStorage.selectRecordFilenameChunkID(fname);
                     		logger.info("The first time to receive the read request from client, and server will return a location String");
                 			String host = "";
-    						try {
-    							host = Inet4Address.getLocalHost().getHostAddress();
-    						} catch (UnknownHostException e1) {
+                			try {
+    							Enumeration e = NetworkInterface.getNetworkInterfaces();
+    							String pattern1 = "169.254.*.*";
+    							String pattern2 = "192.168.*.*";
+    							while(e.hasMoreElements())
+    							{
+    								boolean isMatch1 = false, isMatch2 = false;
+    							    NetworkInterface n = (NetworkInterface) e.nextElement();
+    							    Enumeration ee = n.getInetAddresses();
+    							    while (ee.hasMoreElements())
+    							    {
+    							        InetAddress i = (InetAddress) ee.nextElement();
+    							        String ipAddress = i.getHostAddress();
+    							        System.out.println("ipAddress = " + ipAddress);
+    							        isMatch1 = Pattern.matches(pattern1, ipAddress);
+    							        isMatch2 = Pattern.matches(pattern2, ipAddress);
+    							        
+    							        if (isMatch1 || isMatch2) {
+    							        	host = ipAddress;
+    							        	break;
+    							        }
+    							        else {
+    							        	host = "localhost";
+    							        }						        
+    							    }
+    							    if (isMatch1 || isMatch2) break;
+    							}
+                			} catch (Exception e1) {
     							e1.printStackTrace();
     						}
+    						System.out.println("host = " + host);
                 			int port = conf.getCommandPort();
                 			int nodeID = conf.getNodeId();
                 			String locationAddress = nodeID + ";" + host + ";" + port;
-                			for (Integer e : chunkIDArray) {
-                				location.put(e, locationAddress);
+                			for (Integer i : chunkIDArray) {
+                				location.put(i, locationAddress);
                 			}
 
                     		//return to client a HashMap of locations
@@ -153,11 +175,12 @@ public class CommandSession implements Session, Runnable{
                 								MessageUtil.buildReadResponse(-1, fname, null, location.size(), 
                 										location, null)));
                     		// logger.info("READFILE location isn't null and " + cm.toString());
-                    		//channel.writeAndFlush(cm);
-                			ServerState.nextCluster.writeAndFlush(cm);
+                    		channel.writeAndFlush(cm);
+                			//ServerState.nextCluster.writeAndFlush(cm);
                     	
                     	//ask for chunk data
                     	} else {
+                    		//System.out.println("BBBBBBBBBBBB");
                     		// The second time to receive the message from the client which has received the HashMap<chunkID, location> from the server (Only one location of each chunk).
                     		// The client say that "I want to get the data of chunkId from the location."
                 			mySQLStorage = MySQLStorage.getInstance();
@@ -180,6 +203,7 @@ public class CommandSession implements Session, Runnable{
                     	}
                 	}
             		else {
+            			//System.out.println("CCCCCCCCCCCcc");
             			// File isn't in the database and return to client FAIL to read
             			CommandMessage cm = MessageUtil.buildCommandMessage(
             					MessageUtil.buildHeader(conf.getNodeId(), System.currentTimeMillis()),
@@ -187,8 +211,8 @@ public class CommandSession implements Session, Runnable{
             					null,
             					MessageUtil.buildResponse(TaskType.RESPONSEREADFILE, fname, Response.Status.FILENOTFOUND , null, null));
                         logger.info("File " + fname + " isn't in the database. Read failed on the server.");
-                        //channel.writeAndFlush(cm);
-                        ServerState.nextCluster.writeAndFlush(cm);
+                        channel.writeAndFlush(cm);
+                        //ServerState.nextCluster.writeAndFlush(cm);
                 	}
             	}
             	
@@ -205,7 +229,7 @@ public class CommandSession implements Session, Runnable{
     	    		int numOfChunk = wb.getChunk().getChunkSize();
     	    		String fileId = "";
     	    		if (wb.hasFileId()) {
-    	    			fileId = ((Long)wb.getFileId()).toString();
+    	    			fileId = wb.getFileId();
     	    		}
     	    		
     	    		MySQLStorage mySQLStorage = MySQLStorage.getInstance();

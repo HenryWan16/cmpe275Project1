@@ -139,15 +139,15 @@ public class MessageUtil {
 	
 	public static ChunkLocation.Builder buildChunkLocation(int id, Node.Builder node) {
 		ChunkLocation.Builder location = ChunkLocation.newBuilder();
-		location.setChunkid(id);
-		location.addNode(node);
+		location.setChunkId(id);
+		location.setNode(node);
 		return location;
 	}
 	
 	public static ReadResponse.Builder buildReadResponse(int fileId, String name, String ext, int noChunks, 
 			Hashtable<Integer, String> location, Chunk.Builder chunk) {
 		ReadResponse.Builder rr = ReadResponse.newBuilder();
-		if (fileId != -1) rr.setFileId(fileId);
+		if (fileId != -1) rr.setFileId(Integer.toString(fileId));
 		rr.setFilename(name);
 		if (ext != null) rr.setFileExt(ext);
 		if (noChunks != -1) rr.setNumOfChunks(noChunks);
@@ -167,7 +167,7 @@ public class MessageUtil {
 	public static ReadResponse.Builder buildReadResponseAllFiles(int fileId, String name, int noChunks, 
 			ArrayList<ClassFileChunkRecord> fileList, Chunk.Builder chunk) {
 		ReadResponse.Builder rr = ReadResponse.newBuilder();
-		if (fileId != -1) rr.setFileId(fileId);
+		if (fileId != -1) rr.setFileId(Integer.toString(fileId));
 		rr.setFilename(name);
 		if (noChunks != -1) rr.setNumOfChunks(noChunks);
 		String s= "";
@@ -184,7 +184,7 @@ public class MessageUtil {
 	
 	public static ReadResponse.Builder buildReadResponseAllListFiles(int fileId, String name, String ext) {
 		ReadResponse.Builder rr = ReadResponse.newBuilder();
-		if (fileId != -1) rr.setFileId(fileId);
+		if (fileId != -1) rr.setFileId(Integer.toString(fileId));
 		rr.setFilename(name);
 		//will be used for the list
 		if (ext != null) rr.setFileExt(ext);
@@ -212,20 +212,15 @@ public class MessageUtil {
 	public static ReadBody.Builder buildReadBody(String fname, int fId, int chunkId, int chunkSize) {
 		ReadBody.Builder rb = ReadBody.newBuilder();
 		if (fname != null) rb.setFilename(fname);
-		if (fId != -1) rb.setFileId(fId);
-		if (chunkId != -1) {
-			rb.setChunkId(chunkId);
-		}
-		else {
-			rb.setChunkId(-1);
-		}
+		if (fId != -1) rb.setFileId(Integer.toString(fId));
+		if (chunkId != -1) { rb.setChunkId(chunkId); }
 		if (chunkSize != -1) rb.setChunkSize(chunkSize);
 		return rb;
 	}
 	
 	public static WriteBody.Builder buildWriteBody(int fId, String fname, String ext, Chunk.Builder chunk, int noChunks) {
 		WriteBody.Builder wb = WriteBody.newBuilder();
-		if (fId != -1) wb.setFileId(fId);
+		if (fId != -1) wb.setFileId(Integer.toString(fId));
 		wb.setFilename(fname);
 		if (ext != null) wb.setFileExt(ext);
 		if (chunk != null) wb.setChunk(chunk);
@@ -246,6 +241,14 @@ public class MessageUtil {
 		hb.setNodeId(nodeId);
 		hb.setTime(time);
 		hb.setDestination(-1);
+		return hb;
+	}
+	
+	public static Header.Builder buildHeader(int nodeId, long time, int des) {
+		Header.Builder hb = Header.newBuilder();
+		hb.setNodeId(nodeId);
+		hb.setTime(time);
+		hb.setDestination(des);
 		return hb;
 	}
 	

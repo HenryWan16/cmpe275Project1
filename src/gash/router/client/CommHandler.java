@@ -129,7 +129,7 @@ public class CommHandler extends SimpleChannelInboundHandler<CommandMessage> {
 					if (!msg.getResponse().getFilename().equals("ls_all_the_files_and_chunks")) {
 						for(int i=0;i<chunkSize;i++){
 							
-							int chunkId = list.get(i).getChunkid();
+							int chunkId = list.get(i).getChunkId();
 							
 							CommandMessage cm = MessageUtil.buildCommandMessage(
 	            					MessageUtil.buildHeader(999, System.currentTimeMillis()),

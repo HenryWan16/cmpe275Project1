@@ -1,8 +1,13 @@
 package gash.router.server.raft;
 
 import java.net.Inet4Address;
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Random;
+import java.util.regex.Pattern;
+
 import gash.router.server.ServerState;
 import gash.router.server.edges.EdgeInfo;
 import gash.router.server.edges.EdgeMonitor;
@@ -53,7 +58,38 @@ public class RaftHandler implements Runnable {
 			candidate = new CandidateNode(this);
 			follower = new FollowerNode(this);
 			
-			host = "169.254.37.203";//Inet4Address.getLocalHost().getHostAddress();
+			host = "";
+			try {
+				Enumeration e = NetworkInterface.getNetworkInterfaces();
+				String pattern1 = "169.254.*.*";
+				String pattern2 = "192.168.*.*";
+				while(e.hasMoreElements())
+				{
+					boolean isMatch1 = false, isMatch2 = false;
+				    NetworkInterface n = (NetworkInterface) e.nextElement();
+				    Enumeration ee = n.getInetAddresses();
+				    while (ee.hasMoreElements())
+				    {
+				        InetAddress i = (InetAddress) ee.nextElement();
+				        String ipAddress = i.getHostAddress();
+				        System.out.println("ipAddress = " + ipAddress);
+				        isMatch1 = Pattern.matches(pattern1, ipAddress);
+				        isMatch2 = Pattern.matches(pattern2, ipAddress);
+				        
+				        if (isMatch1 || isMatch2) {
+				        	host = ipAddress;
+				        	break;
+				        }
+				        else {
+				        	host = "localhost";
+				        }						        
+				    }
+				    if (isMatch1 || isMatch2) break;
+				}
+			} catch (Exception e1) {
+				e1.printStackTrace();
+			}
+
 			port = serverState.getConf().getWorkPort();
 			edgeMonitor = serverState.getEmon();
 
