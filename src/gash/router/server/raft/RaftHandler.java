@@ -11,6 +11,7 @@ import java.util.regex.Pattern;
 import gash.router.server.ServerState;
 import gash.router.server.edges.EdgeInfo;
 import gash.router.server.edges.EdgeMonitor;
+import io.netty.channel.Channel;
 
 public class RaftHandler implements Runnable {
 

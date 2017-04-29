@@ -32,23 +32,23 @@ public class DemoApp implements CommListener {
 		this.mc.addListener(this);
 	}
 
-	private void ping(int N) {
-		// test round-trip overhead (note overhead for initial connection)
-		final int maxN = 10;
-		long[] dt = new long[N];
-		long st = System.currentTimeMillis(), ft = 0;
-		for (int n = 0; n < N; n++) {
-			mc.ping();
-			ft = System.currentTimeMillis();
-			dt[n] = ft - st;
-			st = ft;
-		}
-
-		System.out.println("Round-trip ping times (msec)");
-		for (int n = 0; n < N; n++)
-			System.out.print(dt[n] + " ");
-		System.out.println("");
-	}
+//	private void ping(int N) {
+//		// test round-trip overhead (note overhead for initial connection)
+//		final int maxN = 10;
+//		long[] dt = new long[N];
+//		long st = System.currentTimeMillis(), ft = 0;
+//		for (int n = 0; n < N; n++) {
+//			mc.ping();
+//			ft = System.currentTimeMillis();
+//			dt[n] = ft - st;
+//			st = ft;
+//		}
+//
+//		System.out.println("Round-trip ping times (msec)");
+//		for (int n = 0; n < N; n++)
+//			System.out.print(dt[n] + " ");
+//		System.out.println("");
+//	}
 
 	@Override
 	public String getListenerID() {

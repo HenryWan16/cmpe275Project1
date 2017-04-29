@@ -1,6 +1,7 @@
 package gash.router.server.messages;
 
 import gash.router.container.RoutingConf;
+import gash.router.server.CommandHandler;
 import gash.router.server.ServerState;
 import gash.router.server.edges.EdgeInfo;
 import gash.router.server.raft.LogUtil;
@@ -70,17 +71,7 @@ public class CommandSession implements Session, Runnable{
                 cm.setPing(true);
                 channel.writeAndFlush(cm); //respond back to client
                 
-//            } else if (msg.hasResponse()) {
-//            	if (msg.getHeader().getDestination() == RoutingConf.clusterId) {
-//    				
-//    				ServerState.clientChannel.writeAndFlush(msg);
-//    				ServerState.clientChannel = null;
-//    				
-//    				return;
-//    			}
-//            	else {
-//            		ServerState.nextCluster.writeAndFlush(msg);
-//            	}
+
         	}else if (msg.hasRequest()) {
             	logger.info("CommendSession handleMessage RequestType is " + type);
             	// key = chunkID; 
@@ -89,13 +80,6 @@ public class CommandSession implements Session, Runnable{
         		String fname = msg.getRequest().getRrb().getFilename();
         		
             	if (type == TaskType.REQUESTREADFILE) {
-            		
-//            		if (ServerState.clientChannel == null) {
-//						//msg from client
-//						ServerState.clientChannel = channel;
-//						logger.info("Server received read request from client" + msg.getHeader().getNodeId());
-//            		}
-//            		
             	
             		logger.info("read fileName is " + fname);
             		MySQLStorage mySQLStorage = MySQLStorage.getInstance();
@@ -219,6 +203,42 @@ public class CommandSession implements Session, Runnable{
             	
             	/**************** WRITE ****************/
             	else if (type.equals(TaskType.REQUESTWRITEFILE)) {
+            		
+            		if(msg.getHeader().getDestination() == RoutingConf.clusterId) {
+    					//add into channels table
+    					int nodeId = msg.getHeader().getNodeId();
+    					if (nodeId > 10) {
+    						CommandHandler.handleClientRequest(channel, nodeId);
+    						ServerState.nextCluster.writeAndFlush(msg);
+    						
+    					} else if (ServerState.channelsTable.containsKey(msg.getHeader().getDestination())) {
+    						//stop here
+    						Hashtable<Channel, Integer> client = ServerState.channelsTable.get(nodeId);
+    						Channel firstChannel = client.keys().nextElement();
+    						
+    						//build successful response cm
+    						CommandMessage cm = MessageUtil.buildCommandMessage(
+    								MessageUtil.buildHeader(RoutingConf.clusterId, System.currentTimeMillis()),
+    								null,
+    								null,
+    								MessageUtil.buildResponse(TaskType.RESPONSEWRITEFILE,
+    										msg.getRequest().getRwb().getFilename(),
+    										Response.Status.SUCCESS,
+    										null, 
+    										null));
+    						
+    						
+    						firstChannel.writeAndFlush(cm);
+    						
+    						CommandHandler.updateChannelsTable(client, firstChannel, nodeId);
+    						
+    					} else { //from your neighbor
+    						//forward anyway
+    						ServerState.nextCluster.writeAndFlush(msg);
+    					}
+    				}
+            		
+            		
     	        	logger.info("CommendSession type = " + type);
     	        	logger.info("type == TaskType.WRITEFILE is " + (type == TaskType.REQUESTWRITEFILE));
     	    		WriteBody wb = msg.getRequest().getRwb();

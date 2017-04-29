@@ -55,12 +55,13 @@ public class MessageClient {
 		CommConnection.getInstance().addListener(listener);
 	}
 
-	public void ping() {
+	public void ping(int dest) {
 		// construct the message to send
 		Header.Builder hb = Header.newBuilder();
-		hb.setNodeId(999);
+		hb.setNodeId(RoutingConf.clientId);
 		hb.setTime(System.currentTimeMillis());
-		hb.setDestination(RoutingConf.clusterDestination);
+		hb.setDestination(dest);
+		hb.setMaxHops(RoutingConf.maxHops);
 
 		CommandMessage.Builder rb = CommandMessage.newBuilder();
 		rb.setHeader(hb);

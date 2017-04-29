@@ -19,6 +19,10 @@ import gash.router.server.messages.CommandSession;
 import gash.router.server.messages.QOSWorker;
 import gash.router.server.messages.Session;
 import gash.router.server.messages.WorkSession;
+import gash.router.server.raft.RaftHandler;
+
+import java.util.Hashtable;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -64,41 +68,38 @@ public class CommandHandler extends SimpleChannelInboundHandler<CommandMessage> 
 			return;
 		}
 
-		//PrintUtil.printCommand(msg);
-
 		try {
 			// TODO How can you implement this without if-else statements?
 			if (msg.hasPing()) {
 
 				if(msg.getHeader().getDestination() == RoutingConf.clusterId) {
-					if (ServerState.clientChannel == null) {
-						//msg from client
-						ServerState.clientChannel = channel;
-						logger.info("Server received ping from" + msg.getHeader().getNodeId());
-
-						//then forward to next cluster
-						logger.info("Forwarding ping from client");
-						ServerState.nextCluster.writeAndFlush(msg);
-					} else {
-						//stop
-						logger.info("Sending ping back to client");
-						ServerState.clientChannel.writeAndFlush(msg);
-						ServerState.clientChannel = null;
+					//add into channels table
+					int nodeId = msg.getHeader().getNodeId();
+					if (nodeId > 10) {
+						handleClientRequest(channel, nodeId);
+						forwardMessage(msg, channel, nodeId);
+						
+					} else if (ServerState.channelsTable.containsKey(msg.getHeader().getDestination())) {
+						//stop here
+						Hashtable<Channel, Integer> client = ServerState.channelsTable.get(nodeId);
+						Channel firstChannel = client.keys().nextElement();
+						firstChannel.writeAndFlush(msg);
+						
+						updateChannelsTable(client, firstChannel, nodeId);
+						
+					} else { //from your neighbor
+						//forward anyway
+						forwardMessage(msg, channel, nodeId);
 					}
-				}else{
-					logger.info("Forwarding ping from server");
-					ServerState.nextCluster.writeAndFlush(msg);
 				}
 
 			} else if (msg.hasRequest()) {
-				//logger.info("server get request: "+msg.getRequest().toString());
 				
 				qos = QOSWorker.getInstance();
 				Session session = new CommandSession(conf, msg, channel);
 				qos.getQueue().enqueue(session);
 
-			} else {
-			}
+			} else { }
 
 		} catch (Exception e) {
 			// TODO add logging
@@ -113,6 +114,47 @@ public class CommandHandler extends SimpleChannelInboundHandler<CommandMessage> 
 
 		System.out.flush();
 		
+	}
+	
+	public static void handleClientRequest(Channel channel, int nodeId) {
+		Hashtable<Channel, Integer> client = new Hashtable<Channel, Integer>();
+		if (!ServerState.channelsTable.containsKey(nodeId)) {
+			//first time here
+			client.put(channel, 1);
+			ServerState.channelsTable.put(nodeId, client);
+		} else { //update request count
+			Hashtable<Channel, Integer> savedClient = ServerState.channelsTable.get(nodeId);
+			Channel firstChannel = savedClient.keys().nextElement();
+			int count = client.get(firstChannel);
+			savedClient.put(firstChannel, count+1);
+			ServerState.channelsTable.put(nodeId, savedClient);
+		}
+	}
+	
+	public static void updateChannelsTable(Hashtable<Channel, Integer> client, Channel firstChannel, int nodeId) {
+		int count = client.get(firstChannel);
+		if (count == 1) {
+			ServerState.channelsTable.remove(nodeId);
+		} else { //minus request -1
+			client.put(firstChannel, count-1);
+			ServerState.channelsTable.put(nodeId, client);
+		}
+	}
+	
+	public void forwardMessage(CommandMessage msg, Channel channel, int nodeId) {
+		Header.Builder hb = Header.newBuilder();
+		hb.setNodeId(msg.getHeader().getDestination());
+		hb.setTime(msg.getHeader().getTime());
+		hb.setDestination(msg.getHeader().getNodeId());
+		hb.setMaxHops(msg.getHeader().getMaxHops() - 1);
+
+		CommandMessage.Builder cmb = CommandMessage.newBuilder();
+		cmb.setHeader(hb);
+		cmb.setPing(true);
+		
+		if (ServerState.nextCluster.isActive()) {
+			ServerState.nextCluster.writeAndFlush(cmb.build());
+		}
 	}
 
 	/**

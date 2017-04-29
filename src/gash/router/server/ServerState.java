@@ -1,5 +1,7 @@
 package gash.router.server;
 
+import java.util.Hashtable;
+
 import gash.router.container.RoutingConf;
 import gash.router.server.edges.EdgeMonitor;
 import gash.router.server.raft.RaftHandler;
@@ -14,7 +16,7 @@ public class ServerState {
 	private int leaderId;
 	private String status = "";
 	public static Channel nextCluster = null;
-	public static Channel clientChannel = null;
+	public static Hashtable<Integer, Hashtable<Channel, Integer>> channelsTable = new Hashtable<Integer, Hashtable<Channel, Integer>>();
 
 	public String getStatus() { 
 		return status;

@@ -37,23 +37,23 @@ public class ClientApp implements CommListener {
 		this.mc.addListener(this);
 	}
 
-	private void ping(int N) {
-		// test round-trip overhead (note overhead for initial connection)
-		final int maxN = 10;
-		long[] dt = new long[N];
-		long st = System.currentTimeMillis(), ft = 0;
-		for (int n = 0; n < N; n++) {
-			mc.ping();
-			ft = System.currentTimeMillis();
-			dt[n] = ft - st;
-			st = ft;
-		}
-
-		System.out.println("Round-trip ping times (msec)");
-		for (int n = 0; n < N; n++)
-			System.out.print(dt[n] + " ");
-		System.out.println("");
-	}
+//	private void ping(int N) {
+//		// test round-trip overhead (note overhead for initial connection)
+//		final int maxN = 10;
+//		long[] dt = new long[N];
+//		long st = System.currentTimeMillis(), ft = 0;
+//		for (int n = 0; n < N; n++) {
+//			mc.ping();
+//			ft = System.currentTimeMillis();
+//			dt[n] = ft - st;
+//			st = ft;
+//		}
+//
+//		System.out.println("Round-trip ping times (msec)");
+//		for (int n = 0; n < N; n++)
+//			System.out.print(dt[n] + " ");
+//		System.out.println("");
+//	}
 
 	@Override
 	public String getListenerID() {
@@ -76,7 +76,7 @@ public class ClientApp implements CommListener {
 			System.out.flush();
 	        System.out.print("\n\n------------------------\n" +
 	        				"Menu\n------------------------\n" +
-	        				"* ping\n" +
+	        				"* ping <destination>\n" +
 	        				"* ls\n" +
 							"* leader\n" +
 	                        "* read <fileName>\n" + 
@@ -89,8 +89,9 @@ public class ClientApp implements CommListener {
 	        commands = command.split("\\s+");
 	        switch(commands[0]) {
 	          	case "ping":
-	        	  	  mc.ping();
-	        	  	  break;
+	          		if(commands.length > 1)
+	        	  	  mc.ping(Integer.valueOf(commands[1]));
+	        	  	break;
 				case "leader":
 					RedisServer.getInstance().getLocalhostJedis().select(0);
 					String leader = RedisServer.getInstance().getLocalhostJedis().get("1");
