@@ -72,9 +72,8 @@ public class CommandHandler extends SimpleChannelInboundHandler<CommandMessage> 
 			// TODO How can you implement this without if-else statements?
 			if (msg.hasPing()) {
 				int nodeId = msg.getHeader().getNodeId();
-				if(msg.getHeader().getDestination() == RoutingConf.clusterId) {
 					//add into channels table
-					
+					System.out.println("I am the ");
 					if (nodeId > 10) {
 						handleClientRequest(channel, nodeId);
 						forwardMessage(msg, channel, nodeId);
@@ -93,7 +92,7 @@ public class CommandHandler extends SimpleChannelInboundHandler<CommandMessage> 
 						//forward anyway
 						forwardMessage(msg, channel, nodeId);
 					}
-				}
+
 
 			} else if (msg.hasRequest()) {
 				
@@ -144,6 +143,7 @@ public class CommandHandler extends SimpleChannelInboundHandler<CommandMessage> 
 	}
 	
 	public void forwardMessage(CommandMessage msg, Channel channel, int nodeId) {
+		System.out.println("************");
 		Header.Builder hb = Header.newBuilder();
 		hb.setNodeId(msg.getHeader().getDestination());
 		hb.setTime(msg.getHeader().getTime());
@@ -156,6 +156,7 @@ public class CommandHandler extends SimpleChannelInboundHandler<CommandMessage> 
 		
 		if (ServerState.nextCluster.isActive()) {
 			ServerState.nextCluster.writeAndFlush(cmb.build());
+			System.out.println("1111111111111");
 		}
 	}
 
