@@ -106,7 +106,7 @@ public class CommandHandler extends SimpleChannelInboundHandler<CommandMessage> 
 							Channel clientChannel = client.keys().nextElement();
 							clientChannel.writeAndFlush(msg);
 							
-							//updateChannelsTable(client, clientChannel, nodeId);
+							updateChannelsTable(client, clientChannel, nodeId);
 						}
 					}
 				}
@@ -144,11 +144,11 @@ public class CommandHandler extends SimpleChannelInboundHandler<CommandMessage> 
 			ServerState.channelsTable.put(nodeId, client);
 			logger.info("table size: " + String.valueOf(ServerState.channelsTable.size()));
 		} else { //update request count
-//			Hashtable<Channel, Integer> savedClient = ServerState.channelsTable.get(nodeId);
-//			Channel firstChannel = savedClient.keys().nextElement();
-//			int count = client.get(firstChannel);
-//			savedClient.put(firstChannel, count+1);
-//			ServerState.channelsTable.put(nodeId, savedClient);
+			Hashtable<Channel, Integer> savedClient = ServerState.channelsTable.get(nodeId);
+			Channel firstChannel = savedClient.keys().nextElement();
+			int count = savedClient.get(firstChannel);
+			savedClient.put(firstChannel, count+1);
+			ServerState.channelsTable.put(nodeId, savedClient);
 		}
 	}
 	

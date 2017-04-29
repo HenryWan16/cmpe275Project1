@@ -207,31 +207,32 @@ public class CommandSession implements Session, Runnable{
             		if(msg.getHeader().getDestination() == RoutingConf.clusterId) {
     					//add into channels table
     					int nodeId = msg.getHeader().getNodeId();
-    					if (nodeId > 10) {
-    						CommandHandler.handleClientRequest(channel, nodeId);
-    						ServerState.nextCluster.writeAndFlush(msg);
+    					if ((nodeId % 10) == RoutingConf.clusterId) { 
+    						if (!ServerState.channelsTable.containsKey(msg.getHeader().getDestination())) {
+    							CommandHandler.handleClientRequest(channel, nodeId);
+    						} else {
+	    						//stop here
+	    						Hashtable<Channel, Integer> client = ServerState.channelsTable.get(nodeId);
+	    						Channel firstChannel = client.keys().nextElement();
+	    						
+	    						//build successful response cm
+	    						CommandMessage cm = MessageUtil.buildCommandMessage(
+	    								MessageUtil.buildHeader(RoutingConf.clusterId, System.currentTimeMillis()),
+	    								null,
+	    								null,
+	    								MessageUtil.buildResponse(TaskType.RESPONSEWRITEFILE,
+	    										msg.getRequest().getRwb().getFilename(),
+	    										Response.Status.SUCCESS,
+	    										null, 
+	    										null));
+	    						
+	    						
+	    						firstChannel.writeAndFlush(cm);
+	    						CommandHandler.updateChannelsTable(client, firstChannel, nodeId);
+	    						return;
+    						}
     						
-    					} else if (ServerState.channelsTable.containsKey(msg.getHeader().getDestination())) {
-    						//stop here
-    						Hashtable<Channel, Integer> client = ServerState.channelsTable.get(nodeId);
-    						Channel firstChannel = client.keys().nextElement();
-    						
-    						//build successful response cm
-    						CommandMessage cm = MessageUtil.buildCommandMessage(
-    								MessageUtil.buildHeader(RoutingConf.clusterId, System.currentTimeMillis()),
-    								null,
-    								null,
-    								MessageUtil.buildResponse(TaskType.RESPONSEWRITEFILE,
-    										msg.getRequest().getRwb().getFilename(),
-    										Response.Status.SUCCESS,
-    										null, 
-    										null));
-    						
-    						
-    						firstChannel.writeAndFlush(cm);
-    						
-    						CommandHandler.updateChannelsTable(client, firstChannel, nodeId);
-    						
+        					ServerState.nextCluster.writeAndFlush(msg);
     					} else { //from your neighbor
     						//forward anyway
     						ServerState.nextCluster.writeAndFlush(msg);
