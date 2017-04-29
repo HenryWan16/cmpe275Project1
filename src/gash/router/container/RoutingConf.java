@@ -38,7 +38,7 @@ public class RoutingConf {
 	private boolean internalNode = true;
 	private int heartbeatDt = 2000;
 	private List<RoutingEntry> routing;
-	public static int clusterId = 6;
+	public static int clusterId = 1;
 	public static int clusterDestination = 10;
 	public static int clientId = clusterId * 10 + clusterId;
 	public static String redis = "169.254.250.92";

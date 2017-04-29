@@ -71,21 +71,23 @@ public class CommandHandler extends SimpleChannelInboundHandler<CommandMessage> 
 		try {
 			// TODO How can you implement this without if-else statements?
 			if (msg.hasPing()) {
-
+				int nodeId = msg.getHeader().getNodeId();
 				if(msg.getHeader().getDestination() == RoutingConf.clusterId) {
 					//add into channels table
-					int nodeId = msg.getHeader().getNodeId();
+					
 					if (nodeId > 10) {
 						handleClientRequest(channel, nodeId);
 						forwardMessage(msg, channel, nodeId);
 						
-					} else if (ServerState.channelsTable.containsKey(msg.getHeader().getDestination())) {
-						//stop here
-						Hashtable<Channel, Integer> client = ServerState.channelsTable.get(nodeId);
-						Channel firstChannel = client.keys().nextElement();
-						firstChannel.writeAndFlush(msg);
-						
-						updateChannelsTable(client, firstChannel, nodeId);
+					} else if (!ServerState.channelsTable.isEmpty()) {
+						if (ServerState.channelsTable.containsKey(msg.getHeader().getDestination())) {
+							//stop here
+							Hashtable<Channel, Integer> client = ServerState.channelsTable.get(nodeId);
+							Channel firstChannel = client.keys().nextElement();
+							firstChannel.writeAndFlush(msg);
+							
+							updateChannelsTable(client, firstChannel, nodeId);
+						}
 						
 					} else { //from your neighbor
 						//forward anyway
