@@ -27,6 +27,9 @@ import java.util.Scanner;
 
 public class ClientApp implements CommListener {
 	private MessageClient mc;
+	public static int clusterId = 1;
+	public static String host = null;
+	public static int port;
 
 	public ClientApp(MessageClient mc) {
 		init(mc);
@@ -74,13 +77,14 @@ public class ClientApp implements CommListener {
 	
 		do {
 			System.out.flush();
-	        System.out.print("\n\n------------------------\n" +
-	        				"Menu\n------------------------\n" +
-	        				"* ping <destination>\n" +
+	        System.out.print("\n\n-----------------------------------------\n" +
+	        				"Menu: connected to " + host + ":" + port
+	        				+ "\n-----------------------------------------\n" +
+	        				"* ping <cluster_id>\n" +
 	        				"* ls\n" +
 							"* leader\n" +
-	                        "* read <fileName>\n" + 
-	                        "* write <filePath>\n" +
+	                        "* read <file_name>\n" + 
+	                        "* write <file_path>\n" +
 	                        "* quit\n\n\n" +
 	                        "> ");
 	        System.out.flush();
@@ -90,7 +94,7 @@ public class ClientApp implements CommListener {
 	        switch(commands[0]) {
 	          	case "ping":
 	          		if(commands.length > 1)
-	        	  	  mc.ping(Integer.valueOf(commands[1]));
+	          			mc.ping(Integer.valueOf(commands[1]));
 	        	  	break;
 				case "leader":
 					RedisServer.getInstance().getLocalhostJedis().select(0);
@@ -121,31 +125,35 @@ public class ClientApp implements CommListener {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		RedisServer.getInstance().getLocalhostJedis().select(0);
-		String leader = RedisServer.getInstance().getLocalhostJedis().get(String.valueOf(RoutingConf.clusterDestination));
-		String host;
-		int port;
-		if(leader != null) {
-			host = leader.split(":")[0];
-			port = Integer.parseInt(leader.split(":")[1]);
-		}else{
-			host = "localhost";
-			port = 4168;
-		}
-		try {
-//			TestSQLOperations testSQLOperations = new TestSQLOperations();
-//			testSQLOperations.createTable();
-			MessageClient mc = new MessageClient(host, port);
-			ClientApp ca = new ClientApp(mc);
-			ca.menu();
-
-			System.out.println("\n** exiting in 10 seconds. **");
-			System.out.flush();
-			Thread.sleep(10 * 1000);
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			CommConnection.getInstance().release();
-		}
+		
+			RedisServer.getInstance().getLocalhostJedis().select(0);
+			String leader = RedisServer.getInstance().getLocalhostJedis().get(String.valueOf(RoutingConf.clusterId));
+			
+			if(leader != null) {
+				host = leader.split(":")[0];
+				port = Integer.parseInt(leader.split(":")[1]);
+			}else{
+				host = "localhost";
+				port = 4168;
+			}
+			try {
+	//			TestSQLOperations testSQLOperations = new TestSQLOperations();
+	//			testSQLOperations.createTable();
+				MessageClient mc = new MessageClient(host, port);
+				ClientApp ca = new ClientApp(mc);
+				ca.menu();
+	
+				System.out.println("\n** exiting in 10 seconds. **");
+				System.out.flush();
+				Thread.sleep(10 * 1000);
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				CommConnection.getInstance().release();
+			}
+//		} 
+//	else {
+//			System.out.println("Syntax: runClient.sh <CLUSTER_ID>\n");
+//		}
 	}
 }

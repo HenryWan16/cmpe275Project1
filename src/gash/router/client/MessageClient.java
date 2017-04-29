@@ -16,6 +16,7 @@
 package gash.router.client;
 
 
+import gash.router.app.ClientApp;
 import gash.router.container.RoutingConf;
 import gash.router.server.raft.MessageUtil;
 
@@ -141,7 +142,7 @@ public class MessageClient {
 	public void sendReadRequest(String fname){
 		
 		// send a request to the server to read the file.
-		CommandMessage cmdb = MessageUtil.buildCommandMessage(MessageUtil.buildHeader(999,System.currentTimeMillis(), RoutingConf.clusterDestination),null,
+		CommandMessage cmdb = MessageUtil.buildCommandMessage(MessageUtil.buildHeader(999, System.currentTimeMillis(), ClientApp.clusterId),null,
 				MessageUtil.buildRequest(TaskType.REQUESTREADFILE,null,
 						MessageUtil.buildReadBody(fname,-1,-1,-1)),null);
 

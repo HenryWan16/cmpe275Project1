@@ -39,9 +39,8 @@ public class RoutingConf {
 	private int heartbeatDt = 2000;
 	private List<RoutingEntry> routing;
 	public static int clusterId = 1;
-	public static int clusterDestination = 10;
 	public static int clientId = clusterId * 10 + clusterId;
-	public static String redis = "169.254.250.92";
+	public static String redis = "localhost";
 	public static int maxHops = 10;
 
 	public HashMap<String, Integer> asHashMap() {

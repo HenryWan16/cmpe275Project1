@@ -71,28 +71,46 @@ public class CommandHandler extends SimpleChannelInboundHandler<CommandMessage> 
 		try {
 			// TODO How can you implement this without if-else statements?
 			if (msg.hasPing()) {
+				logger.info("Received a PING message.");
+				logger.info("Node ID = " + msg.getHeader().getNodeId());
+				logger.info("Destination ID = " + msg.getHeader().getDestination());
 				int nodeId = msg.getHeader().getNodeId();
 					//add into channels table
-					System.out.println("I am the ");
-					if (nodeId > 10) {
+				if (nodeId > 10) {
+					//save client channel
+					if ((msg.getHeader().getNodeId() % 10) == RoutingConf.clusterId) {
+						logger.info("in HEREEEEEE");
 						handleClientRequest(channel, nodeId);
-						forwardMessage(msg, channel, nodeId);
-						
-					} else if (!ServerState.channelsTable.isEmpty()) {
-						if (ServerState.channelsTable.containsKey(msg.getHeader().getDestination())) {
-							//stop here
-							Hashtable<Channel, Integer> client = ServerState.channelsTable.get(nodeId);
-							Channel firstChannel = client.keys().nextElement();
-							firstChannel.writeAndFlush(msg);
-							
-							updateChannelsTable(client, firstChannel, nodeId);
+					}
+					
+					if (msg.getHeader().getDestination() != RoutingConf.clusterId) {
+						logger.info("Not a cluster destination, just forwarding the message.");
+						if (ServerState.nextCluster.isActive()) {
+							ServerState.nextCluster.writeAndFlush(msg);
 						}
-						
-					} else { //from your neighbor
-						//forward anyway
+					} else {
+						logger.info("Reached cluster destination, rebuiding & forwarding the message.");
 						forwardMessage(msg, channel, nodeId);
 					}
-
+				} else { //node <10
+					if ((msg.getHeader().getDestination() % 10) != RoutingConf.clusterId) {
+						logger.info("Not a cluster destination, just forwarding the message.");
+						if (ServerState.nextCluster.isActive()) {
+							ServerState.nextCluster.writeAndFlush(msg);
+						}
+					} else {
+						//stop here
+						logger.info("REPLY BACK TO CLIENT HERE.");
+						if (!ServerState.channelsTable.isEmpty()) {
+							Hashtable<Channel, Integer> client = ServerState.channelsTable.get(msg.getHeader().getDestination());
+							Channel clientChannel = client.keys().nextElement();
+							clientChannel.writeAndFlush(msg);
+							
+							//updateChannelsTable(client, clientChannel, nodeId);
+						}
+					}
+				}
+					
 
 			} else if (msg.hasRequest()) {
 				
@@ -120,30 +138,33 @@ public class CommandHandler extends SimpleChannelInboundHandler<CommandMessage> 
 	public static void handleClientRequest(Channel channel, int nodeId) {
 		Hashtable<Channel, Integer> client = new Hashtable<Channel, Integer>();
 		if (!ServerState.channelsTable.containsKey(nodeId)) {
+			logger.info("Saving client channel");
 			//first time here
 			client.put(channel, 1);
 			ServerState.channelsTable.put(nodeId, client);
+			logger.info("table size: " + String.valueOf(ServerState.channelsTable.size()));
 		} else { //update request count
-			Hashtable<Channel, Integer> savedClient = ServerState.channelsTable.get(nodeId);
-			Channel firstChannel = savedClient.keys().nextElement();
-			int count = client.get(firstChannel);
-			savedClient.put(firstChannel, count+1);
-			ServerState.channelsTable.put(nodeId, savedClient);
+//			Hashtable<Channel, Integer> savedClient = ServerState.channelsTable.get(nodeId);
+//			Channel firstChannel = savedClient.keys().nextElement();
+//			int count = client.get(firstChannel);
+//			savedClient.put(firstChannel, count+1);
+//			ServerState.channelsTable.put(nodeId, savedClient);
 		}
 	}
 	
-	public static void updateChannelsTable(Hashtable<Channel, Integer> client, Channel firstChannel, int nodeId) {
-		int count = client.get(firstChannel);
+	public static void updateChannelsTable(Hashtable<Channel, Integer> client, Channel clientChannel, int nodeId) {
+		int count = client.get(clientChannel);
 		if (count == 1) {
 			ServerState.channelsTable.remove(nodeId);
 		} else { //minus request -1
-			client.put(firstChannel, count-1);
+			client.put(clientChannel, count-1);
 			ServerState.channelsTable.put(nodeId, client);
 		}
 	}
 	
 	public void forwardMessage(CommandMessage msg, Channel channel, int nodeId) {
-		System.out.println("************");
+		logger.info("Forwarding message...");
+		
 		Header.Builder hb = Header.newBuilder();
 		hb.setNodeId(msg.getHeader().getDestination());
 		hb.setTime(msg.getHeader().getTime());
@@ -153,11 +174,13 @@ public class CommandHandler extends SimpleChannelInboundHandler<CommandMessage> 
 		CommandMessage.Builder cmb = CommandMessage.newBuilder();
 		cmb.setHeader(hb);
 		cmb.setPing(true);
-		
+	
 		if (ServerState.nextCluster.isActive()) {
 			ServerState.nextCluster.writeAndFlush(cmb.build());
-			System.out.println("1111111111111");
+		} else {
+			logger.info("Cannot connect to next cluster");
 		}
+			
 	}
 
 	/**

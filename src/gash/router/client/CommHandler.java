@@ -95,6 +95,7 @@ public class CommHandler extends SimpleChannelInboundHandler<CommandMessage> {
 
 		}else if(msg.hasPing()){
 			logger.info("Ping success");
+			
 		}else if(msg.hasResponse()){
 			TaskType type = msg.getResponse().getResponseType();
 			Response.Status status =  msg.getResponse().getStatus();
