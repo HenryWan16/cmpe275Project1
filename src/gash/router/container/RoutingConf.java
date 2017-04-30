@@ -40,7 +40,7 @@ public class RoutingConf {
 	private List<RoutingEntry> routing;
 	public static int clusterId = 6;
 	public static int clientId = clusterId * 10 + clusterId;
-	public static String redis = "192.168.1.40";
+	public static String redis = "192.168.1.20";
 	public static int maxHops = 10;
 
 	public HashMap<String, Integer> asHashMap() {

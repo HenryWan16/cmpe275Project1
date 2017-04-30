@@ -4,13 +4,9 @@
     <list default="true" id="c054b1c7-8499-48ab-b5c2-5751c17fab07" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/generated/pipe/common/Common.java" afterPath="$PROJECT_DIR$/generated/pipe/common/Common.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/generated/pipe/work/Work.java" afterPath="$PROJECT_DIR$/generated/pipe/work/Work.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/generated/routing/Pipe.java" afterPath="$PROJECT_DIR$/generated/routing/Pipe.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/runtime/route-4.conf" afterPath="$PROJECT_DIR$/runtime/route-4.conf" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/common.proto" afterPath="$PROJECT_DIR$/resources/common.proto" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/gash/router/container/RoutingConf.java" afterPath="$PROJECT_DIR$/src/gash/router/container/RoutingConf.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/gash/router/server/CommandHandler.java" afterPath="$PROJECT_DIR$/src/gash/router/server/CommandHandler.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/gash/router/server/edges/EdgeMonitor.java" afterPath="$PROJECT_DIR$/src/gash/router/server/edges/EdgeMonitor.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/gash/router/server/messages/CommandSession.java" afterPath="$PROJECT_DIR$/src/gash/router/server/messages/CommandSession.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/gash/router/server/raft/MessageUtil.java" afterPath="$PROJECT_DIR$/src/gash/router/server/raft/MessageUtil.java" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -41,16 +37,6 @@
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="108">
               <caret line="10" column="13" lean-forward="false" selection-start-line="10" selection-start-column="13" selection-end-line="10" selection-end-column="13" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="NodeState.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/gash/router/server/raft/NodeState.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="108">
-              <caret line="4" column="17" lean-forward="false" selection-start-line="4" selection-start-column="17" selection-end-line="4" selection-end-column="17" />
               <folding />
             </state>
           </provider>
@@ -98,8 +84,8 @@
       <file leaf-file-name="RoutingConf.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/gash/router/container/RoutingConf.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="783">
-              <caret line="49" column="37" lean-forward="false" selection-start-line="49" selection-start-column="37" selection-end-line="49" selection-end-column="37" />
+            <state relative-caret-position="837">
+              <caret line="54" column="5" lean-forward="false" selection-start-line="54" selection-start-column="5" selection-end-line="54" selection-end-column="5" />
               <folding />
             </state>
           </provider>
@@ -119,23 +105,38 @@
         <entry file="file://$PROJECT_DIR$/src/gash/router/server/edges/EdgeMonitor.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="297">
-              <caret line="50" column="30" lean-forward="true" selection-start-line="50" selection-start-column="30" selection-end-line="50" selection-end-column="30" />
+              <caret line="50" column="30" lean-forward="false" selection-start-line="50" selection-start-column="30" selection-end-line="50" selection-end-column="30" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="CommandSession.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="CommandSession.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/gash/router/server/messages/CommandSession.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="586">
-              <caret line="253" column="21" lean-forward="true" selection-start-line="253" selection-start-column="21" selection-end-line="253" selection-end-column="21" />
+            <state relative-caret-position="373">
+              <caret line="261" column="58" lean-forward="false" selection-start-line="261" selection-start-column="58" selection-end-line="261" selection-end-column="58" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="MessageUtil.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/gash/router/server/raft/MessageUtil.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="378">
+              <caret line="146" column="21" lean-forward="false" selection-start-line="146" selection-start-column="21" selection-end-line="146" selection-end-column="21" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
     </leaf>
+  </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>c</find>
+    </findStrings>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -151,11 +152,12 @@
         <option value="$PROJECT_DIR$/src/gash/router/client/MessageClient.java" />
         <option value="$PROJECT_DIR$/src/gash/router/client/CommHandler.java" />
         <option value="$PROJECT_DIR$/src/gash/router/server/messages/QOSWorker.java" />
-        <option value="$PROJECT_DIR$/src/gash/router/container/RoutingConf.java" />
         <option value="$PROJECT_DIR$/src/gash/router/server/CommandHandler.java" />
         <option value="$PROJECT_DIR$/src/gash/router/server/edges/EdgeMonitor.java" />
         <option value="$PROJECT_DIR$/src/gash/router/server/raft/RaftHandler.java" />
         <option value="$PROJECT_DIR$/src/gash/router/server/messages/CommandSession.java" />
+        <option value="$PROJECT_DIR$/src/gash/router/container/RoutingConf.java" />
+        <option value="$PROJECT_DIR$/src/gash/router/server/raft/MessageUtil.java" />
       </list>
     </option>
   </component>
@@ -861,14 +863,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/gash/router/container/RoutingConf.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="783">
-          <caret line="49" column="37" lean-forward="false" selection-start-line="49" selection-start-column="37" selection-end-line="49" selection-end-column="37" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/gash/router/server/raft/CandidateNode.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="108">
@@ -888,7 +882,7 @@
     <entry file="file://$PROJECT_DIR$/src/gash/router/server/edges/EdgeMonitor.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="297">
-          <caret line="50" column="30" lean-forward="true" selection-start-line="50" selection-start-column="30" selection-end-line="50" selection-end-column="30" />
+          <caret line="50" column="30" lean-forward="false" selection-start-line="50" selection-start-column="30" selection-end-line="50" selection-end-column="30" />
           <folding />
         </state>
       </provider>
@@ -904,10 +898,26 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/gash/router/container/RoutingConf.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="837">
+          <caret line="54" column="5" lean-forward="false" selection-start-line="54" selection-start-column="5" selection-end-line="54" selection-end-column="5" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/gash/router/server/messages/CommandSession.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="586">
-          <caret line="253" column="21" lean-forward="true" selection-start-line="253" selection-start-column="21" selection-end-line="253" selection-end-column="21" />
+        <state relative-caret-position="373">
+          <caret line="261" column="58" lean-forward="false" selection-start-line="261" selection-start-column="58" selection-end-line="261" selection-end-column="58" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/gash/router/server/raft/MessageUtil.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="378">
+          <caret line="146" column="21" lean-forward="false" selection-start-line="146" selection-start-column="21" selection-end-line="146" selection-end-column="21" />
           <folding />
         </state>
       </provider>

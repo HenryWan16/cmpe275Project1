@@ -140,7 +140,7 @@ public class MessageUtil {
 	public static ChunkLocation.Builder buildChunkLocation(int id, Node.Builder node) {
 		ChunkLocation.Builder location = ChunkLocation.newBuilder();
 		location.setChunkId(id);
-		location.setNode(node);
+		location.addNode(node);
 		return location;
 	}
 	

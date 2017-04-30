@@ -107,5 +107,5 @@ message ReadResponse{
 
 message ChunkLocation{
  optional int32 chunk_id = 1;
- optional Node node =2;
+ repeated Node node =2;
 }
