@@ -3462,38 +3462,13 @@ public final class Work {
     long getSecret();
 
     /**
-     * <code>map&lt;string, string&gt; log = 16;</code>
+     * <code>optional bool stolen_msg = 16;</code>
      */
-    int getLogCount();
+    boolean hasStolenMsg();
     /**
-     * <code>map&lt;string, string&gt; log = 16;</code>
+     * <code>optional bool stolen_msg = 16;</code>
      */
-    boolean containsLog(
-        java.lang.String key);
-    /**
-     * Use {@link #getLogMap()} instead.
-     */
-    @java.lang.Deprecated
-    java.util.Map<java.lang.String, java.lang.String>
-    getLog();
-    /**
-     * <code>map&lt;string, string&gt; log = 16;</code>
-     */
-    java.util.Map<java.lang.String, java.lang.String>
-    getLogMap();
-    /**
-     * <code>map&lt;string, string&gt; log = 16;</code>
-     */
-
-    java.lang.String getLogOrDefault(
-        java.lang.String key,
-        java.lang.String defaultValue);
-    /**
-     * <code>map&lt;string, string&gt; log = 16;</code>
-     */
-
-    java.lang.String getLogOrThrow(
-        java.lang.String key);
+    boolean getStolenMsg();
 
     /**
      * <code>optional .Failure err = 3;</code>
@@ -3667,47 +3642,6 @@ public final class Work {
      */
     routing.Pipe.CommandMessageOrBuilder getCmdMessageOrBuilder();
 
-    /**
-     * <code>optional .TaskStatus task_status = 17;</code>
-     */
-    boolean hasTaskStatus();
-    /**
-     * <code>optional .TaskStatus task_status = 17;</code>
-     */
-    pipe.work.Work.TaskStatus getTaskStatus();
-    /**
-     * <code>optional .TaskStatus task_status = 17;</code>
-     */
-    pipe.work.Work.TaskStatusOrBuilder getTaskStatusOrBuilder();
-
-    /**
-     * <code>optional string delete_file = 18;</code>
-     */
-    boolean hasDeleteFile();
-    /**
-     * <code>optional string delete_file = 18;</code>
-     */
-    java.lang.String getDeleteFile();
-    /**
-     * <code>optional string delete_file = 18;</code>
-     */
-    com.google.protobuf.ByteString
-        getDeleteFileBytes();
-
-    /**
-     * <code>optional string delete_log = 19;</code>
-     */
-    boolean hasDeleteLog();
-    /**
-     * <code>optional string delete_log = 19;</code>
-     */
-    java.lang.String getDeleteLog();
-    /**
-     * <code>optional string delete_log = 19;</code>
-     */
-    com.google.protobuf.ByteString
-        getDeleteLogBytes();
-
     public pipe.work.Work.WorkMessage.PayloadCase getPayloadCase();
   }
   /**
@@ -3727,6 +3661,7 @@ public final class Work {
     }
     private WorkMessage() {
       secret_ = 0L;
+      stolenMsg_ = false;
     }
 
     @java.lang.Override
@@ -3934,43 +3869,9 @@ public final class Work {
               payloadCase_ = 15;
               break;
             }
-            case 130: {
-              if (!((mutable_bitField0_ & 0x00000004) == 0x00000004)) {
-                log_ = com.google.protobuf.MapField.newMapField(
-                    LogDefaultEntryHolder.defaultEntry);
-                mutable_bitField0_ |= 0x00000004;
-              }
-              com.google.protobuf.MapEntry<java.lang.String, java.lang.String>
-              log__ = input.readMessage(
-                  LogDefaultEntryHolder.defaultEntry.getParserForType(), extensionRegistry);
-              log_.getMutableMap().put(
-                  log__.getKey(), log__.getValue());
-              break;
-            }
-            case 138: {
-              pipe.work.Work.TaskStatus.Builder subBuilder = null;
-              if (payloadCase_ == 17) {
-                subBuilder = ((pipe.work.Work.TaskStatus) payload_).toBuilder();
-              }
-              payload_ =
-                  input.readMessage(pipe.work.Work.TaskStatus.PARSER, extensionRegistry);
-              if (subBuilder != null) {
-                subBuilder.mergeFrom((pipe.work.Work.TaskStatus) payload_);
-                payload_ = subBuilder.buildPartial();
-              }
-              payloadCase_ = 17;
-              break;
-            }
-            case 146: {
-              com.google.protobuf.ByteString bs = input.readBytes();
-              payloadCase_ = 18;
-              payload_ = bs;
-              break;
-            }
-            case 154: {
-              com.google.protobuf.ByteString bs = input.readBytes();
-              payloadCase_ = 19;
-              payload_ = bs;
+            case 128: {
+              bitField0_ |= 0x00000004;
+              stolenMsg_ = input.readBool();
               break;
             }
           }
@@ -3990,17 +3891,6 @@ public final class Work {
       return pipe.work.Work.internal_static_WorkMessage_descriptor;
     }
 
-    @SuppressWarnings({"rawtypes"})
-    protected com.google.protobuf.MapField internalGetMapField(
-        int number) {
-      switch (number) {
-        case 16:
-          return internalGetLog();
-        default:
-          throw new RuntimeException(
-              "Invalid map field number: " + number);
-      }
-    }
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
       return pipe.work.Work.internal_static_WorkMessage_fieldAccessorTable
@@ -4025,9 +3915,6 @@ public final class Work {
       REQUEST(13),
       RESPONSE(14),
       CMD_MESSAGE(15),
-      TASK_STATUS(17),
-      DELETE_FILE(18),
-      DELETE_LOG(19),
       PAYLOAD_NOT_SET(0);
       private final int value;
       private PayloadCase(int value) {
@@ -4055,9 +3942,6 @@ public final class Work {
           case 13: return REQUEST;
           case 14: return RESPONSE;
           case 15: return CMD_MESSAGE;
-          case 17: return TASK_STATUS;
-          case 18: return DELETE_FILE;
-          case 19: return DELETE_LOG;
           case 0: return PAYLOAD_NOT_SET;
           default: return null;
         }
@@ -4109,80 +3993,19 @@ public final class Work {
       return secret_;
     }
 
-    public static final int LOG_FIELD_NUMBER = 16;
-    private static final class LogDefaultEntryHolder {
-      static final com.google.protobuf.MapEntry<
-          java.lang.String, java.lang.String> defaultEntry =
-              com.google.protobuf.MapEntry
-              .<java.lang.String, java.lang.String>newDefaultInstance(
-                  pipe.work.Work.internal_static_WorkMessage_LogEntry_descriptor, 
-                  com.google.protobuf.WireFormat.FieldType.STRING,
-                  "",
-                  com.google.protobuf.WireFormat.FieldType.STRING,
-                  "");
-    }
-    private com.google.protobuf.MapField<
-        java.lang.String, java.lang.String> log_;
-    private com.google.protobuf.MapField<java.lang.String, java.lang.String>
-    internalGetLog() {
-      if (log_ == null) {
-        return com.google.protobuf.MapField.emptyMapField(
-            LogDefaultEntryHolder.defaultEntry);
-      }
-      return log_;
-    }
-
-    public int getLogCount() {
-      return internalGetLog().getMap().size();
+    public static final int STOLEN_MSG_FIELD_NUMBER = 16;
+    private boolean stolenMsg_;
+    /**
+     * <code>optional bool stolen_msg = 16;</code>
+     */
+    public boolean hasStolenMsg() {
+      return ((bitField0_ & 0x00000004) == 0x00000004);
     }
     /**
-     * <code>map&lt;string, string&gt; log = 16;</code>
+     * <code>optional bool stolen_msg = 16;</code>
      */
-
-    public boolean containsLog(
-        java.lang.String key) {
-      if (key == null) { throw new java.lang.NullPointerException(); }
-      return internalGetLog().getMap().containsKey(key);
-    }
-    /**
-     * Use {@link #getLogMap()} instead.
-     */
-    @java.lang.Deprecated
-    public java.util.Map<java.lang.String, java.lang.String> getLog() {
-      return getLogMap();
-    }
-    /**
-     * <code>map&lt;string, string&gt; log = 16;</code>
-     */
-
-    public java.util.Map<java.lang.String, java.lang.String> getLogMap() {
-      return internalGetLog().getMap();
-    }
-    /**
-     * <code>map&lt;string, string&gt; log = 16;</code>
-     */
-
-    public java.lang.String getLogOrDefault(
-        java.lang.String key,
-        java.lang.String defaultValue) {
-      if (key == null) { throw new java.lang.NullPointerException(); }
-      java.util.Map<java.lang.String, java.lang.String> map =
-          internalGetLog().getMap();
-      return map.containsKey(key) ? map.get(key) : defaultValue;
-    }
-    /**
-     * <code>map&lt;string, string&gt; log = 16;</code>
-     */
-
-    public java.lang.String getLogOrThrow(
-        java.lang.String key) {
-      if (key == null) { throw new java.lang.NullPointerException(); }
-      java.util.Map<java.lang.String, java.lang.String> map =
-          internalGetLog().getMap();
-      if (!map.containsKey(key)) {
-        throw new java.lang.IllegalArgumentException();
-      }
-      return map.get(key);
+    public boolean getStolenMsg() {
+      return stolenMsg_;
     }
 
     public static final int ERR_FIELD_NUMBER = 3;
@@ -4508,130 +4331,6 @@ public final class Work {
       return routing.Pipe.CommandMessage.getDefaultInstance();
     }
 
-    public static final int TASK_STATUS_FIELD_NUMBER = 17;
-    /**
-     * <code>optional .TaskStatus task_status = 17;</code>
-     */
-    public boolean hasTaskStatus() {
-      return payloadCase_ == 17;
-    }
-    /**
-     * <code>optional .TaskStatus task_status = 17;</code>
-     */
-    public pipe.work.Work.TaskStatus getTaskStatus() {
-      if (payloadCase_ == 17) {
-         return (pipe.work.Work.TaskStatus) payload_;
-      }
-      return pipe.work.Work.TaskStatus.getDefaultInstance();
-    }
-    /**
-     * <code>optional .TaskStatus task_status = 17;</code>
-     */
-    public pipe.work.Work.TaskStatusOrBuilder getTaskStatusOrBuilder() {
-      if (payloadCase_ == 17) {
-         return (pipe.work.Work.TaskStatus) payload_;
-      }
-      return pipe.work.Work.TaskStatus.getDefaultInstance();
-    }
-
-    public static final int DELETE_FILE_FIELD_NUMBER = 18;
-    /**
-     * <code>optional string delete_file = 18;</code>
-     */
-    public boolean hasDeleteFile() {
-      return payloadCase_ == 18;
-    }
-    /**
-     * <code>optional string delete_file = 18;</code>
-     */
-    public java.lang.String getDeleteFile() {
-      java.lang.Object ref = "";
-      if (payloadCase_ == 18) {
-        ref = payload_;
-      }
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        if (bs.isValidUtf8() && (payloadCase_ == 18)) {
-          payload_ = s;
-        }
-        return s;
-      }
-    }
-    /**
-     * <code>optional string delete_file = 18;</code>
-     */
-    public com.google.protobuf.ByteString
-        getDeleteFileBytes() {
-      java.lang.Object ref = "";
-      if (payloadCase_ == 18) {
-        ref = payload_;
-      }
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        if (payloadCase_ == 18) {
-          payload_ = b;
-        }
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-
-    public static final int DELETE_LOG_FIELD_NUMBER = 19;
-    /**
-     * <code>optional string delete_log = 19;</code>
-     */
-    public boolean hasDeleteLog() {
-      return payloadCase_ == 19;
-    }
-    /**
-     * <code>optional string delete_log = 19;</code>
-     */
-    public java.lang.String getDeleteLog() {
-      java.lang.Object ref = "";
-      if (payloadCase_ == 19) {
-        ref = payload_;
-      }
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        if (bs.isValidUtf8() && (payloadCase_ == 19)) {
-          payload_ = s;
-        }
-        return s;
-      }
-    }
-    /**
-     * <code>optional string delete_log = 19;</code>
-     */
-    public com.google.protobuf.ByteString
-        getDeleteLogBytes() {
-      java.lang.Object ref = "";
-      if (payloadCase_ == 19) {
-        ref = payload_;
-      }
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        if (payloadCase_ == 19) {
-          payload_ = b;
-        }
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
@@ -4708,12 +4407,6 @@ public final class Work {
           return false;
         }
       }
-      if (hasTaskStatus()) {
-        if (!getTaskStatus().isInitialized()) {
-          memoizedIsInitialized = 0;
-          return false;
-        }
-      }
       memoizedIsInitialized = 1;
       return true;
     }
@@ -4763,20 +4456,8 @@ public final class Work {
       if (payloadCase_ == 15) {
         output.writeMessage(15, (routing.Pipe.CommandMessage) payload_);
       }
-      com.google.protobuf.GeneratedMessageV3
-        .serializeStringMapTo(
-          output,
-          internalGetLog(),
-          LogDefaultEntryHolder.defaultEntry,
-          16);
-      if (payloadCase_ == 17) {
-        output.writeMessage(17, (pipe.work.Work.TaskStatus) payload_);
-      }
-      if (payloadCase_ == 18) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 18, payload_);
-      }
-      if (payloadCase_ == 19) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 19, payload_);
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        output.writeBool(16, stolenMsg_);
       }
       unknownFields.writeTo(output);
     }
@@ -4843,25 +4524,9 @@ public final class Work {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(15, (routing.Pipe.CommandMessage) payload_);
       }
-      for (java.util.Map.Entry<java.lang.String, java.lang.String> entry
-           : internalGetLog().getMap().entrySet()) {
-        com.google.protobuf.MapEntry<java.lang.String, java.lang.String>
-        log__ = LogDefaultEntryHolder.defaultEntry.newBuilderForType()
-            .setKey(entry.getKey())
-            .setValue(entry.getValue())
-            .build();
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
         size += com.google.protobuf.CodedOutputStream
-            .computeMessageSize(16, log__);
-      }
-      if (payloadCase_ == 17) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(17, (pipe.work.Work.TaskStatus) payload_);
-      }
-      if (payloadCase_ == 18) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(18, payload_);
-      }
-      if (payloadCase_ == 19) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(19, payload_);
+          .computeBoolSize(16, stolenMsg_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -4890,8 +4555,11 @@ public final class Work {
         result = result && (getSecret()
             == other.getSecret());
       }
-      result = result && internalGetLog().equals(
-          other.internalGetLog());
+      result = result && (hasStolenMsg() == other.hasStolenMsg());
+      if (hasStolenMsg()) {
+        result = result && (getStolenMsg()
+            == other.getStolenMsg());
+      }
       result = result && getPayloadCase().equals(
           other.getPayloadCase());
       if (!result) return false;
@@ -4944,18 +4612,6 @@ public final class Work {
           result = result && getCmdMessage()
               .equals(other.getCmdMessage());
           break;
-        case 17:
-          result = result && getTaskStatus()
-              .equals(other.getTaskStatus());
-          break;
-        case 18:
-          result = result && getDeleteFile()
-              .equals(other.getDeleteFile());
-          break;
-        case 19:
-          result = result && getDeleteLog()
-              .equals(other.getDeleteLog());
-          break;
         case 0:
         default:
       }
@@ -4979,9 +4635,10 @@ public final class Work {
         hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
             getSecret());
       }
-      if (!internalGetLog().getMap().isEmpty()) {
-        hash = (37 * hash) + LOG_FIELD_NUMBER;
-        hash = (53 * hash) + internalGetLog().hashCode();
+      if (hasStolenMsg()) {
+        hash = (37 * hash) + STOLEN_MSG_FIELD_NUMBER;
+        hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
+            getStolenMsg());
       }
       switch (payloadCase_) {
         case 3:
@@ -5032,18 +4689,6 @@ public final class Work {
         case 15:
           hash = (37 * hash) + CMD_MESSAGE_FIELD_NUMBER;
           hash = (53 * hash) + getCmdMessage().hashCode();
-          break;
-        case 17:
-          hash = (37 * hash) + TASK_STATUS_FIELD_NUMBER;
-          hash = (53 * hash) + getTaskStatus().hashCode();
-          break;
-        case 18:
-          hash = (37 * hash) + DELETE_FILE_FIELD_NUMBER;
-          hash = (53 * hash) + getDeleteFile().hashCode();
-          break;
-        case 19:
-          hash = (37 * hash) + DELETE_LOG_FIELD_NUMBER;
-          hash = (53 * hash) + getDeleteLog().hashCode();
           break;
         case 0:
         default:
@@ -5146,28 +4791,6 @@ public final class Work {
         return pipe.work.Work.internal_static_WorkMessage_descriptor;
       }
 
-      @SuppressWarnings({"rawtypes"})
-      protected com.google.protobuf.MapField internalGetMapField(
-          int number) {
-        switch (number) {
-          case 16:
-            return internalGetLog();
-          default:
-            throw new RuntimeException(
-                "Invalid map field number: " + number);
-        }
-      }
-      @SuppressWarnings({"rawtypes"})
-      protected com.google.protobuf.MapField internalGetMutableMapField(
-          int number) {
-        switch (number) {
-          case 16:
-            return internalGetMutableLog();
-          default:
-            throw new RuntimeException(
-                "Invalid map field number: " + number);
-        }
-      }
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
         return pipe.work.Work.internal_static_WorkMessage_fieldAccessorTable
@@ -5201,7 +4824,8 @@ public final class Work {
         bitField0_ = (bitField0_ & ~0x00000001);
         secret_ = 0L;
         bitField0_ = (bitField0_ & ~0x00000002);
-        internalGetMutableLog().clear();
+        stolenMsg_ = false;
+        bitField0_ = (bitField0_ & ~0x00000004);
         payloadCase_ = 0;
         payload_ = null;
         return this;
@@ -5240,8 +4864,10 @@ public final class Work {
           to_bitField0_ |= 0x00000002;
         }
         result.secret_ = secret_;
-        result.log_ = internalGetLog();
-        result.log_.makeImmutable();
+        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
+          to_bitField0_ |= 0x00000004;
+        }
+        result.stolenMsg_ = stolenMsg_;
         if (payloadCase_ == 3) {
           if (errBuilder_ == null) {
             result.payload_ = payload_;
@@ -5322,19 +4948,6 @@ public final class Work {
             result.payload_ = cmdMessageBuilder_.build();
           }
         }
-        if (payloadCase_ == 17) {
-          if (taskStatusBuilder_ == null) {
-            result.payload_ = payload_;
-          } else {
-            result.payload_ = taskStatusBuilder_.build();
-          }
-        }
-        if (payloadCase_ == 18) {
-          result.payload_ = payload_;
-        }
-        if (payloadCase_ == 19) {
-          result.payload_ = payload_;
-        }
         result.bitField0_ = to_bitField0_;
         result.payloadCase_ = payloadCase_;
         onBuilt();
@@ -5384,8 +4997,9 @@ public final class Work {
         if (other.hasSecret()) {
           setSecret(other.getSecret());
         }
-        internalGetMutableLog().mergeFrom(
-            other.internalGetLog());
+        if (other.hasStolenMsg()) {
+          setStolenMsg(other.getStolenMsg());
+        }
         switch (other.getPayloadCase()) {
           case ERR: {
             mergeErr(other.getErr());
@@ -5433,22 +5047,6 @@ public final class Work {
           }
           case CMD_MESSAGE: {
             mergeCmdMessage(other.getCmdMessage());
-            break;
-          }
-          case TASK_STATUS: {
-            mergeTaskStatus(other.getTaskStatus());
-            break;
-          }
-          case DELETE_FILE: {
-            payloadCase_ = 18;
-            payload_ = other.payload_;
-            onChanged();
-            break;
-          }
-          case DELETE_LOG: {
-            payloadCase_ = 19;
-            payload_ = other.payload_;
-            onChanged();
             break;
           }
           case PAYLOAD_NOT_SET: {
@@ -5516,11 +5114,6 @@ public final class Work {
         }
         if (hasCmdMessage()) {
           if (!getCmdMessage().isInitialized()) {
-            return false;
-          }
-        }
-        if (hasTaskStatus()) {
-          if (!getTaskStatus().isInitialized()) {
             return false;
           }
         }
@@ -5711,126 +5304,35 @@ public final class Work {
         return this;
       }
 
-      private com.google.protobuf.MapField<
-          java.lang.String, java.lang.String> log_;
-      private com.google.protobuf.MapField<java.lang.String, java.lang.String>
-      internalGetLog() {
-        if (log_ == null) {
-          return com.google.protobuf.MapField.emptyMapField(
-              LogDefaultEntryHolder.defaultEntry);
-        }
-        return log_;
-      }
-      private com.google.protobuf.MapField<java.lang.String, java.lang.String>
-      internalGetMutableLog() {
-        onChanged();;
-        if (log_ == null) {
-          log_ = com.google.protobuf.MapField.newMapField(
-              LogDefaultEntryHolder.defaultEntry);
-        }
-        if (!log_.isMutable()) {
-          log_ = log_.copy();
-        }
-        return log_;
-      }
-
-      public int getLogCount() {
-        return internalGetLog().getMap().size();
+      private boolean stolenMsg_ ;
+      /**
+       * <code>optional bool stolen_msg = 16;</code>
+       */
+      public boolean hasStolenMsg() {
+        return ((bitField0_ & 0x00000004) == 0x00000004);
       }
       /**
-       * <code>map&lt;string, string&gt; log = 16;</code>
+       * <code>optional bool stolen_msg = 16;</code>
        */
-
-      public boolean containsLog(
-          java.lang.String key) {
-        if (key == null) { throw new java.lang.NullPointerException(); }
-        return internalGetLog().getMap().containsKey(key);
+      public boolean getStolenMsg() {
+        return stolenMsg_;
       }
       /**
-       * Use {@link #getLogMap()} instead.
+       * <code>optional bool stolen_msg = 16;</code>
        */
-      @java.lang.Deprecated
-      public java.util.Map<java.lang.String, java.lang.String> getLog() {
-        return getLogMap();
-      }
-      /**
-       * <code>map&lt;string, string&gt; log = 16;</code>
-       */
-
-      public java.util.Map<java.lang.String, java.lang.String> getLogMap() {
-        return internalGetLog().getMap();
-      }
-      /**
-       * <code>map&lt;string, string&gt; log = 16;</code>
-       */
-
-      public java.lang.String getLogOrDefault(
-          java.lang.String key,
-          java.lang.String defaultValue) {
-        if (key == null) { throw new java.lang.NullPointerException(); }
-        java.util.Map<java.lang.String, java.lang.String> map =
-            internalGetLog().getMap();
-        return map.containsKey(key) ? map.get(key) : defaultValue;
-      }
-      /**
-       * <code>map&lt;string, string&gt; log = 16;</code>
-       */
-
-      public java.lang.String getLogOrThrow(
-          java.lang.String key) {
-        if (key == null) { throw new java.lang.NullPointerException(); }
-        java.util.Map<java.lang.String, java.lang.String> map =
-            internalGetLog().getMap();
-        if (!map.containsKey(key)) {
-          throw new java.lang.IllegalArgumentException();
-        }
-        return map.get(key);
-      }
-
-      public Builder clearLog() {
-        internalGetMutableLog().getMutableMap()
-            .clear();
+      public Builder setStolenMsg(boolean value) {
+        bitField0_ |= 0x00000004;
+        stolenMsg_ = value;
+        onChanged();
         return this;
       }
       /**
-       * <code>map&lt;string, string&gt; log = 16;</code>
+       * <code>optional bool stolen_msg = 16;</code>
        */
-
-      public Builder removeLog(
-          java.lang.String key) {
-        if (key == null) { throw new java.lang.NullPointerException(); }
-        internalGetMutableLog().getMutableMap()
-            .remove(key);
-        return this;
-      }
-      /**
-       * Use alternate mutation accessors instead.
-       */
-      @java.lang.Deprecated
-      public java.util.Map<java.lang.String, java.lang.String>
-      getMutableLog() {
-        return internalGetMutableLog().getMutableMap();
-      }
-      /**
-       * <code>map&lt;string, string&gt; log = 16;</code>
-       */
-      public Builder putLog(
-          java.lang.String key,
-          java.lang.String value) {
-        if (key == null) { throw new java.lang.NullPointerException(); }
-        if (value == null) { throw new java.lang.NullPointerException(); }
-        internalGetMutableLog().getMutableMap()
-            .put(key, value);
-        return this;
-      }
-      /**
-       * <code>map&lt;string, string&gt; log = 16;</code>
-       */
-
-      public Builder putAllLog(
-          java.util.Map<java.lang.String, java.lang.String> values) {
-        internalGetMutableLog().getMutableMap()
-            .putAll(values);
+      public Builder clearStolenMsg() {
+        bitField0_ = (bitField0_ & ~0x00000004);
+        stolenMsg_ = false;
+        onChanged();
         return this;
       }
 
@@ -7417,316 +6919,6 @@ public final class Work {
         onChanged();;
         return cmdMessageBuilder_;
       }
-
-      private com.google.protobuf.SingleFieldBuilderV3<
-          pipe.work.Work.TaskStatus, pipe.work.Work.TaskStatus.Builder, pipe.work.Work.TaskStatusOrBuilder> taskStatusBuilder_;
-      /**
-       * <code>optional .TaskStatus task_status = 17;</code>
-       */
-      public boolean hasTaskStatus() {
-        return payloadCase_ == 17;
-      }
-      /**
-       * <code>optional .TaskStatus task_status = 17;</code>
-       */
-      public pipe.work.Work.TaskStatus getTaskStatus() {
-        if (taskStatusBuilder_ == null) {
-          if (payloadCase_ == 17) {
-            return (pipe.work.Work.TaskStatus) payload_;
-          }
-          return pipe.work.Work.TaskStatus.getDefaultInstance();
-        } else {
-          if (payloadCase_ == 17) {
-            return taskStatusBuilder_.getMessage();
-          }
-          return pipe.work.Work.TaskStatus.getDefaultInstance();
-        }
-      }
-      /**
-       * <code>optional .TaskStatus task_status = 17;</code>
-       */
-      public Builder setTaskStatus(pipe.work.Work.TaskStatus value) {
-        if (taskStatusBuilder_ == null) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          payload_ = value;
-          onChanged();
-        } else {
-          taskStatusBuilder_.setMessage(value);
-        }
-        payloadCase_ = 17;
-        return this;
-      }
-      /**
-       * <code>optional .TaskStatus task_status = 17;</code>
-       */
-      public Builder setTaskStatus(
-          pipe.work.Work.TaskStatus.Builder builderForValue) {
-        if (taskStatusBuilder_ == null) {
-          payload_ = builderForValue.build();
-          onChanged();
-        } else {
-          taskStatusBuilder_.setMessage(builderForValue.build());
-        }
-        payloadCase_ = 17;
-        return this;
-      }
-      /**
-       * <code>optional .TaskStatus task_status = 17;</code>
-       */
-      public Builder mergeTaskStatus(pipe.work.Work.TaskStatus value) {
-        if (taskStatusBuilder_ == null) {
-          if (payloadCase_ == 17 &&
-              payload_ != pipe.work.Work.TaskStatus.getDefaultInstance()) {
-            payload_ = pipe.work.Work.TaskStatus.newBuilder((pipe.work.Work.TaskStatus) payload_)
-                .mergeFrom(value).buildPartial();
-          } else {
-            payload_ = value;
-          }
-          onChanged();
-        } else {
-          if (payloadCase_ == 17) {
-            taskStatusBuilder_.mergeFrom(value);
-          }
-          taskStatusBuilder_.setMessage(value);
-        }
-        payloadCase_ = 17;
-        return this;
-      }
-      /**
-       * <code>optional .TaskStatus task_status = 17;</code>
-       */
-      public Builder clearTaskStatus() {
-        if (taskStatusBuilder_ == null) {
-          if (payloadCase_ == 17) {
-            payloadCase_ = 0;
-            payload_ = null;
-            onChanged();
-          }
-        } else {
-          if (payloadCase_ == 17) {
-            payloadCase_ = 0;
-            payload_ = null;
-          }
-          taskStatusBuilder_.clear();
-        }
-        return this;
-      }
-      /**
-       * <code>optional .TaskStatus task_status = 17;</code>
-       */
-      public pipe.work.Work.TaskStatus.Builder getTaskStatusBuilder() {
-        return getTaskStatusFieldBuilder().getBuilder();
-      }
-      /**
-       * <code>optional .TaskStatus task_status = 17;</code>
-       */
-      public pipe.work.Work.TaskStatusOrBuilder getTaskStatusOrBuilder() {
-        if ((payloadCase_ == 17) && (taskStatusBuilder_ != null)) {
-          return taskStatusBuilder_.getMessageOrBuilder();
-        } else {
-          if (payloadCase_ == 17) {
-            return (pipe.work.Work.TaskStatus) payload_;
-          }
-          return pipe.work.Work.TaskStatus.getDefaultInstance();
-        }
-      }
-      /**
-       * <code>optional .TaskStatus task_status = 17;</code>
-       */
-      private com.google.protobuf.SingleFieldBuilderV3<
-          pipe.work.Work.TaskStatus, pipe.work.Work.TaskStatus.Builder, pipe.work.Work.TaskStatusOrBuilder> 
-          getTaskStatusFieldBuilder() {
-        if (taskStatusBuilder_ == null) {
-          if (!(payloadCase_ == 17)) {
-            payload_ = pipe.work.Work.TaskStatus.getDefaultInstance();
-          }
-          taskStatusBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-              pipe.work.Work.TaskStatus, pipe.work.Work.TaskStatus.Builder, pipe.work.Work.TaskStatusOrBuilder>(
-                  (pipe.work.Work.TaskStatus) payload_,
-                  getParentForChildren(),
-                  isClean());
-          payload_ = null;
-        }
-        payloadCase_ = 17;
-        onChanged();;
-        return taskStatusBuilder_;
-      }
-
-      /**
-       * <code>optional string delete_file = 18;</code>
-       */
-      public boolean hasDeleteFile() {
-        return payloadCase_ == 18;
-      }
-      /**
-       * <code>optional string delete_file = 18;</code>
-       */
-      public java.lang.String getDeleteFile() {
-        java.lang.Object ref = "";
-        if (payloadCase_ == 18) {
-          ref = payload_;
-        }
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (payloadCase_ == 18) {
-            if (bs.isValidUtf8()) {
-              payload_ = s;
-            }
-          }
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
-      }
-      /**
-       * <code>optional string delete_file = 18;</code>
-       */
-      public com.google.protobuf.ByteString
-          getDeleteFileBytes() {
-        java.lang.Object ref = "";
-        if (payloadCase_ == 18) {
-          ref = payload_;
-        }
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          if (payloadCase_ == 18) {
-            payload_ = b;
-          }
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <code>optional string delete_file = 18;</code>
-       */
-      public Builder setDeleteFile(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  payloadCase_ = 18;
-        payload_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional string delete_file = 18;</code>
-       */
-      public Builder clearDeleteFile() {
-        if (payloadCase_ == 18) {
-          payloadCase_ = 0;
-          payload_ = null;
-          onChanged();
-        }
-        return this;
-      }
-      /**
-       * <code>optional string delete_file = 18;</code>
-       */
-      public Builder setDeleteFileBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  payloadCase_ = 18;
-        payload_ = value;
-        onChanged();
-        return this;
-      }
-
-      /**
-       * <code>optional string delete_log = 19;</code>
-       */
-      public boolean hasDeleteLog() {
-        return payloadCase_ == 19;
-      }
-      /**
-       * <code>optional string delete_log = 19;</code>
-       */
-      public java.lang.String getDeleteLog() {
-        java.lang.Object ref = "";
-        if (payloadCase_ == 19) {
-          ref = payload_;
-        }
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (payloadCase_ == 19) {
-            if (bs.isValidUtf8()) {
-              payload_ = s;
-            }
-          }
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
-      }
-      /**
-       * <code>optional string delete_log = 19;</code>
-       */
-      public com.google.protobuf.ByteString
-          getDeleteLogBytes() {
-        java.lang.Object ref = "";
-        if (payloadCase_ == 19) {
-          ref = payload_;
-        }
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          if (payloadCase_ == 19) {
-            payload_ = b;
-          }
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <code>optional string delete_log = 19;</code>
-       */
-      public Builder setDeleteLog(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  payloadCase_ = 19;
-        payload_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional string delete_log = 19;</code>
-       */
-      public Builder clearDeleteLog() {
-        if (payloadCase_ == 19) {
-          payloadCase_ = 0;
-          payload_ = null;
-          onChanged();
-        }
-        return this;
-      }
-      /**
-       * <code>optional string delete_log = 19;</code>
-       */
-      public Builder setDeleteLogBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  payloadCase_ = 19;
-        payload_ = value;
-        onChanged();
-        return this;
-      }
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
         return super.setUnknownFields(unknownFields);
@@ -7806,11 +6998,6 @@ public final class Work {
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_WorkMessage_fieldAccessorTable;
-  private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_WorkMessage_LogEntry_descriptor;
-  private static final 
-    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_WorkMessage_LogEntry_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -7828,22 +7015,19 @@ public final class Work {
       "d\030\002 \002(\005\"*\n\014RegisterNode\022\014\n\004host\030\001 \002(\t\022\014\n" +
       "\004port\030\002 \002(\005\"a\n\nTaskStatus\022\020\n\010filename\030\001 " +
       "\002(\t\022\020\n\010chunk_id\030\002 \002(\005\022\022\n\nchunk_size\030\003 \002(" +
-      "\005\022\033\n\004node\030\004 \002(\0132\r.RegisterNode\"\276\004\n\013WorkM" +
+      "\005\022\033\n\004node\030\004 \002(\0132\r.RegisterNode\"\261\003\n\013WorkM" +
       "essage\022\027\n\006header\030\001 \001(\0132\007.Header\022\016\n\006secre",
-      "t\030\002 \002(\003\022\"\n\003log\030\020 \003(\0132\025.WorkMessage.LogEn" +
-      "try\022\027\n\003err\030\003 \001(\0132\010.FailureH\000\022\016\n\004ping\030\004 \001" +
-      "(\010H\000\022\032\n\004beat\030\005 \001(\0132\n.HeartbeatH\000\022\025\n\004task" +
-      "\030\006 \001(\0132\005.TaskH\000\022\033\n\005state\030\007 \001(\0132\n.WorkSta" +
-      "teH\000\022\037\n\006leader\030\010 \001(\0132\r.LeaderStatusH\000\022\027\n" +
-      "\006a_vote\030\n \001(\0132\005.VoteH\000\022\"\n\nreq_a_vote\030\013 \001" +
-      "(\0132\014.RequestVoteH\000\022\037\n\006a_node\030\014 \001(\0132\r.Reg" +
-      "isterNodeH\000\022\033\n\007request\030\r \001(\0132\010.RequestH\000" +
-      "\022\035\n\010response\030\016 \001(\0132\t.ResponseH\000\022&\n\013cmd_m" +
-      "essage\030\017 \001(\0132\017.CommandMessageH\000\022\"\n\013task_",
-      "status\030\021 \001(\0132\013.TaskStatusH\000\022\025\n\013delete_fi" +
-      "le\030\022 \001(\tH\000\022\024\n\ndelete_log\030\023 \001(\tH\000\032*\n\010LogE" +
-      "ntry\022\013\n\003key\030\001 \001(\t\022\r\n\005value\030\002 \001(\t:\0028\001B\t\n\007" +
-      "payloadB\r\n\tpipe.workH\001"
+      "t\030\002 \002(\003\022\022\n\nstolen_msg\030\020 \001(\010\022\027\n\003err\030\003 \001(\013" +
+      "2\010.FailureH\000\022\016\n\004ping\030\004 \001(\010H\000\022\032\n\004beat\030\005 \001" +
+      "(\0132\n.HeartbeatH\000\022\025\n\004task\030\006 \001(\0132\005.TaskH\000\022" +
+      "\033\n\005state\030\007 \001(\0132\n.WorkStateH\000\022\037\n\006leader\030\010" +
+      " \001(\0132\r.LeaderStatusH\000\022\027\n\006a_vote\030\n \001(\0132\005." +
+      "VoteH\000\022\"\n\nreq_a_vote\030\013 \001(\0132\014.RequestVote" +
+      "H\000\022\037\n\006a_node\030\014 \001(\0132\r.RegisterNodeH\000\022\033\n\007r" +
+      "equest\030\r \001(\0132\010.RequestH\000\022\035\n\010response\030\016 \001" +
+      "(\0132\t.ResponseH\000\022&\n\013cmd_message\030\017 \001(\0132\017.C" +
+      "ommandMessageH\000B\t\n\007payloadB\r\n\tpipe.workH",
+      "\001"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -7895,13 +7079,7 @@ public final class Work {
     internal_static_WorkMessage_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_WorkMessage_descriptor,
-        new java.lang.String[] { "Header", "Secret", "Log", "Err", "Ping", "Beat", "Task", "State", "Leader", "AVote", "ReqAVote", "ANode", "Request", "Response", "CmdMessage", "TaskStatus", "DeleteFile", "DeleteLog", "Payload", });
-    internal_static_WorkMessage_LogEntry_descriptor =
-      internal_static_WorkMessage_descriptor.getNestedTypes().get(0);
-    internal_static_WorkMessage_LogEntry_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_WorkMessage_LogEntry_descriptor,
-        new java.lang.String[] { "Key", "Value", });
+        new java.lang.String[] { "Header", "Secret", "StolenMsg", "Err", "Ping", "Beat", "Task", "State", "Leader", "AVote", "ReqAVote", "ANode", "Request", "Response", "CmdMessage", "Payload", });
     pipe.common.Common.getDescriptor();
     pipe.election.Election.getDescriptor();
     routing.Pipe.getDescriptor();

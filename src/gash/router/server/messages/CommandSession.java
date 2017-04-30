@@ -203,42 +203,42 @@ public class CommandSession implements Session, Runnable{
             	
             	/**************** WRITE ****************/
             	else if (type.equals(TaskType.REQUESTWRITEFILE)) {
-            		
-            		if(msg.getHeader().getDestination() == RoutingConf.clusterId) {
-    					//add into channels table
-    					int nodeId = msg.getHeader().getNodeId();
-    					if ((nodeId % 10) == RoutingConf.clusterId) { 
-    						if (!ServerState.channelsTable.containsKey(msg.getHeader().getDestination())) {
-    							CommandHandler.handleClientRequest(channel, nodeId);
-    						} else {
-	    						//stop here
-	    						Hashtable<Channel, Integer> client = ServerState.channelsTable.get(nodeId);
-	    						Channel firstChannel = client.keys().nextElement();
-	    						
-	    						//build successful response cm
-	    						CommandMessage cm = MessageUtil.buildCommandMessage(
-	    								MessageUtil.buildHeader(RoutingConf.clusterId, System.currentTimeMillis()),
-	    								null,
-	    								null,
-	    								MessageUtil.buildResponse(TaskType.RESPONSEWRITEFILE,
-	    										msg.getRequest().getRwb().getFilename(),
-	    										Response.Status.SUCCESS,
-	    										null, 
-	    										null));
-	    						
-	    						
-	    						firstChannel.writeAndFlush(cm);
-	    						CommandHandler.updateChannelsTable(client, firstChannel, nodeId);
-	    						return;
-    						}
-    						
-        					ServerState.nextCluster.writeAndFlush(msg);
-    					} else { //from your neighbor
-    						//forward anyway
-    						ServerState.nextCluster.writeAndFlush(msg);
-    					}
-    				}
-            		
+            		if(conf.getNodeId() == RaftHandler.getInstance().getLeaderNodeId()) {
+						if (msg.getHeader().getDestination() == RoutingConf.clusterId) {
+							//add into channels table
+							int nodeId = msg.getHeader().getNodeId();
+							if ((nodeId % 10) == RoutingConf.clusterId) {
+								if (!ServerState.channelsTable.containsKey(msg.getHeader().getDestination())) {
+									CommandHandler.handleClientRequest(channel, nodeId);
+								} else {
+									//stop here
+									Hashtable<Channel, Integer> client = ServerState.channelsTable.get(nodeId);
+									Channel firstChannel = client.keys().nextElement();
+
+									//build successful response cm
+									CommandMessage cm = MessageUtil.buildCommandMessage(
+											MessageUtil.buildHeader(RoutingConf.clusterId, System.currentTimeMillis()),
+											null,
+											null,
+											MessageUtil.buildResponse(TaskType.RESPONSEWRITEFILE,
+													msg.getRequest().getRwb().getFilename(),
+													Response.Status.SUCCESS,
+													null,
+													null));
+
+
+									firstChannel.writeAndFlush(cm);
+									CommandHandler.updateChannelsTable(client, firstChannel, nodeId);
+									return;
+								}
+
+								ServerState.nextCluster.writeAndFlush(msg);
+							} else { //from your neighbor
+								//forward anyway
+								ServerState.nextCluster.writeAndFlush(msg);
+							}
+						}
+					}
             		
     	        	logger.info("CommendSession type = " + type);
     	        	logger.info("type == TaskType.WRITEFILE is " + (type == TaskType.REQUESTWRITEFILE));

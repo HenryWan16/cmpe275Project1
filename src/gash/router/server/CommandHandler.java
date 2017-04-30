@@ -94,8 +94,9 @@ public class CommandHandler extends SimpleChannelInboundHandler<CommandMessage> 
 					}
 				} else { //node <10
 					if ((msg.getHeader().getDestination() % 10) != RoutingConf.clusterId) {
-						logger.info("Not a cluster destination, just forwarding the message.");
 						if (ServerState.nextCluster.isActive()) {
+							logger.info("Not a cluster destination, just forwarding the message.");
+							logger.info(ServerState.nextCluster.remoteAddress().toString());
 							ServerState.nextCluster.writeAndFlush(msg);
 						}
 					} else {
