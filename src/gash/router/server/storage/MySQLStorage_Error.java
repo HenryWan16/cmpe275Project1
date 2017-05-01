@@ -2,6 +2,9 @@ package gash.router.server.storage;
 
 import com.jolbox.bonecp.BoneCP;
 import com.jolbox.bonecp.BoneCPConfig;
+
+import gash.router.container.RoutingConf;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,8 +21,8 @@ public class MySQLStorage_Error implements FileStorage {
 
     public static final String sDriver = "com.mysql.jdbc.Driver";
     public static final String sUrl = "jdbc:mysql://localhost:3306/FileDB";
-    public static final String sUser = "root";
-    public static final String sPass = "cmpe275";
+    public static final String sUser = RoutingConf.mySQLUser;
+    public static final String sPass = RoutingConf.mySQLPwd;
 
     protected Properties cfg;
     protected BoneCP cpool;
@@ -115,10 +118,6 @@ public class MySQLStorage_Error implements FileStorage {
                 else {
                     logger.info("Create table FileChunk in the FileDB successfully. ");
                 }
-//                ResultSet rs = stmt.executeQuery("SELECT 1 FROM INFORMATION_SCHEMA.SYSTEM_USERS"); // do something with the connection.
-//                while(rs.next()){
-//                    System.out.println(rs.getString(1)); // should print out "1"'
-//                }
             }
             release(); // shutdown connection pool.
         } catch (Exception ex) {
@@ -164,10 +163,6 @@ public class MySQLStorage_Error implements FileStorage {
                     logger.info("Table FileChunk is already in the FileDB. ");
                     return rs;
                 }
-//                ResultSet rs = stmt.executeQuery("SELECT 1 FROM INFORMATION_SCHEMA.SYSTEM_USERS"); // do something with the connection.
-//                while(rs.next()){
-//                    System.out.println(rs.getString(1)); // should print out "1"'
-//                }
             }
             release(); // shutdown connection pool.
         } catch (Exception ex) {
@@ -208,10 +203,6 @@ public class MySQLStorage_Error implements FileStorage {
                 else {
                     logger.info("Drop table FileChunk in the FileDB successfully. ");
                 }
-//                ResultSet rs = stmt.executeQuery("SELECT 1 FROM INFORMATION_SCHEMA.SYSTEM_USERS"); // do something with the connection.
-//                while(rs.next()){
-//                    System.out.println(rs.getString(1)); // should print out "1"'
-//                }
             }
             release(); // shutdown connection pool.
         } catch (Exception ex) {
@@ -255,16 +246,6 @@ public class MySQLStorage_Error implements FileStorage {
                 if (insertResult == true) {
                     logger.info("Insert table FileChunk in the FileDB successfully. ");
                 }
-//                if (insertResult == false) {
-//                    logger.info("Insert a new record to Table FileChunk in the FileDB failed. ");
-//                }
-//                else {
-//                    logger.info("Insert table FileChunk in the FileDB successfully. ");
-//                }
-//                ResultSet rs = stmt.executeQuery("SELECT 1 FROM INFORMATION_SCHEMA.SYSTEM_USERS"); // do something with the connection.
-//                while(rs.next()){
-//                    System.out.println(rs.getString(1)); // should print out "1"'
-//                }
             }
             release(); // shutdown connection pool.
         } catch (Exception ex) {
@@ -307,10 +288,6 @@ public class MySQLStorage_Error implements FileStorage {
                 else {
                     logger.info("Delete table FileChunk in the FileDB successfully. ");
                 }
-//                ResultSet rs = stmt.executeQuery("SELECT 1 FROM INFORMATION_SCHEMA.SYSTEM_USERS"); // do something with the connection.
-//                while(rs.next()){
-//                    System.out.println(rs.getString(1)); // should print out "1"'
-//                }
             }
             release(); // shutdown connection pool.
         } catch (Exception ex) {
@@ -355,10 +332,6 @@ public class MySQLStorage_Error implements FileStorage {
                 else {
                     logger.info("Update table FileChunk in the FileDB successfully. ");
                 }
-//                ResultSet rs = stmt.executeQuery("SELECT 1 FROM INFORMATION_SCHEMA.SYSTEM_USERS"); // do something with the connection.
-//                while(rs.next()){
-//                    System.out.println(rs.getString(1)); // should print out "1"'
-//                }
             }
             release(); // shutdown connection pool.
         } catch (Exception ex) {
@@ -405,10 +378,6 @@ public class MySQLStorage_Error implements FileStorage {
                 else {
                     logger.info("Select table FileChunk in the FileDB successfully. ");
                 }
-//                ResultSet rs = stmt.executeQuery("SELECT 1 FROM INFORMATION_SCHEMA.SYSTEM_USERS"); // do something with the connection.
-//                while(rs.next()){
-//                    System.out.println(rs.getString(1)); // should print out "1"'
-//                }
             }
             release(); // shutdown connection pool.
         } catch (Exception ex) {
@@ -441,11 +410,6 @@ public class MySQLStorage_Error implements FileStorage {
         this.fileChunk = fileChunk;
     }
 
-    //    optional int32 chunkId = 1;
-//    optional bytes data = 2;
-//    required string filename = 3;
-//    optional int32 totalNoOfChunks = 4;  //total number of chunks of a requested file
-//    optional string file_id = 5; // can be a message digest of file. Will also serve as file validation code
 
     private class FileChunk {
         private String fileName;

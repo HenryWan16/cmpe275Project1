@@ -38,10 +38,15 @@ public class RoutingConf {
 	private boolean internalNode = true;
 	private int heartbeatDt = 2000;
 	private List<RoutingEntry> routing;
+	
+	/************* GLOBAL VARIABLE  ***************/
 	public static int clusterId = 1;
 	public static int clientId = clusterId * 10 + clusterId;
 	public static String redis = "localhost";
 	public static int maxHops = 10;
+	public static String mySQLUser = "root";
+	public static String mySQLPwd = "cmpe275";
+	
 
 	public HashMap<String, Integer> asHashMap() {
 		HashMap<String, Integer> map = new HashMap<String, Integer>();

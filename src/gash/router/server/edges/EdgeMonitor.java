@@ -129,7 +129,6 @@ public class EdgeMonitor implements EdgeListener, Runnable {
 				//Check all neighbor nodes to get connected
 				for(EdgeInfo ei:this.outboundEdges.map.values()) {
 					if (ei.getChannel() == null || !ei.getChannel().isActive()) {
-						//logger.info("trying to connect to node " + ei.getRef());
 						try {
 							Channel channel = createChannel(ei.getHost(), ei.getPort());
 

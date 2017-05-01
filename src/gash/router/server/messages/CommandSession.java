@@ -74,8 +74,7 @@ public class CommandSession implements Session, Runnable{
 
         	}else if (msg.hasRequest()) {
             	logger.info("CommendSession handleMessage RequestType is " + type);
-            	// key = chunkID; 
-    			// value = sourceId + ";" + host + ";" + port;
+
     			Hashtable<Integer, String> location = new Hashtable<Integer, String>();
         		String fname = msg.getRequest().getRrb().getFilename();
         		
@@ -95,7 +94,7 @@ public class CommandSession implements Session, Runnable{
             					MessageUtil.buildResponse(TaskType.RESPONSEREADFILE, fname, null , null, 
             								MessageUtil.buildReadResponseAllFiles(-1, fname, fileList.size(), 
             										fileList, null)));
-                		// logger.info("READFILE location isn't null and " + cm.toString());
+
                 		channel.writeAndFlush(cm);
                 		
             		} else if (mySQLStorage.checkFileExist(fname)) {
@@ -106,7 +105,7 @@ public class CommandSession implements Session, Runnable{
             			
             			// if we don't set chunkId in the CommandMessage, its default to be 0;
             			if (!msg.getRequest().getRrb().hasChunkId()) {
-            				//System.out.println("AAAAAAAAAAAAAAA");
+
                 			// Get all the chunkIDs of the file from the database on the leader. 
                 			// All the nodes have the same data and we just return the records on the leader.
                 			ArrayList<Integer> chunkIDArray = mySQLStorage.selectRecordFilenameChunkID(fname);
@@ -158,13 +157,11 @@ public class CommandSession implements Session, Runnable{
                 					MessageUtil.buildResponse(TaskType.RESPONSEREADFILE, fname, null , null, 
                 								MessageUtil.buildReadResponse(-1, fname, null, location.size(), 
                 										location, null)));
-                    		// logger.info("READFILE location isn't null and " + cm.toString());
+
                     		channel.writeAndFlush(cm);
-                			//ServerState.nextCluster.writeAndFlush(cm);
                     	
                     	//ask for chunk data
                     	} else {
-                    		//System.out.println("BBBBBBBBBBBB");
                     		// The second time to receive the message from the client which has received the HashMap<chunkID, location> from the server (Only one location of each chunk).
                     		// The client say that "I want to get the data of chunkId from the location."
                 			mySQLStorage = MySQLStorage.getInstance();
@@ -173,7 +170,7 @@ public class CommandSession implements Session, Runnable{
                 			ClassFileChunkRecord record = mySQLStorage.selectRecordFileChunk(fileName, chunkID);
                 			byte[] chunkData = record.getData();
                 			int chunkSize = record.getTotalNoOfChunks();
-                			// logger.info("Send chunkData to the client: " + new String(chunkData));
+
                 			CommandMessage cm = MessageUtil.buildCommandMessage(
                 					MessageUtil.buildHeader(conf.getNodeId(), System.currentTimeMillis()),
                 					null,
@@ -181,13 +178,11 @@ public class CommandSession implements Session, Runnable{
                 					MessageUtil.buildResponse(TaskType.RESPONSEREADFILE, fname, null , null, 
                 								MessageUtil.buildReadResponse(-1, fname, null, location.size(), 
                 										location, MessageUtil.buildChunk(chunkID, chunkData, chunkSize))));
-                			// logger.info("Send chunkData to the client:" + cm.toString());
               
                 			channel.writeAndFlush(cm);
                     	}
                 	}
             		else {
-            			//System.out.println("CCCCCCCCCCCcc");
             			// File isn't in the database and return to client FAIL to read
             			CommandMessage cm = MessageUtil.buildCommandMessage(
             					MessageUtil.buildHeader(conf.getNodeId(), System.currentTimeMillis()),
@@ -196,7 +191,6 @@ public class CommandSession implements Session, Runnable{
             					MessageUtil.buildResponse(TaskType.RESPONSEREADFILE, fname, Response.Status.FILENOTFOUND , null, null));
                         logger.info("File " + fname + " isn't in the database. Read failed on the server.");
                         channel.writeAndFlush(cm);
-                        //ServerState.nextCluster.writeAndFlush(cm);
                 	}
             	}
             	
@@ -241,11 +235,11 @@ public class CommandSession implements Session, Runnable{
 	    						}
 	    						
 	        					ServerState.nextCluster.writeAndFlush(msg);
-	        					logger.info("Forwarding a WRITE message get from client...");
+	        					logger.info("Forwarding a WRITE message get from client id " + nodeId);
 	    					} else { //from your neighbor
 	    						//forward anyway
 	    						ServerState.nextCluster.writeAndFlush(msg);
-	    						logger.info("Forwarding a WRITE message get from the neighbor...");
+	    						logger.info("Forwarding a WRITE message get from the neighbor cluster...");
 	    					}
     					} else {
     						logger.info("The file already in the system. Ignore and not forward the message");

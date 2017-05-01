@@ -37,28 +37,23 @@ public class WorkSession implements Session, Runnable{
         // TODO How can you implement this without if-else statements?
         try {
             if (msg.hasBeat()) {
-//                Heartbeat hb = msg.getBeat();
-//                logger.info("heartbeat from " + msg.getHeader());
                 PrintUtil.printWork(msg);
+                
             } else if (msg.hasPing()) {
                 logger.info("Server WorkHandler received ping message!");
                 logger.info("ping from " + msg.getHeader().getNodeId());
-                //            boolean p = msg.getPing();
-                //            WorkMessage.Builder rb = WorkMessage.newBuilder();
-                //            rb.setPing(true);
-                //            channel.write(rb.build());
+
             } else if (msg.hasErr()) {
                 Common.Failure err = msg.getErr();
                 logger.error("failure from " + msg.getHeader().getNodeId());
                 // PrintUtil.printFailure(err);
             } else if (msg.hasTask()) {
-                Work.Task t = msg.getTask();
+
+            	Work.Task t = msg.getTask();
             } else if (msg.hasState()) {
-                Work.WorkState s = msg.getState();
+
+            	Work.WorkState s = msg.getState();
             }
-//            logger.info("MessageServer.threadLimit = " + MessageServer.threadLimit);
-//            MessageServer.minThreadLimit();
-//            logger.info("MessageServer.threadLimit = " + MessageServer.threadLimit);
         }
         catch (Exception e) {
             // TODO add logging

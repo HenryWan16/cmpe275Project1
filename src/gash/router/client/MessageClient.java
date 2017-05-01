@@ -73,7 +73,6 @@ public class MessageClient {
 			// CommConnection.getInstance().write(rb.build());
 
 			// using queue
-			logger.info("MessageClient send CommandMessage with ping=true to Netty Channel! ");
 			CommConnection.getInstance().enqueue(rb.build());
 
 		} catch (Exception e) {
@@ -87,7 +86,6 @@ public class MessageClient {
 						MessageUtil.buildReadBody("ls_all_the_files_and_chunks",-1,-1,-1)),null);
 
 		try {
-			// logger.info("The first time to send Read message to server " + cmdb);
 			CommConnection.getInstance().enqueue(cmdb);
 
 		} catch (Exception e) {
@@ -118,8 +116,8 @@ public class MessageClient {
 				read = fis.read(byteChunk, 0, readLength);
 				file_size -= read;
 				assert (read == byteChunk.length);
+				
 				// get hash key for store, to do
-				// logger.info("bytechunk: "+byteChunk.toString());
 				logger.info("Current chunkId is " + chunkId);
 				CommandMessage cm = MessageUtil.buildCommandMessage(MessageUtil.buildHeader(999,System.currentTimeMillis()),null,
 						MessageUtil.buildRequest(TaskType.REQUESTWRITEFILE, MessageUtil.buildWriteBody(-1,fname,"txt",
@@ -127,7 +125,7 @@ public class MessageClient {
 								chunkSize),null),null);
 				chunkId++;
 				logger.info("build success, start to enque");
-				// logger.info("msg enque is: "+cm.getRequest().getRwb().getChunk().toString());
+
 				CommConnection.getInstance().enqueue(cm);
 				logger.info("enque success");
 				byteChunk = null;
@@ -147,7 +145,6 @@ public class MessageClient {
 						MessageUtil.buildReadBody(fname,-1,-1,-1)),null);
 
 		try {
-			// logger.info("The first time to send Read message to server " + cmdb);
 			CommConnection.getInstance().enqueue(cmdb);
 
 		} catch (Exception e) {

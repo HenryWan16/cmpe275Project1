@@ -66,14 +66,7 @@ public class WorkHandler extends SimpleChannelInboundHandler<WorkMessage> {
 	 * @param msg
 	 */
 	public void handleMessage(WorkMessage msg, Channel channel) {
-		
-//		QOSWorker qos = QOSWorker.getInstance();
-//		logger.info("QOSWorker Thread Working : ");
-//		Session session = new WorkSession(this.state, msg);
-//		qos.getQueue().enqueue(session);
 
-		
-		
 		if (msg == null) {
 			// TODO add logging
 			System.out.println("ERROR: Unexpected content - " + msg);
@@ -184,7 +177,7 @@ public class WorkHandler extends SimpleChannelInboundHandler<WorkMessage> {
 	 */
 	@Override
 	protected void channelRead0(ChannelHandlerContext ctx, WorkMessage msg) throws Exception {
-		logger.info("WorkHandler channelRead0...");
+		//logger.info("WorkHandler channelRead0...");
 		handleMessage(msg, ctx.channel());
 	}
 

@@ -161,15 +161,11 @@ public class CommHandler extends SimpleChannelInboundHandler<CommandMessage> {
 				}
 			} else if (type == TaskType.RESPONSEWRITEFILE) {
 				if (status == Response.Status.SUCCESS) {
-					System.out.println("The file " + msg.getResponse().getFilename() + " has been successfully uploaded");	
+					logger.info("The file " + msg.getResponse().getFilename() + " has been successfully uploaded");	
 				} else
-					System.out.println("Failed to upload file " + msg.getResponse().getFilename() + " to the server.");
+					logger.info("Failed to upload file " + msg.getResponse().getFilename() + " to the server.");
 				
-			} else {
-				 //delete?
-			}
-
-
+			} else { } //update, delete
 		}
 
 		if (debug) {
