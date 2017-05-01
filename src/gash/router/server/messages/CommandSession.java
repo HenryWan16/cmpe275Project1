@@ -124,7 +124,7 @@ public class CommandSession implements Session, Runnable{
     							    {
     							        InetAddress i = (InetAddress) ee.nextElement();
     							        String ipAddress = i.getHostAddress();
-    							        System.out.println("ipAddress = " + ipAddress);
+
     							        isMatch1 = Pattern.matches(pattern1, ipAddress);
     							        isMatch2 = Pattern.matches(pattern2, ipAddress);
     							        

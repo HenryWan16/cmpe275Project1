@@ -27,7 +27,7 @@ import java.util.Scanner;
 
 public class ClientApp implements CommListener {
 	private MessageClient mc;
-	public static int clusterId = 1;
+	public static String connectedClusterId;
 	public static String host = null;
 	public static int port;
 
@@ -40,27 +40,9 @@ public class ClientApp implements CommListener {
 		this.mc.addListener(this);
 	}
 
-//	private void ping(int N) {
-//		// test round-trip overhead (note overhead for initial connection)
-//		final int maxN = 10;
-//		long[] dt = new long[N];
-//		long st = System.currentTimeMillis(), ft = 0;
-//		for (int n = 0; n < N; n++) {
-//			mc.ping();
-//			ft = System.currentTimeMillis();
-//			dt[n] = ft - st;
-//			st = ft;
-//		}
-//
-//		System.out.println("Round-trip ping times (msec)");
-//		for (int n = 0; n < N; n++)
-//			System.out.print(dt[n] + " ");
-//		System.out.println("");
-//	}
-
 	@Override
 	public String getListenerID() {
-		return "demo";
+		return "Client";
 	}
 
 	@Override
@@ -77,9 +59,9 @@ public class ClientApp implements CommListener {
 	
 		do {
 			System.out.flush();
-	        System.out.print("\n\n-----------------------------------------\n" +
-	        				"Menu: connected to " + host + ":" + port
-	        				+ "\n-----------------------------------------\n" +
+	        System.out.print("\n\n--------------------------------------------\n" +
+	        				"Menu: ** CONNECTED to " + host + ":" + port + " **"
+	        				+ "\n--------------------------------------------\n" +
 	        				"* ping <cluster_id>\n" +
 	        				"* ls\n" +
 							"* leader\n" +
@@ -95,11 +77,12 @@ public class ClientApp implements CommListener {
 	          	case "ping":
 	          		if(commands.length > 1)
 	          			mc.ping(Integer.valueOf(commands[1]));
+	          		System.out.println("\nSyntax: ping <cluster_id>\n");
 	        	  	break;
 				case "leader":
 					RedisServer.getInstance().getLocalhostJedis().select(0);
 					String leader = RedisServer.getInstance().getLocalhostJedis().get(""+RoutingConf.clusterId);
-					System.out.println(leader);
+					System.out.println("Cluster <" + ClientApp.connectedClusterId + "> has current leader node <" + leader + ">");
 					break;
 	          	case "read" :
 	                  if(commands.length > 1)
@@ -126,13 +109,15 @@ public class ClientApp implements CommListener {
 	 */
 	public static void main(String[] args) {
 		
+		if (args.length > 0) {
+			connectedClusterId = args[0];
 			RedisServer.getInstance().getLocalhostJedis().select(0);
-			String leader = RedisServer.getInstance().getLocalhostJedis().get(String.valueOf(RoutingConf.clusterId));
+			String leader = RedisServer.getInstance().getLocalhostJedis().get(connectedClusterId);
 			
 			if(leader != null) {
 				host = leader.split(":")[0];
 				port = Integer.parseInt(leader.split(":")[1]);
-			}else{
+			} else{
 				host = "localhost";
 				port = 4168;
 			}
@@ -151,9 +136,9 @@ public class ClientApp implements CommListener {
 			} finally {
 				CommConnection.getInstance().release();
 			}
-//		} 
-//	else {
-//			System.out.println("Syntax: runClient.sh <CLUSTER_ID>\n");
-//		}
+		} 
+	else {
+			System.out.println("\nSyntax: runClient.sh <CLUSTER_ID>\n");
+		}
 	}
 }

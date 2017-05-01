@@ -140,9 +140,14 @@ public class MessageClient {
 	public void sendReadRequest(String fname){
 		
 		// send a request to the server to read the file.
-		CommandMessage cmdb = MessageUtil.buildCommandMessage(MessageUtil.buildHeader(999, System.currentTimeMillis(), ClientApp.clusterId),null,
+		CommandMessage cmdb = MessageUtil.buildCommandMessage(
+				MessageUtil.buildHeader(RoutingConf.clientId, 
+						System.currentTimeMillis(), 
+						Integer.valueOf(ClientApp.connectedClusterId)),
+				null,
 				MessageUtil.buildRequest(TaskType.REQUESTREADFILE,null,
-						MessageUtil.buildReadBody(fname,-1,-1,-1)),null);
+						MessageUtil.buildReadBody(fname,-1,-1,-1)),
+				null);
 
 		try {
 			CommConnection.getInstance().enqueue(cmdb);
@@ -152,7 +157,7 @@ public class MessageClient {
 		}
 		
 		//start the thread for waiting the chunks from server
-		this.mw.setResultFileName("bk_" + fname);
+		this.mw.setResultFileName(fname);
 		this.mw.successMerge = false;
 		Thread cthread = new Thread(this.mw);
 		cthread.start();

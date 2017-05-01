@@ -1,6 +1,5 @@
 package gash.router.server.raft;
 
-import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.util.Enumeration;
@@ -11,7 +10,7 @@ import java.util.regex.Pattern;
 import gash.router.server.ServerState;
 import gash.router.server.edges.EdgeInfo;
 import gash.router.server.edges.EdgeMonitor;
-import io.netty.channel.Channel;
+
 
 public class RaftHandler implements Runnable {
 
@@ -73,7 +72,7 @@ public class RaftHandler implements Runnable {
 				    {
 				        InetAddress i = (InetAddress) ee.nextElement();
 				        String ipAddress = i.getHostAddress();
-				        System.out.println("ipAddress = " + ipAddress);
+
 				        isMatch1 = Pattern.matches(pattern1, ipAddress);
 				        isMatch2 = Pattern.matches(pattern2, ipAddress);
 				        

@@ -1,6 +1,5 @@
 package gash.router.client;
 
-import com.google.protobuf.ByteString;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pipe.common.Common;
@@ -94,8 +93,31 @@ public class MergeWorker implements Runnable{
      * @param filename
      */
     public void getFile(byte[] bytefile, String filename){
-        System.out.println("merge complete, return the file to current directory");
-        File newFile = new File(filename);
+    	
+
+		File theDir = new File("downloads");
+
+		// if the directory does not exist, create it
+		if (!theDir.exists()) {
+		    System.out.println("creating directory: " + theDir.getName());
+		    boolean result = false;
+
+		    try{
+		        theDir.mkdir();
+		        result = true;
+		    } 
+		    catch(SecurityException se){
+		        System.out.println("Not able to write in current directory");
+		    }        
+		    if(result) {    
+		        System.out.println("downloads directory created");  
+		    }
+		}
+    	
+    	
+        System.out.println("Merge complete, return the file into ./downloads directory");
+
+        File newFile = new File(theDir, filename);
         try {
             newFile.canWrite();
             FileOutputStream fos = new FileOutputStream(newFile);

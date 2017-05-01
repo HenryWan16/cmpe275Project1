@@ -40,9 +40,9 @@ public class RoutingConf {
 	private List<RoutingEntry> routing;
 	
 	/************* GLOBAL VARIABLE  ***************/
-	public static int clusterId = 1;
+	public static int clusterId = 6;
 	public static int clientId = clusterId * 10 + clusterId;
-	public static String redis = "localhost";
+	public static String redis = "192.168.1.20";
 	public static int maxHops = 10;
 	public static String mySQLUser = "root";
 	public static String mySQLPwd = "cmpe275";
