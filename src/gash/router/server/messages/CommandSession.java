@@ -203,49 +203,55 @@ public class CommandSession implements Session, Runnable{
             	
             	/**************** WRITE ****************/
             	else if (type.equals(TaskType.REQUESTWRITEFILE)) {
-            		if(conf.getNodeId() == RaftHandler.getInstance().getLeaderNodeId()) {
-						if (msg.getHeader().getDestination() == RoutingConf.clusterId) {
-							//add into channels table
-							int nodeId = msg.getHeader().getNodeId();
-							if ((nodeId % 10) == RoutingConf.clusterId) {
-								if (!ServerState.channelsTable.containsKey(msg.getHeader().getDestination())) {
-									CommandHandler.handleClientRequest(channel, nodeId);
-								} else {
-									//stop here
-									Hashtable<Channel, Integer> client = ServerState.channelsTable.get(nodeId);
-									Channel firstChannel = client.keys().nextElement();
-
-									//build successful response cm
-									CommandMessage cm = MessageUtil.buildCommandMessage(
-											MessageUtil.buildHeader(RoutingConf.clusterId, System.currentTimeMillis()),
-											null,
-											null,
-											MessageUtil.buildResponse(TaskType.RESPONSEWRITEFILE,
-													msg.getRequest().getRwb().getFilename(),
-													Response.Status.SUCCESS,
-													null,
-													null));
-
-
-									firstChannel.writeAndFlush(cm);
-									CommandHandler.updateChannelsTable(client, firstChannel, nodeId);
-									return;
-								}
-
-								ServerState.nextCluster.writeAndFlush(msg);
-							} else { //from your neighbor
-								//forward anyway
-								ServerState.nextCluster.writeAndFlush(msg);
-							}
-						}
-					}
             		
-    	        	logger.info("CommendSession type = " + type);
-    	        	logger.info("type == TaskType.WRITEFILE is " + (type == TaskType.REQUESTWRITEFILE));
-    	    		WriteBody wb = msg.getRequest().getRwb();
-    	    		
-    	    		fname = wb.getFilename();
+            		MySQLStorage mySQLStorage = MySQLStorage.getInstance();
+            		WriteBody wb = msg.getRequest().getRwb();
+            		fname = wb.getFilename();
     	    		int chunkId = wb.getChunk().getChunkId();
+    	    		int nodeId = msg.getHeader().getNodeId();
+    	    		
+            		if(conf.getNodeId() == RaftHandler.getInstance().getLeaderNodeId()) {
+            			//add into channels table
+    					if (!mySQLStorage.checkFileChunkExist(fname, chunkId)) {
+    						//if it is not write before
+    						
+	    					if ((nodeId % 10) == RoutingConf.clusterId) { 
+	    						if (!ServerState.channelsTable.containsKey(nodeId)) {
+	    							CommandHandler.handleClientRequest(channel, nodeId);
+	    						} else {
+		    						//stop here
+		    						Hashtable<Channel, Integer> client = ServerState.channelsTable.get(nodeId);
+		    						Channel firstChannel = client.keys().nextElement();
+		    						
+		    						//build successful response cm
+		    						CommandMessage cm = MessageUtil.buildCommandMessage(
+		    								MessageUtil.buildHeader(RoutingConf.clusterId, System.currentTimeMillis()),
+		    								null,
+		    								null,
+		    								MessageUtil.buildResponse(TaskType.RESPONSEWRITEFILE,
+		    										msg.getRequest().getRwb().getFilename(),
+		    										Response.Status.SUCCESS,
+		    										null, 
+		    										null));
+		    						
+		    						
+		    						firstChannel.writeAndFlush(cm);
+		    						CommandHandler.updateChannelsTable(client, firstChannel, nodeId);
+		    						return;
+	    						}
+	    						
+	        					ServerState.nextCluster.writeAndFlush(msg);
+	        					logger.info("Forwarding a WRITE message get from client...");
+	    					} else { //from your neighbor
+	    						//forward anyway
+	    						ServerState.nextCluster.writeAndFlush(msg);
+	    						logger.info("Forwarding a WRITE message get from the neighbor...");
+	    					}
+    					} else {
+    						logger.info("The file already in the system. Ignore and not forward the message");
+    					}
+            		}
+            		
     	    		byte[] data = wb.getChunk().getChunkData().toByteArray();
     	    		int numOfChunk = wb.getChunk().getChunkSize();
     	    		String fileId = "";
@@ -253,22 +259,23 @@ public class CommandSession implements Session, Runnable{
     	    			fileId = wb.getFileId();
     	    		}
     	    		
-    	    		MySQLStorage mySQLStorage = MySQLStorage.getInstance();
+    	    		
             		
             		// If the file and chunkid already in server.
             		if (!mySQLStorage.checkFileChunkExist(fname, chunkId)) {
             			
 	    	    		boolean result = mySQLStorage.insertRecordFileChunk(fname, chunkId, data, numOfChunk, fileId);
-	    	    		logger.info("ChunkId " + chunkId);
+	    	    		logger.info("Writing the file <" + fname + "> with its chunk_id <"+ chunkId+ "> into DB.");
+	    	    		
 	    	    		if (result) {
 	    	    			// Replication
 		    	    		for(EdgeInfo ei:RaftHandler.getInstance().getEdgeMonitor().getOutboundEdges().getMap().values()){
 		    					if (ei.isActive() && ei.getChannel().isActive()) {
-		    						int nodeId = ei.getRef();
+		    						int internalNodeId = ei.getRef();
 		    						String nodehost = ei.getHost();
 		    						int port = ei.getPort();
 		    						
-		    						WorkMessage wm = MessageUtil.replicateData(nodeId, nodehost, port, msg);
+		    						WorkMessage wm = MessageUtil.replicateData(internalNodeId, nodehost, port, msg);
 		    						ei.getChannel().writeAndFlush(wm);
 		    					}
 		    	    		}

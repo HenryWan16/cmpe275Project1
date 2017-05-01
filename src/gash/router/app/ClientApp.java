@@ -98,7 +98,7 @@ public class ClientApp implements CommListener {
 	        	  	break;
 				case "leader":
 					RedisServer.getInstance().getLocalhostJedis().select(0);
-					String leader = RedisServer.getInstance().getLocalhostJedis().get("1");
+					String leader = RedisServer.getInstance().getLocalhostJedis().get(""+RoutingConf.clusterId);
 					System.out.println(leader);
 					break;
 	          	case "read" :

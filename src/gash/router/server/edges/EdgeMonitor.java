@@ -92,10 +92,10 @@ public class EdgeMonitor implements EdgeListener, Runnable {
 				//set channel to next cluster's leader
 				if (ServerState.nextCluster == null || !ServerState.nextCluster.isActive()) {
 					Set<String> list = RedisServer.getInstance().getLocalhostJedis().keys("*");
-					//int nextClusterId = RoutingConf.clusterId + 1;
-					//if(nextClusterId > list.size()){
-						int nextClusterId = 1;
-					//}
+					int nextClusterId = RoutingConf.clusterId + 1;
+					if(nextClusterId > list.size()){
+						nextClusterId = 1;
+					}
 
 					RedisServer.getInstance().getLocalhostJedis().select(0);
 					String leader = RedisServer.getInstance().getLocalhostJedis().get(String.valueOf(nextClusterId));
