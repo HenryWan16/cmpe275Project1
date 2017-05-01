@@ -87,6 +87,7 @@ public class WorkHandler extends SimpleChannelInboundHandler<WorkMessage> {
 				boolean p = msg.getPing();
 				WorkMessage.Builder rb = WorkMessage.newBuilder();
 				rb.setPing(true);
+				rb.setSecret(1234);
 				channel.write(rb.build());
 				
 			} else if (msg.hasReqAVote()){				
@@ -148,7 +149,7 @@ public class WorkHandler extends SimpleChannelInboundHandler<WorkMessage> {
 				QOSWorker.getInstance().getQueue().enqueue(session1);
 				
 			} else if (msg.hasTask()) {
-				Task t = msg.getTask();
+				//Task t = msg.getTask();
 			}
 		} catch (Exception e) {
 			// TODO add logging
@@ -158,6 +159,7 @@ public class WorkHandler extends SimpleChannelInboundHandler<WorkMessage> {
 			eb.setMessage(e.getMessage());
 			WorkMessage.Builder rb = WorkMessage.newBuilder(msg);
 			rb.setErr(eb);
+			rb.setSecret(1234);
 			channel.write(rb.build());
 		}
 

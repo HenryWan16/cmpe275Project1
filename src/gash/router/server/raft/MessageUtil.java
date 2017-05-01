@@ -109,7 +109,7 @@ public class MessageUtil {
 	public static WorkMessage replicateData(int nodeId, String host, int port, CommandMessage cm) {
 		Header.Builder hb = Header.newBuilder();
 		hb.setNodeId(nodeId);
-		hb.setDestination(-1);
+		//hb.setDestination(-1);
 		hb.setTime(System.currentTimeMillis());
 
 		WorkMessage.Builder wb = WorkMessage.newBuilder();
@@ -240,7 +240,7 @@ public class MessageUtil {
 		Header.Builder hb = Header.newBuilder();
 		hb.setNodeId(nodeId);
 		hb.setTime(time);
-		hb.setDestination(-1);
+		//hb.setDestination(-1);
 		return hb;
 	}
 	

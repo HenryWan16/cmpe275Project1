@@ -95,7 +95,7 @@ public class EdgeMonitor implements EdgeListener, Runnable {
 //					if(nextClusterId > list.size()){
 //						nextClusterId = 1;
 //					}
-					int nextClusterId = 4;
+					int nextClusterId = 3;
 
 					RedisServer.getInstance().getLocalhostJedis().select(0);
 					String leader = RedisServer.getInstance().getLocalhostJedis().get(String.valueOf(nextClusterId));

@@ -259,7 +259,7 @@ public class CommandSession implements Session, Runnable{
             		if (!mySQLStorage.checkFileChunkExist(fname, chunkId)) {
             			
 	    	    		boolean result = mySQLStorage.insertRecordFileChunk(fname, chunkId, data, numOfChunk, fileId);
-	    	    		logger.info("Writing the file <" + fname + "> with its chunk_id <"+ chunkId+ "> into DB.");
+	    	    		logger.info("Writing the file <" + fname + "> with its chunk_id <"+ chunkId+ "> out of <"+numOfChunk+"> into DB.");
 	    	    		
 	    	    		if (result) {
 	    	    			// Replication

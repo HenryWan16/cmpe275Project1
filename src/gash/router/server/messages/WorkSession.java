@@ -63,6 +63,7 @@ public class WorkSession implements Session, Runnable{
             eb.setMessage(e.getMessage());
             WorkMessage.Builder rb = WorkMessage.newBuilder(msg);
             rb.setErr(eb);
+            rb.setSecret(1234);
             channel.write(rb.build());
         }
         System.out.flush();

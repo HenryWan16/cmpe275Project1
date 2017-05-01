@@ -81,9 +81,13 @@ public class MessageClient {
 	}
 
 	public void lsFiles() {
-		CommandMessage cmdb = MessageUtil.buildCommandMessage(MessageUtil.buildHeader(999,System.currentTimeMillis()),null,
-				MessageUtil.buildRequest(TaskType.REQUESTREADFILE,null,
-						MessageUtil.buildReadBody("ls_all_the_files_and_chunks",-1,-1,-1)),null);
+		CommandMessage cmdb = MessageUtil.buildCommandMessage(
+				MessageUtil.buildHeader(999,System.currentTimeMillis()),
+				null,
+				MessageUtil.buildRequest(
+						TaskType.REQUESTREADFILE,null,
+						MessageUtil.buildReadBody("ls_all_the_files_and_chunks",-1,-1,-1)),
+				null);
 
 		try {
 			CommConnection.getInstance().enqueue(cmdb);
