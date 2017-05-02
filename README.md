@@ -6,9 +6,9 @@
 3. Download Google Protocol Buffer v3.2. 
 4. Build the protobuf files: 
 
-'''
+```
 ./build_pb.sh. 
-'''
+```
 
 5. Compile all java files using Apache Ant: 
 	'''
