@@ -5,9 +5,9 @@
 2. Create a database called “FileDB” with a table named “FileChunk” in MySQL. 
 3. Download Google Protocol Buffer v3.2. 
 4. Build the protobuf files: 
-	'''
-	./build_pb.sh. 
-	'''
+'''
+./build_pb.sh. 
+'''
 5. Compile all java files using Apache Ant: 
 	'''
 	ant build 
