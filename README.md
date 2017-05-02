@@ -3,6 +3,9 @@
 
 1. Download MySQL 5.7.18 
 2. Create a database called “FileDB” with a table named “FileChunk” in MySQL. 
+```
+create database FileDB
+```
 3. Download Google Protocol Buffer v3.2. 
 4. Build the protobuf files: 
 	```
