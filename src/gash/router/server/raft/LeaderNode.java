@@ -1,6 +1,5 @@
 package gash.router.server.raft;
 
-import java.util.Hashtable;
 
 import gash.router.server.edges.EdgeInfo;
 import pipe.work.Work.WorkMessage;

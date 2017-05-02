@@ -3,7 +3,6 @@ package gash.router.server.raft;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Hashtable;
-import java.util.Map;
 
 import com.google.protobuf.ByteString;
 

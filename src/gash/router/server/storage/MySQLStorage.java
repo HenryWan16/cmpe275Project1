@@ -11,9 +11,6 @@ import java.sql.*;
 import java.util.ArrayList;
 
 
-/**
- * Created by henrywan16 on 4/16/17.
- */
 public class MySQLStorage {
     protected static Logger logger = LoggerFactory.getLogger("MySQL");
 
@@ -102,7 +99,7 @@ public class MySQLStorage {
     }
 
     public boolean dropTable() {
-        // init();
+
         try {
             // TODO complete code to use JDBC
             if (conn != null){
@@ -244,7 +241,7 @@ public class MySQLStorage {
      * @return
      */
     public ResultSet selectRecordFileChunk(String fileName, int chunkID, byte[] data, int totalNoOfChunks, String file_id) {
-        // init();
+
         if (fileName == null || fileName.length() == 0) {
             logger.info("No record to select.");
             return null;
@@ -291,7 +288,7 @@ public class MySQLStorage {
     }
 
     public boolean checkFileExist(String fileName) {
-    	// init();
+
         if (fileName == null || fileName.length() == 0) {
             logger.info("No record to select.");
             return false;

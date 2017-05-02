@@ -11,9 +11,7 @@ import org.slf4j.LoggerFactory;
 import java.sql.*;
 import java.util.Properties;
 
-/**
- * Created by henrywan16 on 4/13/17.
- */
+
 public class MySQLStorage_Error implements FileStorage {
     private FileChunk fileChunk;
 
@@ -143,6 +141,7 @@ public class MySQLStorage_Error implements FileStorage {
     }
 
     public ResultSet containTable() {
+    	
         Connection conn = null;
         ResultSet rs = null;
         try {

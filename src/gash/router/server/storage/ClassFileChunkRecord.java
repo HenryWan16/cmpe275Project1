@@ -2,9 +2,7 @@ package gash.router.server.storage;
 
 import java.util.Arrays;
 
-/**
- * Created by henrywan16 on 4/16/17.
- */
+
 public class ClassFileChunkRecord {
     private String fileName;
     private int chunkID;
