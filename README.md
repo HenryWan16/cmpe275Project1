@@ -8,8 +8,8 @@ Team project on CMPE275
 5. Compile all java files using Apache Ant: ant build 
 6. Start the server : ./startServer.sh <config file> 
 	Note: the config file must have the ips and ports of all the nodes in the network. 
-7. Start the client: ./startClient.sh 
-	The client has 5 operations:  
+7. Start the client: ./startClient.sh  
+	The client has 5 operations:   
 		1. ping <cluster id>: ping to a cluster.  
 		2. leader: get leader’s ip and port from redis server  
 		3. read <fileName> : retrieve a file from the network.  
