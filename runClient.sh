@@ -19,4 +19,4 @@ JAVA_ARGS="localhost 4167"
 JAVA_TUNE='-client -Djava.net.preferIPv4Stack=true'
 
 
-java ${JAVA_TUNE} -cp .:${SVR_HOME}/lib/'*':${SVR_HOME}/classes ${JAVA_MAIN} ${JAVA_ARGS} 
+java ${JAVA_TUNE} -cp .:${SVR_HOME}/lib/'*':${SVR_HOME}/classes ${JAVA_MAIN} $1
