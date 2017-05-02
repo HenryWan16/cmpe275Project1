@@ -15,16 +15,13 @@
  */
 package gash.router.client;
 
+import gash.router.container.RoutingConf;
 import gash.router.server.PrintUtil;
 import gash.router.server.ServerState;
-import gash.router.server.messages.CommandSession;
-import gash.router.server.messages.QOSWorker;
-import gash.router.server.messages.Session;
 import gash.router.server.raft.MessageUtil;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -133,7 +130,7 @@ public class CommHandler extends SimpleChannelInboundHandler<CommandMessage> {
 							int chunkId = list.get(i).getChunkId();
 							
 							CommandMessage cm = MessageUtil.buildCommandMessage(
-	            					MessageUtil.buildHeader(999, System.currentTimeMillis()),
+	            					MessageUtil.buildHeader(RoutingConf.clientId, System.currentTimeMillis()),
 	            					null,
 	            					MessageUtil.buildRequest(TaskType.REQUESTREADFILE, null, MessageUtil.buildReadBody(fname, -1, chunkId, chunkSize)),
 	            					null);
@@ -186,7 +183,6 @@ public class CommHandler extends SimpleChannelInboundHandler<CommandMessage> {
 	@Override
 	protected void channelRead0(ChannelHandlerContext ctx, CommandMessage msg) throws Exception {
 		System.out.println("--> got incoming message");
-//		System.out.println("--> listeners.size() = " + listeners.size());
 		for (String id : listeners.keySet()) {
 			CommListener cl = listeners.get(id);
 

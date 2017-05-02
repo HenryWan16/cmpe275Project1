@@ -26,22 +26,18 @@ import gash.router.container.RoutingConf.RoutingEntry;
 import gash.router.redis.RedisServer;
 import gash.router.server.ServerState;
 import gash.router.server.WorkInit;
-import gash.router.server.messages.QOSWorker;
 import gash.router.server.raft.MessageUtil;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
-import pipe.common.Common;
-import pipe.work.Work;
 
 
 public class EdgeMonitor implements EdgeListener, Runnable {
 	protected static Logger logger = LoggerFactory.getLogger("edge monitor");
 
 	private EdgeList outboundEdges;
-//	private EdgeList inboundEdges;
 	private long dt = 2000;
 	private ServerState state;
 	private boolean forever = true;
@@ -53,7 +49,6 @@ public class EdgeMonitor implements EdgeListener, Runnable {
 			throw new RuntimeException("state is null");
 
 		this.outboundEdges = new EdgeList();
-//		this.inboundEdges = new EdgeList();
 		this.state = state;
 		this.state.setEmon(this);
 
@@ -67,10 +62,6 @@ public class EdgeMonitor implements EdgeListener, Runnable {
 		if (state.getConf().getHeartbeatDt() > this.dt)
 			this.dt = state.getConf().getHeartbeatDt();
 	}
-
-//	public void createInboundIfNew(int ref, String host, int port) {
-//		inboundEdges.createIfNew(ref, host, port);
-//	}
 
 	public void createOutboundIfNew(int ref, String host, int port) {
 		outboundEdges.createIfNew(ref, host, port);
@@ -91,11 +82,12 @@ public class EdgeMonitor implements EdgeListener, Runnable {
 				//set channel to next cluster's leader
 				if (ServerState.nextCluster == null || !ServerState.nextCluster.isActive()) {
 					Set<String> list = RedisServer.getInstance().getLocalhostJedis().keys("*");
-//					int nextClusterId = RoutingConf.clusterId + 1;
-//					if(nextClusterId > list.size()){
-//						nextClusterId = 1;
-//					}
-					int nextClusterId = 3;
+					
+					//set next cluster
+					int nextClusterId = RoutingConf.clusterId + 1;
+					if(nextClusterId > list.size()){
+						nextClusterId = 1;
+					}
 
 					RedisServer.getInstance().getLocalhostJedis().select(0);
 					String leader = RedisServer.getInstance().getLocalhostJedis().get(String.valueOf(nextClusterId));
@@ -104,7 +96,6 @@ public class EdgeMonitor implements EdgeListener, Runnable {
 					if(leader != null) {
 						host = leader.split(":")[0];
 						port = Integer.parseInt(leader.split(":")[1]);
-						//System.out.println("next cluster:" + host + ":" + port);
 						ServerState.nextCluster = createChannel(host, port);
 					}
 				}

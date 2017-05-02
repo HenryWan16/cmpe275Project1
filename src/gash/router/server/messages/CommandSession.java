@@ -4,17 +4,14 @@ import gash.router.container.RoutingConf;
 import gash.router.server.CommandHandler;
 import gash.router.server.ServerState;
 import gash.router.server.edges.EdgeInfo;
-import gash.router.server.raft.LogUtil;
 import gash.router.server.raft.MessageUtil;
 import gash.router.server.raft.RaftHandler;
 import gash.router.server.storage.ClassFileChunkRecord;
 import gash.router.server.storage.MySQLStorage;
 import io.netty.channel.Channel;
 
-import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
-import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Hashtable;
@@ -23,29 +20,22 @@ import java.util.regex.Pattern;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.protobuf.ByteString;
-
 import pipe.common.Common;
 import pipe.common.Common.Header;
-import pipe.common.Common.ReadBody;
 import pipe.common.Common.Response;
 import pipe.common.Common.TaskType;
 import pipe.common.Common.WriteBody;
 import pipe.work.Work.WorkMessage;
 import routing.Pipe.CommandMessage;
 
-/**
- * Created by henrywan16 on 4/3/17.
- */
+
 public class CommandSession implements Session, Runnable{
     protected static Logger logger = LoggerFactory.getLogger("server");
-    //private ServerState state;
     private RoutingConf conf;
     private CommandMessage msg;
     private Channel channel;
 
     public CommandSession(RoutingConf conf, CommandMessage msg, Channel channel) {
-        //this.state = state;
         this.conf = conf;
         this.msg = msg;
         this.channel = channel;
@@ -73,6 +63,7 @@ public class CommandSession implements Session, Runnable{
                 
 
         	}else if (msg.hasRequest()) {
+        		
             	logger.info("CommendSession handleMessage RequestType is " + type);
 
     			Hashtable<Integer, String> location = new Hashtable<Integer, String>();
@@ -85,6 +76,7 @@ public class CommandSession implements Session, Runnable{
             		
             		// If the fname exists on the server.
             		if (fname.equals("ls_all_the_files_and_chunks")) {
+            			
             			ArrayList<ClassFileChunkRecord> fileList = mySQLStorage.selectAllRecordsFileChunk();
                 		//return to client a HashMap of locations
             			CommandMessage cm = MessageUtil.buildCommandMessage(
@@ -141,7 +133,6 @@ public class CommandSession implements Session, Runnable{
                 			} catch (Exception e1) {
     							e1.printStackTrace();
     						}
-    						System.out.println("host = " + host);
                 			int port = conf.getCommandPort();
                 			int nodeID = conf.getNodeId();
                 			String locationAddress = nodeID + ";" + host + ";" + port;
@@ -236,6 +227,7 @@ public class CommandSession implements Session, Runnable{
 	    						
 	        					ServerState.nextCluster.writeAndFlush(msg);
 	        					logger.info("Forwarding a WRITE message get from client id " + nodeId);
+	    					
 	    					} else { //from your neighbor
 	    						//forward anyway
 	    						ServerState.nextCluster.writeAndFlush(msg);
@@ -253,8 +245,6 @@ public class CommandSession implements Session, Runnable{
     	    			fileId = wb.getFileId();
     	    		}
     	    		
-    	    		
-            		
             		// If the file and chunkid already in server.
             		if (!mySQLStorage.checkFileChunkExist(fname, chunkId)) {
             			

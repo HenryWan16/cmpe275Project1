@@ -21,7 +21,6 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.HashMap;
 
-import gash.router.server.messages.QOSWorker;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,23 +31,12 @@ import gash.router.server.raft.RaftHandler;
 import gash.router.server.tasks.NoOpBalancer;
 import gash.router.server.tasks.TaskList;
 import gash.router.server.storage.MySQLStorage;
-import gash.router.server.storage.TestSQLOperations;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Properties;
 
 public class MessageServer {
 	protected static Logger logger = LoggerFactory.getLogger("server");
@@ -125,10 +113,8 @@ public class MessageServer {
 		BufferedInputStream br = null;
 		try {
 			byte[] raw = new byte[(int) cfg.length()];
-			Properties properties = new Properties();
 			
 			mySQLStorage = new MySQLStorage();
-			TestSQLOperations testSQLOperations = new TestSQLOperations();
 			
 			br = new BufferedInputStream(new FileInputStream(cfg));
 			br.read(raw);
@@ -163,7 +149,6 @@ public class MessageServer {
 
 		public StartCommandCommunication(RoutingConf conf) {
 			this.conf = conf;
-			QOSWorker qos = QOSWorker.getInstance();
 		}
 
 		public void run() {

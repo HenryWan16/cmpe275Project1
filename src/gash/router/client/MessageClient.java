@@ -29,7 +29,7 @@ import routing.Pipe.CommandMessage;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
+
 /**
  * front-end (proxy) to our service - functional-based
  * 
@@ -39,7 +39,6 @@ import java.io.FileOutputStream;
 public class MessageClient {
 	protected static Logger logger = LoggerFactory.getLogger("client");
 	// track requests
-	private long curID = 0;
 	private MergeWorker mw = null;
 
 	public MessageClient(String host, int port) {
@@ -196,13 +195,4 @@ public class MessageClient {
 		CommConnection.getInstance().release();
 	}
 
-	/**
-	 * Since the service/server is asychronous we need a unique ID to associate
-	 * our requests with the server's reply
-	 * 
-	 * @return
-	 */
-	private synchronized long nextId() {
-		return ++curID;
-	}
 }

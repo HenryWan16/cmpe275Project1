@@ -3,9 +3,7 @@ package gash.router.client;
 import io.netty.channel.Channel;
 import pipe.work.Work.WorkMessage;
 
-/**
- * Created by henrywan16 on 4/12/17.
- */
+
 public class WorkWorker extends Thread{
     private WorkConnection conn;
     private boolean forever = true;
@@ -46,7 +44,6 @@ public class WorkWorker extends Thread{
                 } else {
                     System.out.println("--> channel not writable- tossing out msg!");
 
-                    // conn.outbound.putFirst(msg);
                 }
 
                 System.out.flush();

@@ -18,8 +18,6 @@ package gash.router.server;
 import gash.router.server.messages.CommandSession;
 import gash.router.server.messages.QOSWorker;
 import gash.router.server.messages.Session;
-import gash.router.server.messages.WorkSession;
-import gash.router.server.raft.RaftHandler;
 
 import java.util.Hashtable;
 
@@ -31,7 +29,6 @@ import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import pipe.common.Common.Failure;
-import routing.Pipe;
 import routing.Pipe.CommandMessage;
 import pipe.common.Common.Header;
 
@@ -91,6 +88,7 @@ public class CommandHandler extends SimpleChannelInboundHandler<CommandMessage> 
 						logger.info("Reached cluster destination, rebuiding & forwarding the message.");
 						forwardMessage(msg, channel, nodeId);
 					}
+					
 				} else { //node <10
 					if ((msg.getHeader().getDestination() % 10) != RoutingConf.clusterId) {
 						logger.info("Not a cluster destination, just forwarding the message.");
@@ -112,12 +110,11 @@ public class CommandHandler extends SimpleChannelInboundHandler<CommandMessage> 
 					
 
 			} else if (msg.hasRequest()) {
-				
 				qos = QOSWorker.getInstance();
 				Session session = new CommandSession(conf, msg, channel);
 				qos.getQueue().enqueue(session);
 
-			} else { }
+			}
 
 		} catch (Exception e) {
 			// TODO add logging

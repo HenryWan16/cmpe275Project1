@@ -15,30 +15,20 @@
  */
 package gash.router.server;
 
-import gash.router.server.edges.EdgeInfo;
 import gash.router.server.messages.CommandSession;
-
-import java.net.Inet4Address;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import gash.router.server.messages.QOSWorker;
 import gash.router.server.messages.Session;
-import gash.router.server.messages.WorkSession;
-import gash.router.server.raft.MessageUtil;
-import gash.router.server.raft.RaftHandler;
-import gash.router.server.storage.MySQLStorage;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import pipe.common.Common;
 import pipe.common.Common.Failure;
-import pipe.common.Common.Response.Status;
 import pipe.work.Work.Heartbeat;
-import pipe.work.Work.Task;
 import pipe.work.Work.WorkMessage;
-import pipe.work.Work.WorkState;
 import routing.Pipe;
 
 /**
@@ -82,9 +72,9 @@ public class WorkHandler extends SimpleChannelInboundHandler<WorkMessage> {
 			if (msg.hasBeat()) {
 				Heartbeat hb = msg.getBeat();
 				logger.debug("heartbeat from " + msg.getHeader().getNodeId());
+				
 			} else if (msg.hasPing()) {
 				logger.info("ping from " + msg.getHeader().getNodeId());
-				boolean p = msg.getPing();
 				WorkMessage.Builder rb = WorkMessage.newBuilder();
 				rb.setPing(true);
 				rb.setSecret(1234);
@@ -118,8 +108,10 @@ public class WorkHandler extends SimpleChannelInboundHandler<WorkMessage> {
 						//The node that steals the work from this node will not be able to talk to the client
 						CommandSession commandSession = ((CommandSession) QOSWorker.getInstance().getQueue().dequeue());
 						if(commandSession != null) {
+							
 							Pipe.CommandMessage cMsg = commandSession.getMsg();
 							if (cMsg.getRequest().getRequestType() == Common.TaskType.REQUESTWRITEFILE) {
+								
 								//The network can only steal write requests
 								Common.Header.Builder hd = Common.Header.newBuilder();
 								hd.setNodeId(state.getConf().getNodeId());

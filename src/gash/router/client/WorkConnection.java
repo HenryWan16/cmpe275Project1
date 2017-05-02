@@ -12,9 +12,7 @@ import pipe.work.Work.WorkMessage;
 import java.util.concurrent.LinkedBlockingDeque;
 import java.util.concurrent.atomic.AtomicReference;
 
-/**
- * Created by henrywan16 on 4/12/17.
- */
+
 public class WorkConnection {
     protected static Logger logger = LoggerFactory.getLogger("connect");
 
@@ -23,7 +21,6 @@ public class WorkConnection {
     private String host;
     private int port;
     private ChannelFuture channel; // do not use directly call
-    // connect()!
 
     private EventLoopGroup group;
 

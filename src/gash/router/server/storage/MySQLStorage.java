@@ -3,6 +3,7 @@ package gash.router.server.storage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import gash.router.container.RoutingConf;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -35,7 +36,7 @@ public class MySQLStorage {
     public void init() {
 
         try {
-            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/FileDB?&useSSL=true", "root", "cmpe275");
+            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/FileDB?&useSSL=true", RoutingConf.mySQLUser, RoutingConf.mySQLPwd);
         } catch (SQLException e) {
             e.printStackTrace();
         }

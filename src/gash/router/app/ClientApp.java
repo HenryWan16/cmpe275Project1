@@ -21,7 +21,7 @@ import gash.router.client.MessageClient;
 import gash.router.container.RoutingConf;
 import routing.Pipe.CommandMessage;
 import gash.router.redis.RedisServer;
-import gash.router.server.storage.TestSQLOperations;
+//import gash.router.server.storage.TestSQLOperations;
 
 import java.util.Scanner;
 
@@ -99,7 +99,9 @@ public class ClientApp implements CommListener {
 	                  break;
 	        }
 	      } while(!commands[0].equals("quit"));
-	      
+		
+		//close scanner
+		scanner.close();
   }
 
 	/**

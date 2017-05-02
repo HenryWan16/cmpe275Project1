@@ -1,6 +1,5 @@
 package gash.router.server.messages;
 
-import gash.router.server.MessageServer;
 import gash.router.server.edges.EdgeInfo;
 
 import org.slf4j.Logger;
@@ -9,15 +8,12 @@ import gash.router.server.raft.RaftHandler;
 import pipe.common.Common;
 import pipe.work.Work;
 
-/**
- * Created by henrywan16 on 3/25/17.
- */
+
 public class QOSWorker implements Runnable{
     protected static Logger logger = LoggerFactory.getLogger("qosworker");
     protected static QOSWorker instance;
     private boolean forever;
     private QueueInterface queue;
-//    private EdgeMonitor emon;
 
     public QOSWorker() {
         this.forever = true;
