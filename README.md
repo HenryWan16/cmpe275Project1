@@ -24,11 +24,13 @@ testSQLOperations.createTable();
 	Note: the config file must have the ips and ports of all the nodes in the network. 
 7. Start the client: 
 	```
-	./startClient.sh  
+	./startClient.sh <cluster_id>
 	```
-	The client has 5 operations:   
-		1. ping <cluster id>: ping to a cluster.  
-		2. leader: get leader’s ip and port from redis server  
-		3. read <fileName> : retrieve a file from the network.  
-		4. write <filePath>:  upload a file from the client to the network.  
-		5. quit: exit the client.  
+	The client has 6 operations:   
+        1. ping <cluster id>: ping to a cluster.
+        2. ls: retrieve a list of all files stored in the server
+        3. leader: get leader’s ip and port from redis server
+        4. read <fileName> : retrieve a file from the network.
+        5. write <fileName>:  upload a file from the client’s project directory to the network.
+        6. quit: exit the client.
+
