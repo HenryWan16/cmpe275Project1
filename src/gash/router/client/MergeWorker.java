@@ -11,9 +11,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
 
-/**
- * Created by sam on 4/15/17.
- */
+
 public class MergeWorker implements Runnable{
 	protected static Logger logger = LoggerFactory.getLogger("MergeWorker");
     private int totalNoOfChunks;
