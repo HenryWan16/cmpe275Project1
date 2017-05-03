@@ -27,6 +27,7 @@ testSQLOperations.createTable();
 	./startClient.sh <cluster_id>
 	```
 	The client has 6 operations:   
+	
         1. ping <cluster id>: ping to a cluster.
         
         2. ls: retrieve a list of all files stored in the server
