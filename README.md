@@ -28,9 +28,14 @@ testSQLOperations.createTable();
 	```
 	The client has 6 operations:   
         1. ping <cluster id>: ping to a cluster.
+        
         2. ls: retrieve a list of all files stored in the server
+        
         3. leader: get leader’s ip and port from redis server
+        
         4. read <fileName> : retrieve a file from the network.
+        
         5. write <fileName>:  upload a file from the client’s project directory to the network.
+        
         6. quit: exit the client.
 
